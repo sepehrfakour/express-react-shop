@@ -10,6 +10,12 @@
 
 ####Run either `heroku local` or `node index.js` to start the application server on localhost:5000
 
+##Data API
+
+Be sure to have postgres installed and running
+
+Add connection URL strig to config/db
+
 ##Testing
 
 In order to run Unit Tests use:
@@ -35,6 +41,9 @@ In order to run Unit Tests use:
 <script src="/js/app.js" charset="utf-8"></script>
 ```
 
+##Data API
+
+Be sure to set an ENVIRONMENT VARIABLE on production server with production postgres db connection URL string
 
 ###Notes:
 ####Webpack Bundle Prep: Inside webpack config, switch devtools to cheap-module-source-map, and uncomment plugins

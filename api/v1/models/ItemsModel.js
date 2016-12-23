@@ -10,7 +10,12 @@ class ItemsModel {
     let client = new pg.Client(connect);
     let query = client.query('SELECT * FROM items');
     let results = [];
-    client.connect();
+    client.connect( function (error) {
+      console.log('Client connection error: ', error);
+    });
+    query.on('error', function(error) {
+      console.log('Query error: ', error);
+    });
     query.on('row', function(row) {
         results.push(row);
     });
@@ -23,7 +28,12 @@ class ItemsModel {
     let client = new pg.Client(connect);
     let query = client.query("SELECT * FROM items WHERE category = '" + category + "' ORDER BY name ASC");
     let results = [];
-    client.connect();
+    client.connect( function (error) {
+      console.log('Client connection error: ', error);
+    });
+    query.on('error', function(error) {
+      console.log('Query error: ', error);
+    });
     query.on('row', function(row) {
         results.push(row);
     });
@@ -36,7 +46,12 @@ class ItemsModel {
     let client = new pg.Client(connect);
     let query = client.query('SELECT * FROM items WHERE id = ' + id + ' LIMIT 1');
     let results = [];
-    client.connect();
+    client.connect( function (error) {
+      console.log('Client connection error: ', error);
+    });
+    query.on('error', function(error) {
+      console.log('Query error: ', error);
+    });
     query.on('row', function(row) {
         results.push(row);
     });
