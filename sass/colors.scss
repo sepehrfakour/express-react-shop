@@ -1,0 +1,45 @@
+/********************************************************************************/
+/************************************ COLORS ************************************/
+/********************************************************************************/
+
+/* Body */
+
+$text: #363B3E;
+$body: #FAFAFB;
+$wrapper: transparent;
+$main-window: #444;
+$game: #333435;
+
+/* Links */
+
+$link: #3770B0;
+$link-hover: #4780C0;
+$link-selected: #175090;
+
+$link-border: lighten($link, 25%);
+$link-border-hover: lighten($link-border, 5%);
+
+/* Errors */
+
+$error-red: #C00;
+$error-red-trans: rgba(204,0,0,0.9);
+$error-red-dark: #A9271D;
+$error-text-red-light: #FFD7D4;
+
+/* General */
+
+$ghost: rgba(255,255,255,0.7);
+$shadow: rgba(0,0,0,0.7);
+
+/* Game */
+
+// $gridColor: #555;
+$gridColor: $game;
+$gridBackground: #002110;
+
+$placementLocation: #103120;
+$invalidPlacementLocation: #800000;
+$placementHover: lightblue;
+
+$charBackground: #143E9C;
+$buildingBackground: #583415;

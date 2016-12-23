@@ -1,0 +1,64 @@
+
+/******************************************************************************/
+/************************************ BASIC ***********************************/
+/****************************************************************************************/
+/************************************ App-Wide Styles ***********************************/
+/****************************************************************************************/
+
+@import "colors";
+@import "mixins";
+@import "size";
+@import "normalize";
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+html {}
+body {
+  display: block;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Avenir Next', 'Helvetica Neue', arial, helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: $text;
+  background-color: $body;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
+}
+a {
+  color: $link;
+  text-decoration: none;
+}
+a:hover {
+  color: $link-hover;
+}
+a:visited {}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 15px 0px;
+  font-weight: 600;
+}
+
+input::-webkit-input-placeholder, /* Chrome/Opera/Safari */
+input::-moz-placeholder, /* Firefox 19+ */
+input:-ms-input-placeholder, /* IE 10+ */
+input:-moz-placeholder { /* Firefox 18- */
+  font-size: 13px;
+  color: #555;
+}
+
+.hidden {
+  display: none;
+}
+
+/***************************************** End ******************************************/

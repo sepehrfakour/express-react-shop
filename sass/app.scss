@@ -1,0 +1,28 @@
+// Import basic styles...includes normalize.css and colors / variables / mixins
+@import "basic";
+
+#wrapper {
+  display: block;
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  background-color: $wrapper;
+}
+
+#react-container {}
+
+#main-window {
+  display: block;
+  position: absolute;
+  top: 0px;
+  height: 100%;
+  width: auto;
+  // width: 100%;
+  min-width: 100%;
+  background-color: $main-window;
+}
+
+// Import non-component stylesheets
+@import "spinner";
+// Import component stylesheets
+@import "alerts";

@@ -1,0 +1,28 @@
+#alert-display {
+  top: 30px;
+  left: 50%;
+  width: 500px;
+  margin-left: -250px;
+  background-color: transparent;
+  .alerts {
+    .alert {
+      display: block;
+      font-size: 13px;
+      color: #FFF;
+      opacity: 1;
+      -webkit-transition: opacity 10s ease-in;
+      -moz-transition: opacity 10s ease-in;
+      -ms-transition: opacity 10s ease-in;
+      -o-transition: opacity 10s ease-in;
+      transition: opacity 10s ease-in;
+      &.rendered {
+        opacity: 0;
+        -webkit-transition: opacity 10s ease-in;
+        -moz-transition: opacity 10s ease-in;
+        -ms-transition: opacity 10s ease-in;
+        -o-transition: opacity 10s ease-in;
+        transition: opacity 10s ease-in;
+      }
+    }
+  }
+}
