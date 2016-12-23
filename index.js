@@ -1,4 +1,8 @@
 
+/***************************/
+/******** 1. Config ********/
+/***************************/
+
 global.rootRequire = function (name) {
   return require(__dirname + '/' + name);
 }
@@ -54,6 +58,19 @@ var renderIndex = function (req, res) {
   });
 }
 
+
+
+
+
+
+
+
+
+
+/****************************/
+/******** 2. Routing ********/
+/****************************/
+
 // Root route
 app.route('/')
   .all()
@@ -78,6 +95,19 @@ app.route(base_url + 'item')
 // Insert item
 // Update item
 // Delete item
+
+
+
+
+
+
+
+
+
+
+/***************************/
+/******** 3. Server ********/
+/***************************/
 
 // Set up the express application server
 var server = app.listen( (process.env.PORT || 5000), function () {
