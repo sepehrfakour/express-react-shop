@@ -18,7 +18,8 @@ const MainWindow    = require('./components/MainWindowComponent.jsx').default,
       Login         = require('./components/static/LoginComponent.jsx').default,
       AllItems      = require('./components/items/AllItemsComponent.jsx').default,
       CategoryItems = require('./components/items/CategoryItemsComponent.jsx').default,
-      Item          = require('./components/items/ItemComponent.jsx').default;
+      Item          = require('./components/items/ItemComponent.jsx').default,
+      Admin         = require('./components/admin/DashboardComponent.jsx').default;
 
 // LocalStorage Data
 // const LocalStorageHandler = require('./public/js/localStorageHandler.js');
@@ -57,6 +58,7 @@ ReactDOM.render(
       <Route path="item/:id" component={Item}/>
       <Route path="about" component={About}/>
       <Route path="login" component={Login}/>
+      <Route path="admin" component={Admin}/>
     </Route>
     <Route path="*" component={NotFound} />
   </Router>,

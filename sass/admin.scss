@@ -1,0 +1,34 @@
+#admin-dashboard {
+  text-align: center;
+  h1 {
+    margin: 0px;
+    padding: 15px 0px;
+  }
+  #admin-controls {
+    margin: 15px;
+    #add-item {
+      width: 50%;
+      padding: 15px;
+      font-weight: 600;
+      color: $link;
+      background-color: #FFF;
+      border: 2px solid #EEE;
+      border-radius: 5px;
+      &:hover {
+        background-color: #EEE;
+      }
+    }
+  }
+  table {
+    display: inline-table;
+    margin: 15px 0px;
+    tr {
+      border-bottom: 1px solid #EEE;
+      th,
+      td {
+        padding: 5px 30px;
+        text-align: left;
+      }
+    }
+  }
+}
