@@ -43,9 +43,9 @@ const sess = {
   }
 }
 
-// Hard-coded admin config
-const username = 'ptacheen',
-      password = 'doustaram';
+// TODO: extract this hard-coded admin config
+const username = 'a',
+      password = 'a';
 
 // Configuration specific to production env
 if (env == 'production') {
@@ -160,7 +160,7 @@ app.route('/admin')
 app.route(api_base_url + 'item/create')
   .all(authenticate)
   .get()
-  .post()
+  .post(itemsController.addItem)
 // Update item
 app.route(api_base_url + 'item/update')
   .all(authenticate)

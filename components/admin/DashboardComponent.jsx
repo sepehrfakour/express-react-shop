@@ -1,5 +1,7 @@
 const React = require('react');
 
+const ControlPanel = require('./ControlPanelComponent.jsx').default;
+
 const ItemStore   = require('../../stores/ItemStore.js').default,
       ItemActions = require('../../actions/ItemActions.js');
 
@@ -40,7 +42,7 @@ var Dashboard = React.createClass({
       <div id="admin-dashboard">
         <h1>Admin Dashboard</h1>
         <div id="admin-controls">
-          <button id="add-item">+ Add new item</button>
+          <ControlPanel />
         </div>
         <table id="admin-items-list">
           <thead>
@@ -62,7 +64,7 @@ var Dashboard = React.createClass({
   },
   _onChange: function () {
     this.setState(getItemState());
-  },
+  }
 })
 
 export default Dashboard;

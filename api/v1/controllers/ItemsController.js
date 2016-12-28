@@ -27,6 +27,18 @@ class ItemsController {
     }
   }
   addItem(req,res) {
+    if (req.body) {
+      let data = {
+        category: req.body.category,
+        name: req.body.name,
+        price: req.body.price,
+        sku: req.body.sku,
+        quantity: req.body.quantity
+      }
+      ItemsModel.addItem(data, function (result) {
+        res.status(200).json(result);
+      });
+    }
   }
   updateItem(req,res) {
   }
