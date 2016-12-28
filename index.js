@@ -43,6 +43,10 @@ const sess = {
   }
 }
 
+// Hard-coded admin config
+const username = 'ptacheen',
+      password = 'doustaram';
+
 // Configuration specific to production env
 if (env == 'production') {
   // Force SSL on heroku by checking the 'x-forwarded-proto' header
@@ -74,6 +78,16 @@ app.use(bodyParser.urlencoded({
 // Parse request params like in Express 3.0
 app.use( require('request-param')() );
 
+
+
+
+
+
+
+
+
+
+// Route helper methods
 var renderIndex = function (req, res) {
   res.render('index', {
     page: 'index',
@@ -96,7 +110,7 @@ var authenticate = function (req, res, next) {
 }
 
 var login = function (req, res, next) {
-  if (req.body.username && req.body.username === 'user' && req.body.password && req.body.password === 'pass') {
+  if (req.body.username && req.body.username === username && req.body.password && req.body.password === password) {
     req.session.authenticated = true;
     res.redirect('/admin');
   } else {
@@ -152,14 +166,27 @@ app.route(base_url + 'item')
   .post(itemsController.getItem)
 
 // Protected API Endpoints
+// TODO: create controllers and models for all admin routes
 // Admin dashboard
 app.route('/admin')
   .all(authenticate)
-  .get(itemsController.getItems)
-  .post(itemsController.getItems)
+  .get()
+  .post()
 // Insert item
+app.route(base_url + 'item/create')
+  .all(authenticate)
+  .get()
+  .post()
 // Update item
+app.route(base_url + 'item/update')
+  .all(authenticate)
+  .get()
+  .post()
 // Delete item
+app.route(base_url + 'item/delete')
+  .all(authenticate)
+  .get()
+  .post()
 
 
 
