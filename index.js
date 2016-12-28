@@ -136,16 +136,16 @@ const logout = function (req, res, next) {
 
 // API
 // - Public API Endpoints
-const base_url = '/api/v1/';
+const api_base_url = '/api/v1/';
 // Items Controller
-const itemsController = require(__dirname + base_url + 'controllers/itemsController.js');
+const itemsController = require(__dirname + api_base_url + 'controllers/itemsController.js');
 // Fetch all items, or by category
-app.route(base_url + 'items')
+app.route(api_base_url + 'items')
   .all()
   .get(itemsController.getItems)
   .post(itemsController.getItems)
 // Fetch item by id
-app.route(base_url + 'item')
+app.route(api_base_url + 'item')
   .all()
   .get(itemsController.getItem)
   .post(itemsController.getItem)
@@ -157,17 +157,17 @@ app.route('/admin')
   .post()
 // TODO: create controllers and models for all protected API (admin) routes
 // Insert item
-app.route(base_url + 'item/create')
+app.route(api_base_url + 'item/create')
   .all(authenticate)
   .get()
   .post()
 // Update item
-app.route(base_url + 'item/update')
+app.route(api_base_url + 'item/update')
   .all(authenticate)
   .get()
   .post()
 // Delete item
-app.route(base_url + 'item/delete')
+app.route(api_base_url + 'item/delete')
   .all(authenticate)
   .get()
   .post()

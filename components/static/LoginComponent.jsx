@@ -11,13 +11,13 @@ var NotFound = React.createClass({
         <form method="post">
           <h1>Login</h1>
           <p>
-            <input type="text" name="username" placeholder="Username" />
+            <input type="text" name="username" placeholder="Username" autoFocus="autofocus" tabIndex="1" />
           </p>
           <p>
-            <input type="password" name="password" placeholder="Password" />
+            <input type="password" name="password" placeholder="Password" tabIndex="2" />
           </p>
           <p>
-            <input type="submit" name="submit" />
+            <input type="submit" name="submit" tabIndex="3" />
           </p>
         </form>
       </div>

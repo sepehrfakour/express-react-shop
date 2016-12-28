@@ -20,6 +20,11 @@
   // width: 100%;
   min-width: 100%;
   background-color: $main-window;
+  text-align: center;
+  h1 {
+    margin: 0px;
+    padding: 30px 15px;
+  }
 }
 
 // Import non-component stylesheets
@@ -30,3 +35,4 @@
 @import "header";
 @import "login";
 @import "admin";
+@import "landing";
