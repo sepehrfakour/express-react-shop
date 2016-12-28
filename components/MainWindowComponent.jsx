@@ -1,8 +1,6 @@
 const React = require('react');
 
-// const AnotherComponent = require('./AnotherComponent.jsx').default;
-// In render method use the following JSX:
-// <AnotherComponent someprop={this.props.someprop} />
+const Header = require('./nav/HeaderComponent.jsx').default;
 
 var MainWindow = React.createClass({
   getInitialState: function () {
@@ -19,11 +17,10 @@ var MainWindow = React.createClass({
       })
   },
   render: function () {
-    var page = this.props.page;
     return(
       <div id="main-window">
-        <h1>Patina Hello World</h1>
-        <h2>Page: {page} </h2>
+        <Header loggedIn={this.props.route.loggedIn} />
+        {this.props.children}
       </div>
     );
   }

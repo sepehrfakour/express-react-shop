@@ -7,13 +7,21 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-// Components
-const MainWindow = require('./components/MainWindowComponent.jsx').default;
+// Router
+import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
 
-// Default Data (user)
-const Demo_data = require('./lib/demo_data.js');
+// Components
+const MainWindow    = require('./components/MainWindowComponent.jsx').default,
+      NotFound      = require('./components/NotFoundComponent.jsx').default,
+      Home          = require('./components/HomeComponent.jsx').default,
+      About         = require('./components/static/AboutComponent.jsx').default,
+      Login         = require('./components/static/LoginComponent.jsx').default,
+      AllItems      = require('./components/items/AllItemsComponent.jsx').default,
+      CategoryItems = require('./components/items/CategoryItemsComponent.jsx').default,
+      Item          = require('./components/items/ItemComponent.jsx').default;
+
 // LocalStorage Data
-const LocalStorageHandler = require('./public/js/localStorageHandler.js');
+// const LocalStorageHandler = require('./public/js/localStorageHandler.js');
 
 /************************************/
 /*********** 2. Configure ***********/
@@ -30,11 +38,9 @@ const LocalStorageHandler = require('./public/js/localStorageHandler.js');
 //     window.sessionDataObject = Data.user;
 // }
 
-// Set props from retrieved data
-// var props = Data.props;
-// var something = ExampleStore.getData();
-var Data = {
-  page: (page !== undefined) ? page : '',
+// Set loggedIn status (retrieve from index view)
+let Data = {
+  loggedIn: (loggedIn === undefined) ? false : loggedIn
 }
 
 /************************************/
@@ -43,7 +49,17 @@ var Data = {
 
 // Render with props
 ReactDOM.render(
-  <MainWindow page={Data.page} ></MainWindow>,
+  <Router history={browserHistory}>
+    <Route path="/" loggedIn={Data.loggedIn} component={MainWindow}>
+      <IndexRoute component={Home}/>
+      <Route path="all" component={AllItems}/>
+      <Route path="category" component={CategoryItems}/>
+      <Route path="item/:id" component={Item}/>
+      <Route path="about" component={About}/>
+      <Route path="login" component={Login}/>
+    </Route>
+    <Route path="*" component={NotFound} />
+  </Router>,
   document.getElementById('react-container')
 );
 

@@ -90,14 +90,13 @@ app.use( require('request-param')() );
 // Route helper methods
 const renderIndex = function (req, res) {
   res.render('index', {
-    page: 'index',
-    userParam: req.param('user')
+    loggedIn: (req.session.authenticated || false)
   });
 }
 
 const renderLogin = function (req, res) {
   res.render('login', {
-    page: 'login'
+    loggedIn: (req.session.authenticated || false)
   });
 }
 
@@ -177,7 +176,7 @@ app.route(base_url + 'item/delete')
 // Log in
 app.route('/login')
   .all()
-  .get(renderLogin)
+  .get()
   .post(login)
 // Log out
 app.route('/logout')

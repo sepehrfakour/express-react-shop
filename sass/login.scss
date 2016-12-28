@@ -1,0 +1,58 @@
+#login-form {
+  width: 100%;
+  text-align: center;
+  form {
+    display: inline-block;
+    width: 240px;
+    margin-top: 90px;
+    padding: 30px 60px 45px;
+    background-color: #FFF;
+    border-radius: 5px;
+    text-align: center;
+    h1 {
+      margin: 15px 0px 30px;
+    }
+    p {
+      margin: 0px 0px 15px;
+      padding: 0px;
+      &:last-of-type {
+        margin-top: 30px;
+        margin-bottom: 0px;
+      }
+      input {
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      input[type='text'],
+      input[type='password'] {
+        border: 0px;
+        border-bottom: 2px solid #EEE;
+        &:focus {
+          outline: none;
+          border-bottom-color: $link;
+        }
+      }
+      input[type='submit'] {
+        font-weight: 600;
+        color: #000;
+        background: transparent;
+        border: 2px solid #000;
+        border-radius: 5px;
+        -webkit-transition: background 200ms ease-in;
+        -moz-transition: background 200ms ease-in;
+        -ms-transition: background 200ms ease-in;
+        -o-transition: background 200ms ease-in;
+        transition: background 200ms ease-in;
+        &:hover {
+          background-color: #DDD;
+          -webkit-transition: background 200ms ease-in;
+          -moz-transition: background 200ms ease-in;
+          -ms-transition: background 200ms ease-in;
+          -o-transition: background 200ms ease-in;
+          transition: background 200ms ease-in;
+        }
+      }
+    }
+  }
+}

@@ -7,7 +7,8 @@
 $text: #363B3E;
 $body: #FAFAFB;
 $wrapper: transparent;
-$main-window: #444;
+// $main-window: #444;
+$main-window: $body;
 $game: #333435;
 
 /* Links */
@@ -29,7 +30,7 @@ $error-text-red-light: #FFD7D4;
 /* General */
 
 $ghost: rgba(255,255,255,0.7);
-$shadow: rgba(0,0,0,0.7);
+$shadow: rgba(0,0,0,0.05);
 
 /* Game */
 

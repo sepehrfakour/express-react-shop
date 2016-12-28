@@ -1,0 +1,22 @@
+#header {
+  background-color: #FFF;
+  box-shadow: 0px 1px 1px $shadow;
+  ul {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+    text-align: right;
+    li {
+      display: inline-block;
+      a {
+        display: inline-block;
+        padding: 15px;
+        font-weight: 600;
+        color: $link;
+        &:hover {
+          background-color: #EEE;
+        }
+      }
+    }
+  }
+}
