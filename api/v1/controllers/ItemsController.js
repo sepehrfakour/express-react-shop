@@ -6,11 +6,13 @@ class ItemsController {
   }
   getItems(req,res) {
     if (req.param('cat')) {
+      // Fetch items by category
       ItemsModel.getItemsByCategory(req.param('cat'), function (results) {
         res.status(200).json(results);
       });
     }
     else {
+      // Fetch all items
       ItemsModel.getItems(function (results) {
         res.status(200).json(results);
       });
@@ -18,12 +20,11 @@ class ItemsController {
   }
   getItem(req,res) {
     if (req.param('id')) {
+      // Fetch an item by ID
       ItemsModel.getItem(req.param('id'), function (result) {
         res.status(200).json(result);
       });
     }
-  }
-  getItemsByCategory (req, res) {
   }
   addItem(req,res) {
   }

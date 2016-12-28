@@ -11,6 +11,8 @@ var env = process.env.NODE_ENV || 'development'
   , express         = require('express')
   , sassMiddleware  = require('node-sass-middleware')
   , app             = express()
+  , helmet          = require('helmet')
+  , session         = require('express-session')
   , bodyParser      = require('body-parser');
 
 app.set('port', (process.env.PORT || 5000) );
@@ -27,15 +29,37 @@ app.use(
   })
 );
 
+// Session config
+const expiry = new Date( Date.now() + 60 * 60 * 1000 );
+const sess = {
+  secret: 'meow8waka_Zerg',
+  name: 'arbitrarySessionName07856809875671798376',
+  // TODO update resave and saveUninitialized
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    expires: expiry
+  }
+}
+
 // Configuration specific to production env
 if (env == 'production') {
   // Force SSL on heroku by checking the 'x-forwarded-proto' header
   const forceSSL = require('express-force-ssl');
   app.set('forceSSLOptions', {trustXFPHeader: true});
   app.use(forceSSL);
+  // Use secure cookies in production
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
 }
 
+// Static assets path
 app.use(express.static(__dirname + '/public'));
+// Use helmet
+app.use(helmet());
+// Use sessions
+app.use(session(sess));
 
 // Support JSON-encoded bodies
 app.use(bodyParser.json({
@@ -53,12 +77,38 @@ app.use( require('request-param')() );
 var renderIndex = function (req, res) {
   res.render('index', {
     page: 'index',
-    items: null,
     userParam: req.param('user')
   });
 }
 
+var renderLogin = function (req, res) {
+  res.render('login', {
+    page: 'login'
+  });
+}
 
+var authenticate = function (req, res, next) {
+  if (req.session && req.session.authenticated) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+}
+
+var login = function (req, res, next) {
+  if (req.body.username && req.body.username === 'user' && req.body.password && req.body.password === 'pass') {
+    req.session.authenticated = true;
+    res.redirect('/admin');
+  } else {
+    res.status(403).send('Error: Incorrect Username and/or Password');
+    // res.status(403).redirect('/login');
+  }
+}
+
+var logout = function (req, res, next) {
+  delete req.session.authenticated;
+  res.redirect('/');
+}
 
 
 
@@ -76,9 +126,18 @@ app.route('/')
   .all()
   .get(renderIndex)
   .post(renderIndex);
+// Log in
+app.route('/login')
+  .all()
+  .get(renderLogin)
+  .post(login)
+// Log out
+app.route('/logout')
+  .all()
+  .get(logout)
 
 // Public API Endpoints
-var base_url = '/api/v1/';
+const base_url = '/api/v1/';
 // Items Controller
 var itemsController = require(__dirname + base_url + 'controllers/itemsController.js');
 // Fetch all items, or by category
@@ -91,7 +150,13 @@ app.route(base_url + 'item')
   .all()
   .get(itemsController.getItem)
   .post(itemsController.getItem)
+
 // Protected API Endpoints
+// Admin dashboard
+app.route('/admin')
+  .all(authenticate)
+  .get(itemsController.getItems)
+  .post(itemsController.getItems)
 // Insert item
 // Update item
 // Delete item
