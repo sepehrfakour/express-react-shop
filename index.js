@@ -7,7 +7,7 @@ global.rootRequire = function (name) {
   return require(__dirname + '/' + name);
 }
 
-var env = process.env.NODE_ENV || 'development'
+const env = process.env.NODE_ENV || 'development'
   , express         = require('express')
   , sassMiddleware  = require('node-sass-middleware')
   , app             = express()
@@ -88,20 +88,20 @@ app.use( require('request-param')() );
 
 
 // Route helper methods
-var renderIndex = function (req, res) {
+const renderIndex = function (req, res) {
   res.render('index', {
     page: 'index',
     userParam: req.param('user')
   });
 }
 
-var renderLogin = function (req, res) {
+const renderLogin = function (req, res) {
   res.render('login', {
     page: 'login'
   });
 }
 
-var authenticate = function (req, res, next) {
+const authenticate = function (req, res, next) {
   if (req.session && req.session.authenticated) {
     next();
   } else {
@@ -109,7 +109,7 @@ var authenticate = function (req, res, next) {
   }
 }
 
-var login = function (req, res, next) {
+const login = function (req, res, next) {
   if (req.body.username && req.body.username === username && req.body.password && req.body.password === password) {
     req.session.authenticated = true;
     res.redirect('/admin');
@@ -119,7 +119,7 @@ var login = function (req, res, next) {
   }
 }
 
-var logout = function (req, res, next) {
+const logout = function (req, res, next) {
   delete req.session.authenticated;
   res.redirect('/');
 }
@@ -135,25 +135,11 @@ var logout = function (req, res, next) {
 /******** 2. Routing ********/
 /****************************/
 
-// Root route
-app.route('/')
-  .all()
-  .get(renderIndex)
-  .post(renderIndex);
-// Log in
-app.route('/login')
-  .all()
-  .get(renderLogin)
-  .post(login)
-// Log out
-app.route('/logout')
-  .all()
-  .get(logout)
-
-// Public API Endpoints
+// API
+// - Public API Endpoints
 const base_url = '/api/v1/';
 // Items Controller
-var itemsController = require(__dirname + base_url + 'controllers/itemsController.js');
+const itemsController = require(__dirname + base_url + 'controllers/itemsController.js');
 // Fetch all items, or by category
 app.route(base_url + 'items')
   .all()
@@ -164,14 +150,13 @@ app.route(base_url + 'item')
   .all()
   .get(itemsController.getItem)
   .post(itemsController.getItem)
-
-// Protected API Endpoints
-// TODO: create controllers and models for all admin routes
+// - Protected API Endpoints
 // Admin dashboard
 app.route('/admin')
   .all(authenticate)
   .get()
   .post()
+// TODO: create controllers and models for all protected API (admin) routes
 // Insert item
 app.route(base_url + 'item/create')
   .all(authenticate)
@@ -188,6 +173,22 @@ app.route(base_url + 'item/delete')
   .get()
   .post()
 
+// Web App
+// Log in
+app.route('/login')
+  .all()
+  .get(renderLogin)
+  .post(login)
+// Log out
+app.route('/logout')
+  .all()
+  .get(logout)
+// Root route
+app.route('*')
+  .all()
+  .get(renderIndex)
+  .post(renderIndex);
+
 
 
 
@@ -202,8 +203,8 @@ app.route(base_url + 'item/delete')
 /***************************/
 
 // Set up the express application server
-var server = app.listen( (process.env.PORT || 5000), function () {
-  var server_url = server.address()
+const server = app.listen( (process.env.PORT || 5000), function () {
+  const server_url = server.address()
     , host = server_url.address
     , port = server_url.port || 5000;
   console.log('React App listening at http://%s:%s', host, port);
