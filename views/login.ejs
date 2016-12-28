@@ -5,21 +5,22 @@
     <link rel="stylesheet" type="text/css" href="./css/app.css">
 </head>
 <body>
-
     <div id="wrapper">
-        <form method="post">
-            <p>
-                <label>User</label>
-                <input type="text" name="username">
-            </p>
-            <p>
-                <label>Pass</label>
-                <input type="password" name="password">
-            </p>
-            <p>
-                <input type="submit" name="submit">
-            </p>
-        </form>
+        <div id="login-form">
+            <form method="post">
+                <p>
+                    <label>User</label>
+                    <input type="text" name="username">
+                </p>
+                <p>
+                    <label>Pass</label>
+                    <input type="password" name="password">
+                </p>
+                <p>
+                    <input type="submit" name="submit">
+                </p>
+            </form>
+        </div>
     </div>
     <script>
         var page = "<%= page %>";
