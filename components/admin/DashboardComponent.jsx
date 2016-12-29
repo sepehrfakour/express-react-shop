@@ -30,8 +30,8 @@ var Dashboard = React.createClass({
         <td>{item.sku}</td>
         <td>{item.quantity}</td>
         <td>
-          <button>Edit</button>
-          <button>Delete</button>
+          <button data-id={item.id} onClick={this._onEditClick}>Edit</button>
+          <button data-id={item.id} onClick={this._onDeleteClick}>Delete</button>
         </td>
       </tr>
     )
@@ -64,6 +64,16 @@ var Dashboard = React.createClass({
   },
   _onChange: function () {
     this.setState(getItemState());
+  },
+  _onEditClick: function (e) {
+    // TODO: Use update item action
+    let id = e.target.getAttribute('data-id');
+    console.log("Edit click. Item id: ", id);
+  },
+  _onDeleteClick: function (e) {
+    // TODO: Use delete item action
+    let id = e.target.getAttribute('data-id');
+    console.log("Delete click. Item id: ", id);
   }
 })
 
