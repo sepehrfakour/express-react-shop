@@ -20,17 +20,17 @@ export function addItem(data) {
   })
 }
 
-export function deleteCharacter(id) {
-  dispatcher.dispatch({
-    type: "DELETE_ITEM",
-    id: id
-  })
-}
-
-export function updateCharacterLocation(id,data) {
+export function updateItem(id,data) {
   dispatcher.dispatch({
     type: "UPDATE_ITEM",
     id: id,
     data: data
+  })
+}
+
+export function deleteItem(id) {
+  dispatcher.dispatch({
+    type: "DELETE_ITEM",
+    id: id
   })
 }

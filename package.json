@@ -37,7 +37,8 @@
     "redis": "^2.6.0-1",
     "request-param": "^1.0.0",
     "uuid-js": "^0.7.5",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "whatwg-fetch": "^2.0.1"
   },
   "engines": {
     "node": "6.0.0"
