@@ -165,12 +165,12 @@ app.route(api_base_url + 'item/create')
 app.route(api_base_url + 'item/update')
   .all(authenticate)
   .get()
-  .post()
+  .post(itemsController.updateItem)
 // Delete item
 app.route(api_base_url + 'item/delete')
   .all(authenticate)
   .get()
-  .post()
+  .post(itemsController.deleteItem)
 
 // Web App
 // Log in

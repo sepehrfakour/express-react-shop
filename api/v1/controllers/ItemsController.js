@@ -34,15 +34,34 @@ class ItemsController {
         price: req.body.price,
         sku: req.body.sku,
         quantity: req.body.quantity
-      }
+      };
       ItemsModel.addItem(data, function (result) {
         res.status(200).json(result);
       });
     }
   }
   updateItem(req,res) {
+    if (req.body) {
+      let data = {
+        id: req.body.id,
+        category: req.body.category,
+        name: req.body.name,
+        price: req.body.price,
+        sku: req.body.sku,
+        quantity: req.body.quantity
+      };
+      ItemsModel.updateItem(data, function (result) {
+        res.status(200).json(result);
+      });
+    }
   }
   deleteItem(req,res) {
+    if (req.body) {
+      let id = req.body.id;
+      ItemsModel.deleteItem(id, function (result) {
+        res.status(200).json(result);
+      });
+    }
   }
 }
 

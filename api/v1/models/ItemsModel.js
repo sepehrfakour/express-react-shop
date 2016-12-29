@@ -41,13 +41,27 @@ class ItemsModel {
     this.executeQuery(queryString, callback);
   }
   addItem(data, callback) {
-    let values = "'" + [data.category, data.name, data.price, data.sku, data.quantity].join("' , '") + "'";
+    // let values = "'" + [data.category, data.name, data.price, data.sku, data.quantity].join("' , '") + "'";
+    let values = "'" + data.category + "' , '"
+                     + data.name + "' , " // price is numeric, so no single quote here
+                     + data.price + " , '"
+                     + data.sku + "' , " // quantity is numeric, so no single quote here
+                     + data.quantity;
     let queryString = "INSERT into items (category, name, price, sku, quantity) VALUES (" + values + ") RETURNING *";
     this.executeQuery(queryString, callback);
   }
-  updateItem(id, data) {
+  updateItem(data, callback) {
+    let values = "'" + data.category + "' , '"
+                     + data.name + "' , " // price is numeric, so no single quote here
+                     + data.price + " , '"
+                     + data.sku + "' , " // quantity is numeric, so no single quote here
+                     + data.quantity;
+    let queryString = "UPDATE items SET (category, name, price, sku, quantity) = (" + values + ") WHERE id = " + data.id;
+    this.executeQuery(queryString, callback);
   }
-  deleteItem(id) {
+  deleteItem(id, callback) {
+    let queryString = "DELETE FROM items WHERE id = " + id;
+    this.executeQuery(queryString, callback);
   }
 }
 
