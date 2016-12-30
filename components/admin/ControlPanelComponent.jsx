@@ -1,5 +1,7 @@
 const React = require('react');
 
+const ItemActions = require('../../actions/ItemActions.js');
+
 var ControlPanel = React.createClass({
   getInitialState: function () {
       return {
@@ -12,13 +14,10 @@ var ControlPanel = React.createClass({
       var className = "open";
     }
     // TODO: Add validation to form
-    // TODO: Don't POST the form...instead use AJAX in data layer handler triggered by Actions
-    // TODO: Remove iframe response hack
-
     return(
       <div id="control-panel">
         <button id="open-panel" onClick={this._togglePanelHandler} className={className}>+ Add Item</button>
-        <form method="POST" action="/api/v1/item/create" id="add-item-form" target="resultsFrame" className={className}>
+        <form id="add-item-form" className={className} onSubmit={this._addItemClickHandler}>
           <p>
             <button id="close-panel" onClick={this._togglePanelHandler}>X</button>
           </p>
@@ -44,22 +43,45 @@ var ControlPanel = React.createClass({
             <input type="number" name="quantity" placeholder="Quantity"/>
           </p>
           <p>
-            <input type="submit" name="submit" value="+ Add Item" />
+            <input type="submit" name="add-item-form-submit" value="+ Add Item" onClick={this._addItemClickHandler} />
           </p>
         </form>
-        <iframe id="resultsFrame" name="resultsFrame" onload={this._createCallback}></iframe>
       </div>
     );
   },
-  _togglePanelHandler: function () {
+  _togglePanelHandler: function (e) {
+    e.preventDefault();
     if (this.state.open === false) {
       this.setState({open:true});
     } else {
       this.setState({open:false});
     }
   },
-  _createCallback: function () {
-    console.log("Iframe loaded callback!");
+  _addItemClickHandler: function (event) {
+    event.preventDefault();
+    let form          = document.body.querySelector('#add-item-form'),
+        formValidated = false,
+        data          = {
+          // Create a temporary ID until we are returned a real one from DB following AJAX promise resolution in DAO
+          tempid:   Math.random()*1000000,
+          name:     form.name.value,
+          category: form.category.value,
+          price:    parseInt(form.price.value, 10),
+          sku:      form.sku.value,
+          quantity: parseInt(form.quantity.value,10)
+        };
+    if ( form.name.value !== ""
+      && form.category.value !== ""
+      && form.price.value !== ""
+      && form.sku.value !== ""
+      && form.quantity.value !== "" ) {
+      formValidated = true;
+    }
+    if (formValidated) {
+      ItemActions.addItem(data);
+    } else {
+      alert("Please fill out the form before submitting");
+    }
   }
 })
 

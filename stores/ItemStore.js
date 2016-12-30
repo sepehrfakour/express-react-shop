@@ -15,9 +15,7 @@ class ItemStore extends EventEmitter {
       .then( function(json) {
         that.items = json;
         that.emit("change");
-        console.log(json);
       })
-
     // this.items = [
     //   {
     //     id: 'ny768uvu2',
@@ -28,15 +26,13 @@ class ItemStore extends EventEmitter {
     //     quantity: 10
     //   },
     // ];
-
   }
   getItems() {
-    console.log("Items:", this.items);
     return this.items;
   }
   addItem(data) {
     let item = {
-      id:       data.id,
+      id:       data.tempid,
       name:     data.name,
       category: data.category,
       price:    data.price,
@@ -46,9 +42,22 @@ class ItemStore extends EventEmitter {
     this.items.push(item);
     this.emit("change");
   }
-  deleteItem(id) {
-    let items = this.items;
-    // If character exists, delete it
+  updateItem(data) {
+    // If item exists, update it
+    let items = this.items,
+        id = data.id;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].id === id) {
+        items[i] = data;
+      }
+    }
+    this.items = items;
+    this.emit("change");
+  }
+  deleteItem(data) {
+    // If item exists, delete it
+    let items = this.items,
+        id = data.id;
     for (var i = 0; i < items.length; i++) {
       if (items[i].id === id) {
         items.splice(i,1);
@@ -57,13 +66,19 @@ class ItemStore extends EventEmitter {
     this.items = items;
     this.emit("change");
   }
-  updateItem(id,data) {
-    // If character exists, update its location
-    for (var i = 0; i < this.items.length; i++) {
-      if (this.items[i].id === id) {
-        this.items[i].data = data;
+  setRealId(tempid, realid) {
+    /* New items have their authoritative ID's created upon their insertion in the DB. Thus, when we create
+    a new item element client-side in React, and add it to the item store, it will first have a temporary randomly
+    genereated ID. Because that ID will be used client-side by edit/delete click handlers, we will strive to
+    update the DOM elements' temporary ID ASAP, to the real ID from DB (which are returned in the response when
+    DAO AJAX promise is resolved). Thus, upon DAO AJAX prmoise resolution, an Action trigger this method */
+    let items = this.items;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].id === tempid) {
+        items[i].id = realid;
       }
     }
+    this.items = items;
     this.emit("change");
   }
   handleActions(action) {
@@ -74,15 +89,19 @@ class ItemStore extends EventEmitter {
         break;
       }
       case "ADD_ITEM": {
-        this.addItem(action.item);
-        break;
-      }
-      case "DELETE_ITEM": {
-        this.deleteItem(action.id);
+        this.addItem(action.data);
         break;
       }
       case "UPDATE_ITEM": {
-        this.updateItem(action.id,action.data);
+        this.updateItem(action.data);
+        break;
+      }
+      case "DELETE_ITEM": {
+        this.deleteItem(action.data);
+        break;
+      }
+      case "SET_REAL_ID": {
+        this.setRealId(action.tempid, action.realid);
         break;
       }
       default: {

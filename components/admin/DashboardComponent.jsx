@@ -23,12 +23,12 @@ var Dashboard = React.createClass({
   },
   buildItems: function (item) {
     return (
-      <tr key={item.id}>
-        <td>{item.name}</td>
-        <td>{item.category}</td>
-        <td>{item.price}</td>
-        <td>{item.sku}</td>
-        <td>{item.quantity}</td>
+      <tr key={item.id} data-id={item.id}>
+        <td data-name={item.name}>{item.name}</td>
+        <td data-category={item.category}>{item.category}</td>
+        <td data-price={item.price}>{item.price}</td>
+        <td data-sku={item.sku}>{item.sku}</td>
+        <td data-quantity={item.quantity}>{item.quantity}</td>
         <td>
           <button data-id={item.id} onClick={this._onEditClick}>Edit</button>
           <button data-id={item.id} onClick={this._onDeleteClick}>Delete</button>
@@ -37,7 +37,6 @@ var Dashboard = React.createClass({
     )
   },
   render: function () {
-    console.log(this.state.items);
     return(
       <div id="admin-dashboard">
         <h1>Admin Dashboard</h1>
@@ -66,14 +65,28 @@ var Dashboard = React.createClass({
     this.setState(getItemState());
   },
   _onEditClick: function (e) {
-    // TODO: Use update item action
-    let id = e.target.getAttribute('data-id');
-    console.log("Edit click. Item id: ", id);
+    let id = parseInt(e.target.getAttribute('data-id'),10),
+        row = document.body.querySelector('tr[data-id="'+id+'"]') || e.target.parentElement.parentElement;
+    if (row) {
+      let data= {
+        id: id,
+        category: "tempCat",
+        name: "tempName",
+        price: 1000,
+        sku: "tempSku",
+        quantity: 1
+      }
+      ItemActions.updateItem(data);
+    }
   },
   _onDeleteClick: function (e) {
-    // TODO: Use delete item action
-    let id = e.target.getAttribute('data-id');
-    console.log("Delete click. Item id: ", id);
+    var confirmed = confirm("Are you sure you want to delete this item?");
+    if (confirmed) {
+      let data= {
+        id: parseInt(e.target.getAttribute('data-id'),10)
+      }
+      ItemActions.deleteItem(data);
+    }
   }
 })
 

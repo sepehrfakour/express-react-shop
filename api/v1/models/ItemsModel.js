@@ -29,7 +29,7 @@ class ItemsModel {
     });
   }
   getItems(callback) {
-    let queryString = "SELECT * FROM items";
+    let queryString = "SELECT * FROM items ORDER BY id DESC";
     this.executeQuery(queryString, callback);
   }
   getItemsByCategory(category, callback) {
@@ -41,7 +41,6 @@ class ItemsModel {
     this.executeQuery(queryString, callback);
   }
   addItem(data, callback) {
-    // let values = "'" + [data.category, data.name, data.price, data.sku, data.quantity].join("' , '") + "'";
     let values = "'" + data.category + "' , '"
                      + data.name + "' , " // price is numeric, so no single quote here
                      + data.price + " , '"

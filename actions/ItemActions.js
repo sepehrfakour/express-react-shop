@@ -1,5 +1,7 @@
 import dispatcher from '../dispatcher.js';
 
+const ItemDAO = require('../DAO/ItemDAO.js').default;
+
 export function getItems() {
   dispatcher.dispatch({
     type: "GET_ITEMS"
@@ -9,28 +11,31 @@ export function getItems() {
 export function addItem(data) {
   dispatcher.dispatch({
     type: "ADD_ITEM",
-    character: {
-      id:       data.id,
-      name:     data.name,
-      category: data.category,
-      price:    data.price,
-      sku:      data.sku,
-      quantity: data.quantity
-    }
-  })
+    data: data
+  });
+  ItemDAO.addItem(data);
 }
 
-export function updateItem(id,data) {
+export function updateItem(data) {
   dispatcher.dispatch({
     type: "UPDATE_ITEM",
-    id: id,
     data: data
   })
+  ItemDAO.updateItem(data);
 }
 
-export function deleteItem(id) {
+export function deleteItem(data) {
   dispatcher.dispatch({
     type: "DELETE_ITEM",
-    id: id
+    data: data
+  })
+  ItemDAO.deleteItem(data);
+}
+
+export function setRealId(tempid,realid) {
+  dispatcher.dispatch({
+    type: "SET_REAL_ID",
+    tempid,
+    realid
   })
 }

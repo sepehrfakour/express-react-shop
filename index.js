@@ -138,7 +138,7 @@ const logout = function (req, res, next) {
 // - Public API Endpoints
 const api_base_url = '/api/v1/';
 // Items Controller
-const itemsController = require(__dirname + api_base_url + 'controllers/itemsController.js');
+const itemsController = require(__dirname + api_base_url + 'controllers/ItemsController.js');
 // Fetch all items, or by category
 app.route(api_base_url + 'items')
   .all()
