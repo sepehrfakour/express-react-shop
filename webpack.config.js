@@ -9,7 +9,8 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: __dirname + '/public/js',
-    publicPath: '/'
+    publicPath: 'http://localhost:8080/' // So Hot Module Reload uses webpack dev server URL not Express app URL
+
   },
 
   module: {
@@ -23,8 +24,12 @@ module.exports = {
     ],
   },
 
-  // To run in production, switch devtools to cheap-module-source-map, and uncomment plugins
-  // To run on dev, switch devtools to source-map, and comment out plugins
+  // To run in production:
+  // - switch devtools to cheap-module-source-map
+  // - change 'output.publicPath' prop above from webpackdev server url to production app url ('/')
+  // - uncomment plugins below
+
+  // To run on dev, switch devtools to source-map, comment out plugins, set output.publicPath url to webpack dev server URL
 
   devtool: 'source-map',
   // devtool: 'cheap-module-source-map',
