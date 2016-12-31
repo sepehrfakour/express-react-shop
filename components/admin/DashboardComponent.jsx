@@ -1,19 +1,24 @@
 const React = require('react');
 
-const ControlPanel = require('./ControlPanelComponent.jsx').default;
+const ControlPanel  = require('./ControlPanelComponent.jsx').default,
+      AddItem = require('./AddItemComponent.jsx').default,
+      EditItem = require('./EditItemComponent.jsx').default;
 
 const ItemStore   = require('../../stores/ItemStore.js').default,
       ItemActions = require('../../actions/ItemActions.js');
 
 function getItemState() {
-  return {
-    items: ItemStore.getItems()
-  };
+  return ItemStore.getItems();
 }
 
 var Dashboard = React.createClass({
   getInitialState: function () {
-    return getItemState();
+    return {
+      items: getItemState(),
+      addModalOpen: false,
+      editModalOpen: false,
+      selectedForEdit: false
+    }
   },
   componentWillMount: function () {
     ItemStore.on("change", this._onChange);
@@ -24,11 +29,11 @@ var Dashboard = React.createClass({
   buildItems: function (item) {
     return (
       <tr key={item.id} data-id={item.id}>
-        <td data-name={item.name}>{item.name}</td>
-        <td data-category={item.category}>{item.category}</td>
-        <td data-price={item.price}>{item.price}</td>
-        <td data-sku={item.sku}>{item.sku}</td>
-        <td data-quantity={item.quantity}>{item.quantity}</td>
+        <td name="name">{item.name}</td>
+        <td name="category">{item.category}</td>
+        <td name="price">{item.price}</td>
+        <td name="sku">{item.sku}</td>
+        <td name="quantity">{item.quantity}</td>
         <td>
           <button data-id={item.id} onClick={this._onEditClick}>Edit</button>
           <button data-id={item.id} onClick={this._onDeleteClick}>Delete</button>
@@ -40,9 +45,7 @@ var Dashboard = React.createClass({
     return(
       <div id="admin-dashboard">
         <h1>Admin Dashboard</h1>
-        <div id="admin-controls">
-          <ControlPanel />
-        </div>
+        <ControlPanel clickHandler={this._onAddCLick}/>
         <table id="admin-items-list">
           <thead>
             <tr>
@@ -58,26 +61,28 @@ var Dashboard = React.createClass({
             {this.state.items.map(this.buildItems)}
           </tbody>
         </table>
+        {this.state.addModalOpen ? <AddItem closeModal={this._closeModalsCallback} /> : <span style={{display:'none'}}></span>}
+        {this.state.editModalOpen ? <EditItem closeModal={this._closeModalsCallback} item={this.state.selectedForEdit} /> : <span style={{display:'none'}}></span>}
       </div>
     );
   },
   _onChange: function () {
-    this.setState(getItemState());
+    this.setState({ items: getItemState()});
+  },
+  _onAddCLick: function (e) {
+    this.setState({
+      addModalOpen: true,
+      editModalOpen: false
+    })
   },
   _onEditClick: function (e) {
-    let id = parseInt(e.target.getAttribute('data-id'),10),
-        row = document.body.querySelector('tr[data-id="'+id+'"]') || e.target.parentElement.parentElement;
-    if (row) {
-      let data= {
-        id: id,
-        category: "tempCat",
-        name: "tempName",
-        price: 1000,
-        sku: "tempSku",
-        quantity: 1
-      }
-      ItemActions.updateItem(data);
-    }
+    let id = parseInt(e.target.getAttribute('data-id'),10);
+    let item = ItemStore.getItem(id);
+    this.setState({
+      addModalOpen: false,
+      editModalOpen: true,
+      selectedForEdit: item
+    })
   },
   _onDeleteClick: function (e) {
     var confirmed = confirm("Are you sure you want to delete this item?");
@@ -87,6 +92,14 @@ var Dashboard = React.createClass({
       }
       ItemActions.deleteItem(data);
     }
+  },
+  _closeModalsCallback: function (e) {
+    e.preventDefault();
+    this.setState({
+      addModalOpen: false,
+      editModalOpen: false,
+      selectedForEdit: false
+    })
   }
 })
 

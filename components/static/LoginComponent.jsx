@@ -8,7 +8,7 @@ var NotFound = React.createClass({
   render: function () {
     return(
       <div id="login-form">
-        <form method="post">
+        <form method="POST" action="/login">
           <h1>Login</h1>
           <p>
             <input type="text" name="username" placeholder="Username" autoFocus="autofocus" tabIndex="1" />

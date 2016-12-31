@@ -30,7 +30,8 @@ app.use(
 );
 
 // Session config
-const expiry = new Date( Date.now() + 60 * 60 * 1000 );
+const expiry = new Date( Date.now() + 60 * 60 * 1000 ),
+      oneHourOfMilliseconds = 60 * 60 * 1000;
 const sess = {
   secret: 'meow8waka_Zerg',
   name: 'arbitrarySessionName07856809875671798376',
@@ -39,7 +40,8 @@ const sess = {
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    expires: expiry
+    maxAge: oneHourOfMilliseconds
+    // expires: expiry
   }
 }
 
