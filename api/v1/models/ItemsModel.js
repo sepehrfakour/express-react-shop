@@ -6,9 +6,9 @@ class ItemsModel {
   constructor() {
     // super();
   }
-  executeQuery(queryString, callback) {
+  executeQuery(queryString, callback, values) {
     let client = new pg.Client(connect),
-        query  = client.query(queryString),
+        query  = (values) ? client.query(queryString, values) : client.query(queryString),
         results = [];
     client.connect( function (error) {
       if (error) { console.log('Client connection error: ', error); }
@@ -33,34 +33,34 @@ class ItemsModel {
     this.executeQuery(queryString, callback);
   }
   getItemsByCategory(category, callback) {
-    let queryString = "SELECT * FROM items WHERE category = '" + category + "' ORDER BY name ASC";
-    this.executeQuery(queryString, callback);
+    let queryString = "SELECT * FROM items WHERE category = ($1) ORDER BY name ASC",
+        values = [];
+    values.push(category);
+    this.executeQuery(queryString, callback, values);
   }
   getItem(id, callback) {
-    let queryString = "SELECT * FROM items WHERE id = " + id + " LIMIT 1";
-    this.executeQuery(queryString, callback);
+    let queryString = "SELECT * FROM items WHERE id = ($1) LIMIT 1",
+        values = [];
+    values.push(id);
+    this.executeQuery(queryString, callback, values);
   }
   addItem(data, callback) {
-    let values = "'" + data.category + "' , '"
-                     + data.name + "' , " // price is numeric, so no single quote here
-                     + data.price + " , '"
-                     + data.sku + "' , " // quantity is numeric, so no single quote here
-                     + data.quantity;
-    let queryString = "INSERT into items (category, name, price, sku, quantity) VALUES (" + values + ") RETURNING *";
-    this.executeQuery(queryString, callback);
+    let queryString = "INSERT into items (category, name, price, sku, quantity) VALUES ($1,$2,$3,$4,$5) RETURNING *",
+        values = [];
+    values.push(data.category, data.name, data.price, data.sku, data.quantity);
+    this.executeQuery(queryString, callback, values);
   }
   updateItem(data, callback) {
-    let values = "'" + data.category + "' , '"
-                     + data.name + "' , " // price is numeric, so no single quote here
-                     + data.price + " , '"
-                     + data.sku + "' , " // quantity is numeric, so no single quote here
-                     + data.quantity;
-    let queryString = "UPDATE items SET (category, name, price, sku, quantity) = (" + values + ") WHERE id = " + data.id;
-    this.executeQuery(queryString, callback);
+    let queryString = "UPDATE items SET (category, name, price, sku, quantity) = ($1,$2,$3,$4,$5) WHERE id = ($6)",
+        values = [];
+    values.push(data.category, data.name, data.price, data.sku, data.quantity, data.id);
+    this.executeQuery(queryString, callback, values);
   }
   deleteItem(id, callback) {
-    let queryString = "DELETE FROM items WHERE id = " + id;
-    this.executeQuery(queryString, callback);
+    let queryString = "DELETE FROM items WHERE id = $1",
+        values = [];
+    values.push(id);
+    this.executeQuery(queryString, callback, values);
   }
 }
 
