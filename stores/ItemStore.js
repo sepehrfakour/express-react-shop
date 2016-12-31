@@ -30,6 +30,15 @@ class ItemStore extends EventEmitter {
   getItems() {
     return this.items;
   }
+  getItemsByCategory(category) {
+    let output = [];
+    for (var i = 0; i < this.items.length; i++) {
+      if (this.items[i].category === category) {
+        output.push(this.items[i]);
+      }
+    }
+    return output;
+  }
   getItem(id) {
     for (var i = 0; i < this.items.length; i++) {
       if (this.items[i].id === id) {
