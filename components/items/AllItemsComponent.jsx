@@ -1,5 +1,7 @@
 const React = require('react');
 
+import { Link } from 'react-router';
+
 const ItemStore   = require('../../stores/ItemStore.js').default,
       ItemActions = require('../../actions/ItemActions.js');
 
@@ -20,9 +22,12 @@ var AllItems = React.createClass({
     ItemStore.removeListener("change", this._onChange);
   },
   buildItems: function (item) {
+    let itemPageLink = '/item/' + item.id;
     return (
       <div key={item.id} data-id={item.id}>
-        <div name="name">{item.name}</div>
+        <div name="name">
+          <Link to={itemPageLink}>{item.name}</Link>
+        </div>
         <div name="category">{item.category}</div>
         <div name="price">{item.price}</div>
       </div>

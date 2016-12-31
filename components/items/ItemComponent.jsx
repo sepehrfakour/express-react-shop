@@ -1,16 +1,37 @@
 const React = require('react');
 
+const ItemStore   = require('../../stores/ItemStore.js').default,
+      ItemActions = require('../../actions/ItemActions.js');
+
+function getItemState (id) {
+  return ItemStore.getItem(id);
+}
+
 var Item = React.createClass({
   getInitialState: function () {
-      return {};
+    return {
+      item: getItemState(parseInt(this.props.params.id,10))
+    };
   },
-  componentDidMount: function () {},
+  componentWillMount: function () {
+    ItemStore.on("change", this._onChange);
+  },
+  componentWillUnmount: function () {
+    ItemStore.removeListener("change", this._onChange);
+  },
   render: function () {
+    // debugger;
     return(
       <div id="item-page">
         <h1>Item Page</h1>
+        <div>{this.state.item.name}</div>
+        <div>${this.state.item.price}</div>
       </div>
     );
+  },
+  _onChange: function () {
+    debugger;
+    this.setState({ item: getItemState(parseInt(this.props.params.id,10))});
   }
 })
 
