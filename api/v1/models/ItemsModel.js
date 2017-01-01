@@ -1,31 +1,34 @@
 const db      = require(__dirname + '/../../../config/db.js'),
       pg      = db.pg,
-      connect = db.connect;
+      config  = db.config;
 
 class ItemsModel {
   constructor() {
     // super();
   }
   executeQuery(queryString, callback, values) {
-    let client = new pg.Client(connect),
-        query  = (values) ? client.query(queryString, values) : client.query(queryString),
+    let pool = new pg.Pool(config),
         results = [];
-    client.connect( function (error) {
-      if (error) { console.log('Client connection error: ', error); }
+    pool.connect( function (error, client, done) {
+      if (error) { console.log('Error fetching client from pool: ', error); }
+      let query  = (values) ? client.query(queryString, values) : client.query(queryString);
+      done(); // Release client back into pool
+      query.on('error', function(error) {
+        if (error) { console.log('Query error: ', error); }
+      });
+      query.on('row', function(row) {
+          results.push(row);
+      });
+      query.on('end', function() {
+          if (results.length > 1) {
+            callback(results);
+          } else {
+            callback(results[0]);
+          }
+      });
     });
-    query.on('error', function(error) {
-      if (error) { console.log('Query error: ', error); }
-    });
-    query.on('row', function(row) {
-        results.push(row);
-    });
-    query.on('end', function() {
-        client.end();
-        if (results.length > 1) {
-          callback(results);
-        } else {
-          callback(results[0]);
-        }
+    pool.on('error', function (err, client) {
+      console.error('idle client error', err.message, err.stack);
     });
   }
   getItems(callback) {
