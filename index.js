@@ -13,7 +13,8 @@ const env = process.env.NODE_ENV || 'development'
   , app             = express()
   , helmet          = require('helmet')
   , session         = require('express-session')
-  , bodyParser      = require('body-parser');
+  , bodyParser      = require('body-parser')
+  , rateLimit       = require('express-rate-limit');
 
 app.set('port', (process.env.PORT || 5000) );
 app.set('view engine', 'ejs');
@@ -66,6 +67,24 @@ app.use(express.static(__dirname + '/public'));
 app.use(helmet());
 // Use sessions
 app.use(session(sess));
+
+// Rate limiting
+const apiLimiter = new rateLimit({
+  windowMs: 15*60*1000, // 15 minutes
+  max: 100,
+  delayMs: 0 // disabled
+});
+const loginAttemptLimiter = new rateLimit({
+  windowMs: 60*60*1000, // 1 hour window
+  delayAfter: 20, // begin slowing down responses after the 20th request
+  delayMs: 3*1000, // slow down subsequent responses by 3 seconds per request
+  max: 60, // start blocking after 60 requests
+  message: "Too many login attempts from this IP, please try again after an hour"
+});
+// only apply to requests that begin with /api/
+app.use('/api/', apiLimiter);
+app.use('/login', loginAttemptLimiter);
+
 
 // Support JSON-encoded bodies
 app.use(bodyParser.json({
