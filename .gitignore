@@ -10,5 +10,8 @@
 # Ignore npm-debug log
 npm-debug.log
 
+# Ignore Environment Variables
+.env
+
 # Ignore public folder containing webpack-bundled js and css
 /public

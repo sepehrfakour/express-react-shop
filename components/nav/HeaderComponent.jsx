@@ -15,8 +15,8 @@ var Header = React.createClass({
       <div id="header">
         <ul>
           <li><Link to="/">Home</Link></li>
-          <li><Link to="all">Items</Link></li>
-          <li><Link to="about">About</Link></li>
+          <li><Link to="/all">Items</Link></li>
+          <li><Link to="/about">About</Link></li>
           <li>{this.getLoginLink(this.props.loggedIn)}</li>
         </ul>
       </div>

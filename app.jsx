@@ -17,7 +17,7 @@ const MainWindow    = require('./components/MainWindowComponent.jsx').default,
       About         = require('./components/static/AboutComponent.jsx').default,
       Login         = require('./components/static/LoginComponent.jsx').default,
       AllItems      = require('./components/items/AllItemsComponent.jsx').default,
-      CategoryItems = require('./components/items/CategoryItemsComponent.jsx').default,
+      Category      = require('./components/items/CategoryComponent.jsx').default,
       Item          = require('./components/items/ItemComponent.jsx').default,
       Admin         = require('./components/admin/DashboardComponent.jsx').default;
 
@@ -54,7 +54,7 @@ ReactDOM.render(
     <Route path="/" loggedIn={Data.loggedIn} component={MainWindow}>
       <IndexRoute component={Home}/>
       <Route path="all" component={AllItems}/>
-      <Route path="category" component={CategoryItems}/>
+      <Route path="category/:category" component={Category}/>
       <Route path="item/:id" component={Item}/>
       <Route path="about" component={About}/>
       <Route path="login" component={Login}/>

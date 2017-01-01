@@ -20,7 +20,6 @@ var Item = React.createClass({
     ItemStore.removeListener("change", this._onChange);
   },
   render: function () {
-    // debugger;
     return(
       <div id="item-page">
         <h1>Item Page</h1>
@@ -30,7 +29,6 @@ var Item = React.createClass({
     );
   },
   _onChange: function () {
-    debugger;
     this.setState({ item: getItemState(parseInt(this.props.params.id,10))});
   }
 })
