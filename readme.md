@@ -1,3 +1,16 @@
+#Setup Requirements
+-Setup Postgres DB
+-Setup AWS User and S3 bucket
+-Setup Heroku app
+-Create .env, set the following vars:
+NODE_ENV ('development' or 'production')
+PORT
+PG_URL
+AWS_USER
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+S3_BUCKET
+
 #Before running locally:
 
 ##To install and run
@@ -40,10 +53,6 @@ In order to run Unit Tests use:
 ```
 <script src="/js/app.js" charset="utf-8"></script>
 ```
-
-##Data API
-
-Be sure to set an ENVIRONMENT VARIABLE on production server with production postgres db connection URL string
 
 ###Notes:
 ####Webpack Bundle Prep: Inside webpack config, switch devtools to cheap-module-source-map, and uncomment plugins
