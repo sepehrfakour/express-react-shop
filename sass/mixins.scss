@@ -6,3 +6,11 @@
   background: -ms-radial-gradient(center,ellipse cover,rgba(0,0,0,0.4) 0,rgba(0,0,0,0.75) 100%);
   background: radial-gradient(center,ellipse cover,rgba(0,0,0,0.4) 0,rgba(0,0,0,0.75) 100%);
 }
+
+@mixin buttonTransition {
+  -webkit-transition: background 250ms ease-in;
+  -moz-transition: background 250ms ease-in;
+  -ms-transition: background 250ms ease-in;
+  -o-transition: background 250ms ease-in;
+  transition: background 250ms ease-in;
+}

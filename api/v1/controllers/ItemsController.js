@@ -33,7 +33,8 @@ class ItemsController {
         name: req.body.name,
         price: req.body.price,
         sku: req.body.sku,
-        quantity: req.body.quantity
+        quantity: req.body.quantity,
+        imageurl: req.body.imageurl
       };
       ItemsModel.addItem(data, function (result) {
         res.status(200).json(result);
@@ -48,7 +49,8 @@ class ItemsController {
         name: req.body.name,
         price: req.body.price,
         sku: req.body.sku,
-        quantity: req.body.quantity
+        quantity: req.body.quantity,
+        imageurl: req.body.imageurl
       };
       ItemsModel.updateItem(data, function (result) {
         res.status(200).json(result);

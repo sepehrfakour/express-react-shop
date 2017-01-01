@@ -158,51 +158,44 @@ const logout = function (req, res, next) {
 // API
 const api_base_url = '/api/v1/';
 // Items Controller
-const itemsController = require(__dirname + api_base_url + 'controllers/ItemsController.js');
+const itemsController = require(__dirname + api_base_url + 'controllers/ItemsController.js'),
+      s3Controller = require(__dirname + api_base_url + 'controllers/S3Controller.js');
 // - Public API Endpoints
 // Fetch all items, or by category
 app.route(api_base_url + 'items')
-  .all()
   .get(itemsController.getItems)
-  .post(itemsController.getItems)
 // Fetch item by id
 app.route(api_base_url + 'item')
-  .all()
   .get(itemsController.getItem)
-  .post(itemsController.getItem)
 // - Protected API Endpoints
 // Insert item
 app.route(api_base_url + 'item/create')
   .all(authenticate)
-  .get()
   .post(itemsController.addItem)
 // Update item
 app.route(api_base_url + 'item/update')
   .all(authenticate)
-  .get()
   .post(itemsController.updateItem)
 // Delete item
 app.route(api_base_url + 'item/delete')
   .all(authenticate)
-  .get()
   .post(itemsController.deleteItem)
+// Sign S3
+app.route(api_base_url + 'sign-s3')
+  .all(authenticate)
+  .get(s3Controller.signS3)
 
 // Web App
 // Protected Web App Endpoints
 // Admin dashboard
 app.route('/admin')
   .all(authenticate)
-  .get()
-  .post()
 // Public Web App Endpoints
 // Log in
 app.route('/login')
-  .all()
-  .get()
   .post(login)
 // Log out
 app.route('/logout')
-  .all()
   .get(logout)
 // Root route
 app.route('*')

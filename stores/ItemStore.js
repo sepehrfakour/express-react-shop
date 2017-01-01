@@ -49,12 +49,13 @@ class ItemStore extends EventEmitter {
   }
   addItem(data) {
     let item = {
-      id:       data.tempid,
-      name:     data.name,
-      category: data.category,
-      price:    data.price,
-      sku:      data.sku,
-      quantity: data.quantity
+      id:        data.tempid,
+      name:      data.name,
+      category:  data.category,
+      price:     data.price,
+      sku:       data.sku,
+      quantity:  data.quantity,
+      imageurl:  data.imageurl
     }
     this.items.push(item);
     this.emit("change");

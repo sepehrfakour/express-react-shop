@@ -1,7 +1,7 @@
 #admin-dashboard {
   text-align: center;
+  padding-bottom: 90px;
   h1 {
-    margin: 0px;
     padding: 15px 0px;
   }
   #control-panel {
@@ -57,18 +57,21 @@
         }
       }
       p {
+        margin: 8px 0px;
         label {
           display: block;
-          margin-bottom: 5px;
-          color: #777;
+          margin-bottom: 2px;
+          color: #555;
           text-align: left;
-          font-weight: 600;
+          font-weight: 500;
         }
         input,
         select {
           width: 100%;
           margin: 0px;
-          padding: 5px 15px;
+          padding: 4px 8px;
+          border-radius: 3px;
+          border: 1px solid #CCC;
           box-sizing: border-box;
           &[type="submit"] {
             margin-top: 15px;
@@ -77,6 +80,59 @@
             font-weight: 600;
             background-color: $link;
             border: 0px;
+          }
+        }
+        img {
+          max-width: 300px;
+          margin-top: 15px;
+          &.hidden { display: none; }
+        }
+        input[type="file"] {
+          margin: 0px;
+          padding: 0px;
+          width: 0.1px;
+          height: 0.1px;
+          opacity: 0;
+          overflow: hidden;
+          position: absolute;
+          z-index: -1;
+          &:hover {
+            cursor: pointer;
+          }
+          &:focus {
+            outline: 0px;
+          }
+        }
+        #file-button {
+          font-weight: 600;
+          background-color: #FFF;
+          border: 2px solid #000;
+          text-align: center;
+          border-radius: 3px;
+          @include buttonTransition();
+          &:hover {
+            @include buttonTransition();
+            background-color: #EEE;
+            cursor: pointer;
+          }
+          &:focus {
+            outline: 1px dotted #000;
+            outline: -webkit-focus-ring-color auto 5px;;
+          }
+        }
+        .spinner {
+          display: none;
+          height: 48px;
+          width: 100%;
+          &:before {
+            top: 4px;
+            left: 126px;
+            height: 48px;
+            width: 48px;
+            margin: 0px;
+          }
+          &.visible {
+            display: block;
           }
         }
       }
@@ -91,6 +147,9 @@
       td {
         padding: 5px 30px;
         text-align: left;
+        img {
+          max-width: 60px;
+        }
       }
     }
   }

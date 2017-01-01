@@ -29,6 +29,7 @@ var Dashboard = React.createClass({
   buildItems: function (item) {
     return (
       <tr key={item.id} data-id={item.id}>
+        <td name="name"><img src={item.imageurl}></img></td>
         <td name="name">{item.name}</td>
         <td name="category">{item.category}</td>
         <td name="price">{item.price}</td>
@@ -49,6 +50,7 @@ var Dashboard = React.createClass({
         <table id="admin-items-list">
           <thead>
             <tr>
+              <th>Image</th>
               <th>Name</th>
               <th>Category</th>
               <th>Price</th>

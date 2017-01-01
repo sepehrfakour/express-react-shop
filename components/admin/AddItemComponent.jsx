@@ -28,13 +28,15 @@ var AddItem = React.createClass({
           category: form.category.value,
           price:    parseInt(form.price.value, 10),
           sku:      form.sku.value,
-          quantity: parseInt(form.quantity.value,10)
+          quantity: parseInt(form.quantity.value,10),
+          imageurl: form.imageurl.value
         };
     if ( form.name.value !== ""
       && form.category.value !== ""
       && form.price.value !== ""
       && form.sku.value !== ""
-      && form.quantity.value !== "" ) {
+      && form.quantity.value !== ""
+      && form.imageurl.value !== "/images/default.png" ) {
       formValidated = true;
     }
     if (formValidated) {
