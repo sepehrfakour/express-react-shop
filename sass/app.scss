@@ -32,8 +32,9 @@
 @import "spinner";
 // Import component stylesheets
 @import "alerts";
-@import "404";
 @import "header";
-@import "login";
-@import "admin";
-@import "landing";
+@import "pages/404";
+@import "pages/login";
+@import "pages/admin";
+@import "pages/landing";
+@import "pages/all_items";
