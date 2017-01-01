@@ -1,6 +1,6 @@
 #header {
-  background-color: #FFF;
-  box-shadow: 0px 1px 1px $shadow;
+  background-color: $ghost;
+  box-shadow: 0px 1px 0px $shadow;
   ul {
     margin: 0px;
     padding: 0px;
@@ -11,11 +11,35 @@
       a {
         display: inline-block;
         padding: 15px;
-        font-weight: 600;
+        font-size: 15px;
+        font-weight: 500;
         color: $link;
         &:hover {
           background-color: #EEE;
         }
+      }
+    }
+  }
+}
+
+#footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  background-color: $ghost;
+  box-shadow: 0px -1px 0px $shadow;
+  ul {
+    margin: 0px;
+    padding: 30px;
+    list-style-type: none;
+    text-align: center;
+    li {
+      display: inline-block;
+      a{
+        display: inline-block;
+        padding: 3px 6px;
+        font-size: 14px;
+        font-weight: 500;
       }
     }
   }
