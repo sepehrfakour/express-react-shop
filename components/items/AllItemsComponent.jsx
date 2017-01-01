@@ -22,14 +22,21 @@ var AllItems = React.createClass({
     ItemStore.removeListener("change", this._onChange);
   },
   buildItems: function (item) {
-    let itemPageLink = '/item/' + item.id;
+    let itemPageLink = '/item/' + item.id,
+        inlineStyles = {
+          background:'url('+item.imageurl+')',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        };
     return (
-      <div key={item.id} data-id={item.id}>
-        <div name="name">
-          <Link to={itemPageLink}>{item.name}</Link>
-        </div>
-        <div name="category">{item.category}</div>
-        <div name="price">{item.price}</div>
+      <div key={item.id} data-id={item.id} className="item">
+        <Link to={itemPageLink} className="image-overlay">
+          <div style={inlineStyles} className="item-image"/>
+        </Link>
+        <Link to={itemPageLink} className="item-info">
+          <div name="name">{item.name}</div>
+          <span name="price">{item.price}</span>
+        </Link>
       </div>
     )
   },
@@ -37,7 +44,9 @@ var AllItems = React.createClass({
     return(
       <div id="all-items">
         <h1>All Items</h1>
-        {this.state.items.map(this.buildItems)}
+        <div className="container flex">
+          {this.state.items.map(this.buildItems)}
+        </div>
       </div>
     );
   },

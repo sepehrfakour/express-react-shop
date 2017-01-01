@@ -1,3 +1,41 @@
 #all-items {
   padding-bottom: 150px;
+  h1 {
+    padding-bottom: 15px;
+  }
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+    .item {
+      width: 300px;
+      height: 360px;
+      margin: 30px;
+      .image-overlay {
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0,0,0,0.3);
+        .item-image {
+          display: inline-block;
+          width: 300px;
+          height: 360px;
+          border-radius: 3px;
+        }
+      }
+      .item-info {
+        display: block;
+        font-size: 14px;
+        color: #444;
+        text-align: left;
+        [name="name"] {
+          display: inline-block;
+        }
+        [name="price"] {
+          float: right;
+        }
+      }
+    }
+  }
 }
