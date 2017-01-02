@@ -11,7 +11,7 @@ var Item = React.createClass({
           backgroundPosition: 'center',
         };
     return(
-      <div className="col-xs-4 item-col">
+      <div className="col-xl-4 item-col">
         <div data-id={this.props.item.id} className="item">
           <Link to={itemPageLink} className="image-overlay">
             <div style={inlineStyles} className="item-image"/>
