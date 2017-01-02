@@ -8,7 +8,9 @@ var NotFound = React.createClass({
   render: function () {
     return(
       <div id="about-page">
-        <h1>About Page</h1>
+        <div className="banner">
+          <h1>About</h1>
+        </div>
       </div>
     );
   }
