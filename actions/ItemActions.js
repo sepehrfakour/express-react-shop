@@ -1,6 +1,6 @@
 import dispatcher from '../dispatcher.js';
 
-const ItemDAO = require('../DAO/ItemDAO.js').default;
+const ItemDAO = require('../dao/ItemDAO.js').default;
 
 export function getItems() {
   dispatcher.dispatch({
