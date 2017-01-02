@@ -38,6 +38,7 @@
       background-color: #FFF;
       border-radius: 5px;
       box-shadow: $overlay-shadow;
+      z-index: 1;
       #close-panel {
         position: absolute;
         top: 0px;
