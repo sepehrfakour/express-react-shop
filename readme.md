@@ -1,15 +1,4 @@
-#Setup Requirements
--Setup Postgres DB
--Setup AWS User and S3 bucket
--Setup Heroku app
--Create .env, set the following vars:
-NODE_ENV ('development' or 'production')
-PORT
-PG_URL
-AWS_USER
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-S3_BUCKET
+
 
 #Before running locally:
 
@@ -27,7 +16,31 @@ S3_BUCKET
 
 Be sure to have postgres installed and running
 
-Add connection URL strig to config/db
+2 DB's - one local postgres DB, and another one for production
+
+Add connection URL string env var to be parsed config/db
+
+##Setup AWS User + S3 Bucket
+
+Add env vars for AWS_USER, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET
+
+##ENV Vars
+
+Create a .env file in project root, add to gitignore, set following variables:
+
+NODE_ENV ('development' or 'production')
+
+PORT
+
+PG_URL
+
+AWS_USER
+
+AWS_ACCESS_KEY_ID
+
+AWS_SECRET_ACCESS_KEY
+
+S3_BUCKET
 
 ##Testing
 
