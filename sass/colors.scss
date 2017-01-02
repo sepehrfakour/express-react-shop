@@ -29,19 +29,11 @@ $error-text-red-light: #FFD7D4;
 
 /* General */
 
-$ghost: rgba(255,255,255,0.7);
+$ghost: rgba(255,255,255,0.9);
 $shadow: rgba(0,0,0,0.05);
 $overlay-shadow: 0px 0px 0px 9999px rgba(0,0,0,0.5);
 
-/* Game */
+/* Header */
 
-// $gridColor: #555;
-$gridColor: $game;
-$gridBackground: #002110;
-
-$placementLocation: #103120;
-$invalidPlacementLocation: #800000;
-$placementHover: lightblue;
-
-$charBackground: #143E9C;
-$buildingBackground: #583415;
+$header-link-color: #444;
+$header-link-color-hover: #222;

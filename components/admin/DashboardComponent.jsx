@@ -44,7 +44,7 @@ var Dashboard = React.createClass({
   },
   render: function () {
     return(
-      <div id="admin-dashboard">
+      <div id="admin-dashboard" className="container-fluid content">
         <h1>Admin Dashboard</h1>
         <ControlPanel clickHandler={this._onAddCLick}/>
         <table id="admin-items-list">

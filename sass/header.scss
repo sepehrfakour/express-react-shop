@@ -1,8 +1,11 @@
 #header {
+  position: fixed;
+  width: 100%;
   background-color: $ghost;
   box-shadow: 0px 1px 0px $shadow;
+  z-index: 1;
   ul {
-    margin: 0px;
+    margin: 0px 30px;
     padding: 0px;
     list-style-type: none;
     text-align: right;
@@ -11,12 +14,35 @@
       a {
         display: inline-block;
         padding: 15px;
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 500;
-        color: $link;
+        color: $header-link-color;
         &:hover {
           background-color: #EEE;
+          color: $header-link-color-hover;
+          cursor: pointer;
         }
+      }
+    }
+  }
+  .dropdown-container {
+    &:hover {
+      border-bottom: 2px inset #444;
+      .items-dropdown-menu {
+        display: inline-block;
+      }
+    }
+    .items-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 54px;
+      right: 0px;
+      background-color: $ghost;
+      &:hover {
+        display: inline-block;
+      }
+      ul {
+        margin: 30px;
       }
     }
   }
@@ -40,6 +66,11 @@
         padding: 3px 6px;
         font-size: 14px;
         font-weight: 500;
+        color: $header-link-color;
+        &:hover {
+          background-color: #EEE;
+          color: $header-link-color-hover;
+        }
       }
     }
   }

@@ -12,13 +12,13 @@ import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
 
 // Components
 const MainWindow    = require('./components/MainWindowComponent.jsx').default,
-      NotFound      = require('./components/NotFoundComponent.jsx').default,
       Home          = require('./components/HomeComponent.jsx').default,
-      About         = require('./components/static/AboutComponent.jsx').default,
+      NotFound      = require('./components/static/NotFoundComponent.jsx').default,
       Login         = require('./components/static/LoginComponent.jsx').default,
-      AllItems      = require('./components/items/AllItemsComponent.jsx').default,
-      Category      = require('./components/items/CategoryComponent.jsx').default,
-      Item          = require('./components/items/ItemComponent.jsx').default,
+      About         = require('./components/static/AboutComponent.jsx').default,
+      AllItemsPage  = require('./components/items/AllItemsPageComponent.jsx').default,
+      CategoryPage  = require('./components/items/CategoryPageComponent.jsx').default,
+      ItemPage      = require('./components/items/ItemPageComponent.jsx').default,
       Admin         = require('./components/admin/DashboardComponent.jsx').default;
 
 // LocalStorage Data
@@ -53,9 +53,9 @@ ReactDOM.render(
   <Router history={browserHistory}>
     <Route path="/" loggedIn={Data.loggedIn} component={MainWindow}>
       <IndexRoute component={Home}/>
-      <Route path="all" component={AllItems}/>
-      <Route path="category/:category" component={Category}/>
-      <Route path="item/:id" component={Item}/>
+      <Route path="all" component={AllItemsPage}/>
+      <Route path="shop/:category" component={CategoryPage}/>
+      <Route path="item/:id" component={ItemPage}/>
       <Route path="about" component={About}/>
       <Route path="login" component={Login}/>
       <Route path="admin" component={Admin}/>

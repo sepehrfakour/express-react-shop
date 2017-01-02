@@ -7,7 +7,7 @@ var NotFound = React.createClass({
   componentDidMount: function () {},
   render: function () {
     return(
-      <div id="about-page">
+      <div id="about-page" className="container-fluid content">
         <div className="banner">
           <h1>About</h1>
         </div>

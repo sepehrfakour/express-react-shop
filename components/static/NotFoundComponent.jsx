@@ -13,7 +13,7 @@ var NotFound = React.createClass({
   componentDidMount: function () {},
   render: function () {
     return(
-      <div id="not-found">
+      <div id="not-found" className="container-fluid content">
         <h1>404</h1>
         <h2>Oops, there's nothing here...</h2>
         <Link to="/">Go home</Link>

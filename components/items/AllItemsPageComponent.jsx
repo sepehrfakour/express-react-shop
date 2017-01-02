@@ -2,6 +2,7 @@ const React = require('react');
 
 import { Link } from 'react-router';
 
+const Item        = require('./ItemComponent.jsx').default;
 const ItemStore   = require('../../stores/ItemStore.js').default,
       ItemActions = require('../../actions/ItemActions.js');
 
@@ -9,7 +10,7 @@ function getItemState() {
   return ItemStore.getItems();
 }
 
-var AllItems = React.createClass({
+var AllItemsPage = React.createClass({
   getInitialState: function () {
       return {
         items: getItemState(),
@@ -22,29 +23,13 @@ var AllItems = React.createClass({
     ItemStore.removeListener("change", this._onChange);
   },
   buildItems: function (item) {
-    let itemPageLink = '/item/' + item.id,
-        inlineStyles = {
-          background:'url('+item.imageurl+')',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        };
     return (
-      <div className="col-xs-3 item-col">
-        <div key={item.id} data-id={item.id} className="item">
-          <Link to={itemPageLink} className="image-overlay">
-            <div style={inlineStyles} className="item-image"/>
-          </Link>
-          <Link to={itemPageLink} className="item-info">
-            <div name="name">{item.name}</div>
-            <span name="price">{item.price}</span>
-          </Link>
-        </div>
-      </div>
+      <Item key={item.id} item={item} />
     )
   },
   render: function () {
     return(
-      <div id="all-items" className="container-fluid">
+      <div id="all-items" className="container-fluid content">
         <div className="banner">
           <h1>All Items</h1>
         </div>
@@ -61,4 +46,4 @@ var AllItems = React.createClass({
   }
 })
 
-export default AllItems;
+export default AllItemsPage;

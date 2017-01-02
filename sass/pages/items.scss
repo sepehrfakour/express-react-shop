@@ -18,27 +18,26 @@
 
 @media (min-width: 1200px) {
   .items-container {
-    // width: 980px;
-    width: 1140px;
+    width: 980px;
+    // width: 1140px;
   }
 }
 
 .items-container {
   padding-bottom: 150px;
-  h1 {
-    // padding-bottom: 30px;
-  }
+  h2 { margin-bottom: 30px; }
   .item-col {
     box-sizing: border-box;
     .item {
-      width: 260px;
+      width: 300px;
       margin: 0px auto 15px;
       .image-overlay {
         display: block;
         width: 100%;
         background-color: rgba(0,0,0,0.3);
+        border-radius: 3px;
         .item-image {
-          height: 300px;
+          height: 360px;
           border-radius: 3px;
         }
       }

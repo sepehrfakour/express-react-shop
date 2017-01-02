@@ -7,7 +7,7 @@ var NotFound = React.createClass({
   componentDidMount: function () {},
   render: function () {
     return(
-      <div id="login-form">
+      <div id="login-form" className="container-fluid content">
         <form method="POST" action="/login">
           <h1>Login</h1>
           <p>

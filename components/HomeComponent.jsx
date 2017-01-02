@@ -7,7 +7,7 @@ var Home = React.createClass({
   componentDidMount: function () {},
   render: function () {
     return(
-      <div id="landing-page">
+      <div id="landing-page" className="container-fluid content">
         <div className="banner landing-page-banner">
           <h1>Welcome</h1>
         </div>
