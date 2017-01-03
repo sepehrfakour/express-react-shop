@@ -13,8 +13,10 @@ var Header = React.createClass({
   render: function () {
     return(
       <div id="header">
+        <div id="header-logo">
+          <Link to="/">Shopname</Link>
+        </div>
         <ul>
-          <li><Link to="/">Home</Link></li>
           <li className="dropdown-container">
             <Link to="/all">Shop</Link>
             <div className="items-dropdown-menu">
@@ -28,7 +30,10 @@ var Header = React.createClass({
             </div>
           </li>
           <li><Link to="/about">About</Link></li>
-          <li>{this.getLoginLink(this.props.loggedIn)}</li>
+          <li id="login-link">{this.getLoginLink(this.props.loggedIn)}</li>
+          <li id="shopping-cart-button">
+            <Link to="/cart"></Link>
+          </li>
         </ul>
       </div>
     );

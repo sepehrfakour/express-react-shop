@@ -3,8 +3,9 @@
   padding: 0px;
   form {
     display: block;
-    margin-top: 90px;
-    padding: 30px 60px 45px;
+    width: 160px;
+    margin: 90px auto;
+    padding: 15px 30px 30px;
     background-color: #FFF;
     border-radius: 5px;
     text-align: center;
@@ -52,6 +53,12 @@
           transition: background 200ms ease-in;
         }
       }
+    }
+  }
+  @media (min-width: 576px) {
+    form {
+      width: 240px;
+      padding: 30px 60px 45px;
     }
   }
 }

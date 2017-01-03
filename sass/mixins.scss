@@ -14,3 +14,28 @@
   -o-transition: background 250ms ease-in;
   transition: background 250ms ease-in;
 }
+
+@mixin headerLinkHover {
+  background-color: #EEE;
+  color: $header-link-color-hover;
+  cursor: pointer;
+  @include buttonTransition;
+}
+
+@mixin headerLink {
+  display: inline-block;
+  padding: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $header-link-color;
+  @include buttonTransition;
+  &:hover {
+    @include headerLinkHover;
+  }
+}
+
+@mixin headerLinkMobile {
+  @include headerLink;
+  padding: 15px 5px;
+  font-size: 13px;
+}

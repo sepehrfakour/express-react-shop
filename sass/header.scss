@@ -1,49 +1,120 @@
 #header {
   position: fixed;
   width: 100%;
+  padding: 0px;
   background-color: $ghost;
   box-shadow: 0px 1px 0px $shadow;
   z-index: 1;
+  #header-logo {
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    width: 98px;
+    padding: 15px 0px;
+    margin-left: -49px;
+    text-align: center;
+    a {
+      @include headerLinkMobile;
+      display: block;
+      font-size: 0.8em;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+  }
   ul {
-    margin: 0px 30px;
+    margin: 0px 15px;
     padding: 0px;
     list-style-type: none;
-    text-align: right;
+    text-align: left;
     li {
       display: inline-block;
-      a {
-        display: inline-block;
-        padding: 15px;
-        font-size: 14px;
-        font-weight: 500;
-        color: $header-link-color;
-        &:hover {
-          background-color: #EEE;
-          color: $header-link-color-hover;
-          cursor: pointer;
+      padding: 15px 0px;
+      &:hover {
+        cursor: pointer;
+        a {
+          @include headerLinkHover;
         }
       }
+      a {
+        @include headerLinkMobile;
+      }
     }
+    #login-link { display: none; }
   }
   .dropdown-container {
     &:hover {
-      border-bottom: 2px inset #444;
+      border-bottom: 2px inset #DDD;
       .items-dropdown-menu {
         display: inline-block;
+        a {
+          background-color: initial;
+          &:hover {
+            @include headerLinkHover;
+          }
+        }
       }
     }
     .items-dropdown-menu {
       display: none;
       position: absolute;
-      top: 54px;
-      right: 0px;
+      top: $header-height + 3;
+      left: 0px;
       background-color: $ghost;
       &:hover {
         display: inline-block;
       }
       ul {
-        margin: 30px;
+        margin: 15px;
       }
+    }
+  }
+  #shopping-cart-button {
+    position: absolute;
+    right: 15px;
+    a {
+      height: 24px;
+      width: 30px;
+      background: url("/img/shoppingCartIcon.png");
+      background-position: center;
+      background-size: 50%;
+      background-repeat: no-repeat;
+      opacity: 0.5;
+    }
+    &:hover {
+      a {
+        background: #EEE url("/img/shoppingCartIcon.png");
+        background-position: center;
+        background-size: 50%;
+        background-repeat: no-repeat;
+        opacity: 0.9;
+      }
+    }
+  }
+  @media (min-width: 576px) {
+    ul {
+      margin: 0px 30px;
+      li {
+        a { @include headerLink; }
+      }
+    }
+    .dropdown-container {
+      .items-dropdown-menu {
+        ul { margin: 30px; }
+      }
+    }
+    #shopping-cart-button { right: 30px; }
+  }
+  @media (min-width: 768px) {
+    #header-logo {
+      width: 200px;
+      margin-left: -100px;
+      a {
+        font-size: 1.5em;
+      }
+    }
+    ul {
+      #login-link { display: inline-block; }
     }
   }
 }
@@ -62,14 +133,15 @@
     li {
       display: inline-block;
       a{
-        display: inline-block;
-        padding: 3px 6px;
-        font-size: 14px;
-        font-weight: 500;
-        color: $header-link-color;
-        &:hover {
-          background-color: #EEE;
-          color: $header-link-color-hover;
+        @include headerLinkMobile
+      }
+    }
+  }
+  @media (min-width: 576px) {
+    ul {
+      li {
+        a {
+          @include headerLink;
         }
       }
     }

@@ -24,7 +24,7 @@
   .banner {
     height: $banner-height;
     line-height: $banner-height;
-    margin: 30px;
+    margin: 15px;
     background-color: #EEE;
     border-radius: 5px;
     h1 {
@@ -33,9 +33,15 @@
     }
   }
   .content {
-    padding-top: 54px;
+    padding-top: $header-height;
+  }
+  @media (min-width: 576px) {
+    .banner {
+      margin: 30px;
+    }
   }
 }
+
 
 // Import non-component stylesheets
 @import "spinner";
