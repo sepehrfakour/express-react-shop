@@ -29,7 +29,7 @@ var Header = React.createClass({
               </ul>
             </div>
           </li>
-          <li><Link to="/about">About</Link></li>
+          <li id="about-link"><Link to="/about">About</Link></li>
           <li id="login-link">{this.getLoginLink(this.props.loggedIn)}</li>
           <li id="shopping-cart-button">
             <Link to="/cart"></Link>

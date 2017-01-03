@@ -40,6 +40,7 @@
         @include headerLinkMobile;
       }
     }
+    #about-link { display: none; }
     #login-link { display: none; }
   }
   .dropdown-container {
@@ -114,6 +115,7 @@
       }
     }
     ul {
+      #about-link { display: inline-block; }
       #login-link { display: inline-block; }
     }
   }
