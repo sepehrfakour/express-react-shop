@@ -61,5 +61,8 @@ input:-moz-placeholder { /* Firefox 18- */
 .hidden {
   display: none;
 }
+.border-box {
+  box-sizing: border-box;
+}
 
 /***************************************** End ******************************************/
