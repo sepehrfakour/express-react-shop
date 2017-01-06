@@ -9,8 +9,7 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: __dirname + '/public/js',
-    publicPath: 'http://localhost:8080/' // So Hot Module Reload uses webpack dev server URL not Express app URL
-
+    publicPath: '/' // So Hot Module Reload uses webpack dev server URL not Express app URL
   },
 
   module: {
