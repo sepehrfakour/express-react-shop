@@ -1,15 +1,24 @@
 #alert-display {
-  top: 30px;
+  display: inline-block;
+  position: fixed;
+  top: $header-height+60;
   left: 50%;
   width: 500px;
   margin-left: -250px;
   background-color: transparent;
+  z-index: 1;
+  pointer-events: none;
   .alerts {
     .alert {
       display: block;
-      font-size: 13px;
+      padding: 10px 15px;
+      font-size: 14px;
+      font-weight: 600;
       color: #FFF;
+      background-color: $error-red-trans;
+      border-radius: 5px;
       opacity: 1;
+      pointer-events: all;
       -webkit-transition: opacity 10s ease-in;
       -moz-transition: opacity 10s ease-in;
       -ms-transition: opacity 10s ease-in;
@@ -22,6 +31,17 @@
         -ms-transition: opacity 10s ease-in;
         -o-transition: opacity 10s ease-in;
         transition: opacity 10s ease-in;
+      }
+      &.alert-positive {
+        background-color: $success-green;
+      }
+      &.alert-neutral {
+        color: $neutral-text;
+        background-color: $neutral-blue;
+        border-color: $neutral-border;
+      }
+      &.alert-negative {
+        background-color: $error-red-trans;
       }
     }
   }

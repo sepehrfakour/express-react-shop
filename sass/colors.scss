@@ -20,7 +20,15 @@ $link-selected: #175090;
 $link-border: lighten($link, 25%);
 $link-border-hover: lighten($link-border, 5%);
 
-/* Errors */
+/* Alerts */
+
+$success-green: #37B070;
+$success-green-trans: rgba(55,176,112,0.9);
+$success-hover-green: #57D090;
+
+$neutral-blue: #D9EDF7;
+$neutral-border: #BCDFF1;
+$neutral-text: #31708F;
 
 $error-red: #C00;
 $error-red-trans: rgba(204,0,0,0.9);
