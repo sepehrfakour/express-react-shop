@@ -10,7 +10,7 @@ function getItemState (category) {
   return ItemStore.getItemsByCategory(category);
 }
 
-var CategoryPage = React.createClass({
+const CategoryPage = React.createClass({
   getInitialState: function () {
     return {
       items: getItemState(this.props.params.category)

@@ -2,7 +2,7 @@ const React = require('react');
 
 import { Link } from 'react-router';
 
-var Item = React.createClass({
+const Item = React.createClass({
   render: function () {
     let itemPageLink = '/item/' + this.props.item.id,
         inlineStyles = {

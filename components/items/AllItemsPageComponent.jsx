@@ -10,7 +10,7 @@ function getItemState() {
   return ItemStore.getItems();
 }
 
-var AllItemsPage = React.createClass({
+const AllItemsPage = React.createClass({
   getInitialState: function () {
       return {
         items: getItemState(),

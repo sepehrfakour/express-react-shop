@@ -11,7 +11,7 @@ function getItemState() {
   return ItemStore.getItems();
 }
 
-var Dashboard = React.createClass({
+const Dashboard = React.createClass({
   getInitialState: function () {
     return {
       items: getItemState(),

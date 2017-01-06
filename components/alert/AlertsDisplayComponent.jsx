@@ -8,7 +8,7 @@ function getAlertsState () {
   return AlertStore.getAlerts();
 }
 
-var AlertDisplay = React.createClass({
+const AlertDisplay = React.createClass({
   getInitialState: function() {
     return {
       alerts: getAlertsState()

@@ -1,6 +1,6 @@
 const React = require('react');
 
-var Home = React.createClass({
+const Home = React.createClass({
   getInitialState: function () {
       return {};
   },

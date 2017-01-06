@@ -4,7 +4,7 @@ const Header = require('./nav/HeaderComponent.jsx').default,
       Footer = require('./nav/FooterComponent.jsx').default,
       AlertDisplay = require('./alert/AlertsDisplayComponent.jsx').default;
 
-var MainWindow = React.createClass({
+const MainWindow = React.createClass({
   getInitialState: function () {
     return {};
   },

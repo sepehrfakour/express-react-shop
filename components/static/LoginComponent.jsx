@@ -1,6 +1,6 @@
 const React = require('react');
 
-var NotFound = React.createClass({
+const Login = React.createClass({
   getInitialState: function () {
       return {};
   },
@@ -27,4 +27,4 @@ var NotFound = React.createClass({
   }
 })
 
-export default NotFound;
+export default Login;

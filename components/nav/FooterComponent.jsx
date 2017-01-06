@@ -2,7 +2,7 @@ const React = require('react');
 
 import {Link} from 'react-router';
 
-var Header = React.createClass({
+const Footer = React.createClass({
   render: function () {
     let date          = new Date,
         year          = date.getFullYear(),
@@ -17,4 +17,4 @@ var Header = React.createClass({
   }
 })
 
-export default Header;
+export default Footer;

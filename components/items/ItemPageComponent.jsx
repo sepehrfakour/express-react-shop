@@ -11,7 +11,7 @@ function getItemState (id) {
   return ItemStore.getItem(id);
 }
 
-var ItemPage = React.createClass({
+const ItemPage = React.createClass({
   getInitialState: function () {
     return {
       item: getItemState(parseInt(this.props.params.id,10)),

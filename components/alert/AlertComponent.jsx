@@ -2,7 +2,7 @@ const React = require('react');
 
 const AlertActions = require('../../actions/AlertActions.js');
 
-var Alert = React.createClass({
+const Alert = React.createClass({
   getInitialState: function() {
     return {}
   },

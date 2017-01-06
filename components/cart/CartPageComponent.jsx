@@ -11,7 +11,7 @@ function getCartState() {
   return CartStore.getCart();
 }
 
-var CartPage = React.createClass({
+const CartPage = React.createClass({
   getInitialState: function () {
     return {
       items: getCartState(),

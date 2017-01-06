@@ -4,7 +4,7 @@ const ItemModal = require('./ItemModalComponent.jsx').default;
 
 const ItemActions = require('../../actions/ItemActions.js');
 
-var EditItem = React.createClass({
+const EditItem = React.createClass({
   getInitialState: function () {
       return {};
   },

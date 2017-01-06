@@ -2,7 +2,7 @@ const React = require('react');
 
 const S3DAO = require('../../dao/S3DAO.js').default;
 
-var ItemModal = React.createClass({
+const ItemModal = React.createClass({
   getInitialState: function () {
       return {
         loadingImage: false,

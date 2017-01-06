@@ -2,7 +2,7 @@ const React = require('react');
 
 import {Link} from 'react-router';
 
-var Header = React.createClass({
+const Header = React.createClass({
   getInitialState: function () {
     return {
       open: false

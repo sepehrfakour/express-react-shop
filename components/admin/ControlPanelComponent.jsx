@@ -2,7 +2,7 @@ const React = require('react');
 
 const ItemActions = require('../../actions/ItemActions.js');
 
-var ControlPanel = React.createClass({
+const ControlPanel = React.createClass({
   getInitialState: function () {
       return {}
   },
