@@ -22,8 +22,8 @@
   background-color: $main-window;
   text-align: center;
   .banner {
-    height: $banner-height;
-    line-height: $banner-height;
+    height: $mobile-banner-height;
+    line-height: $mobile-banner-height;
     margin: 15px;
     background-color: #EEE;
     border-radius: 5px;
@@ -37,6 +37,8 @@
   }
   @media (min-width: 576px) {
     .banner {
+      height: $banner-height;
+      line-height: $banner-height;
       margin: 30px;
     }
   }

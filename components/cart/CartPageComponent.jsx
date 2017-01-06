@@ -32,7 +32,7 @@ const CartPage = React.createClass({
     let item = ItemStore.getItem(cartItem.id);
     return (
       <tr key={cartItem.id} data-id={cartItem.id} className="cart-item">
-        <td name="name"><img src={item.imageurl}></img></td>
+        <td name="image"><img src={item.imageurl}></img></td>
         <td name="name">{item.name}</td>
         <td name="price">{item.price}</td>
         <td name="quantity">{cartItem.quantity}</td>
@@ -53,14 +53,14 @@ const CartPage = React.createClass({
             <button onClick={this._onKeepShoppingHandler}>Keep shopping</button>
           </div>
           <div className="row">
-            <div className="offset-xs-1 col-xs-10 offset-md-0 col-md-6 border-box">
+            <div className="col-xs-12 col-md-6 border-box">
               <table id="cart-table">
                 <tbody>
                   {this.state.items.map(this.buildItems)}
                 </tbody>
               </table>
             </div>
-            <div className="offset-xs-1 col-xs-10 offset-md-0 col-md-6 border-box">
+            <div className="col-xs-12 col-md-6 border-box">
               <div className="cart-summary">
                 <button>Continue to checkout</button>
               </div>
