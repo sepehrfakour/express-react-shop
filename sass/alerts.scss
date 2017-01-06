@@ -3,7 +3,7 @@
   position: fixed;
   top: $header-height+60;
   left: 50%;
-  width: 500px;
+  width: 300px;
   margin-left: -250px;
   background-color: transparent;
   z-index: 1;
@@ -44,5 +44,12 @@
         background-color: $error-red-trans;
       }
     }
+  }
+}
+
+@media (min-width: 576px) {
+  #alert-display {
+    width: 500px;
+    margin-left: -150px;
   }
 }
