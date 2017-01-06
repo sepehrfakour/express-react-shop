@@ -13,9 +13,9 @@ function getCartState() {
 
 var CartPage = React.createClass({
   getInitialState: function () {
-      return {
-        items: getCartState(),
-      };
+    return {
+      items: getCartState(),
+    };
   },
   componentWillMount: function () {
     // TODO: Refactor this listener on ItemStore (maybe call ItemStore on MainWindow and pass items array as props)
