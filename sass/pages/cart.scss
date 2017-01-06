@@ -1,0 +1,30 @@
+#cart-page {
+  .cart-top {
+    margin: 0px;
+    padding: 15px 0px;
+    border-bottom: 1px solid #EEE;
+    text-align: left;
+  }
+  table#cart-table {
+    display: inline-table;
+    margin: 15px auto;
+    tr.cart-item {
+      border-bottom: 1px solid #EEE;
+      th,
+      td {
+        padding: 5px 15px;
+        text-align: left;
+        img {
+          max-width: 60px;
+        }
+      }
+    }
+  }
+  .cart-summary {
+    margin: 15px 0px;
+    text-align: right;
+    button {
+
+    }
+  }
+}

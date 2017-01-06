@@ -89,12 +89,13 @@ var ItemModal = React.createClass({
     );
   },
   _keyPressHandler: function (event) {
-    console.log('keypress handler triggered');
     if ((event.which && event.which == 13) || (event.keyCode && event.keyCode == 13)) {
+      // Handle enter key
       event.stopPropagation();
       this.props.submitCallback(event);
     }
     if ((event.which && event.which == 27) || (event.keyCode && event.keyCode == 27)) {
+      // Handle escape key
       event.stopPropagation();
       this.props.closeCallback(event);
     }
