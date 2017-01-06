@@ -31,8 +31,15 @@ class ItemDAO {
     })
 
   }
-  getItems() {
-    // TODO: Create method here
+  getItems(callback) {
+    // Fetch items from DB then run provided callback
+    fetch('/api/v1/items')
+      .then( function (res) {
+        return res.json();
+      })
+      .then( function(json) {
+        callback(json)
+      })
   }
   getItem(id) {
     // TODO: Create method here

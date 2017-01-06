@@ -2,20 +2,16 @@ import { EventEmitter } from "events";
 
 import dispatcher from "../dispatcher.js";
 
+const ItemDAO = require('../dao/ItemDAO.js').default;
+
 class ItemStore extends EventEmitter {
   constructor() {
     super();
     this.items = [];
-    var that = this;
-    // Async read items from server, then emit change event so components update
-    fetch('/api/v1/items')
-      .then( function (res) {
-        return res.json();
-      })
-      .then( function(json) {
-        that.items = json;
-        that.emit("change");
-      })
+
+    // Async retreive items from server. See this.setItemsCallback for behavior on successful API fetch
+    ItemDAO.getItems(this.setItemsCallback.bind(this));
+
     // this.items = [
     //   {
     //     id: 'ny768uvu2',
@@ -26,6 +22,10 @@ class ItemStore extends EventEmitter {
     //     quantity: 10
     //   },
     // ];
+  }
+  setItemsCallback (json) {
+      this.items = json;
+      this.emit("change");
   }
   getItems() {
     return this.items;
