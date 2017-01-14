@@ -70,9 +70,10 @@ const ItemModal = React.createClass({
             <label>Category:</label>
             <select name="category" placeholder="Category" defaultValue={category}>
               <option value="hats">Hats</option>
-              <option value="shirts">Shirts</option>
-              <option value="pants">Pants</option>
+              <option value="tops">Tops</option>
+              <option value="bottoms">Bottoms</option>
               <option value="dresses">Dresses</option>
+              <option value="accessories">Accessories</option>
               <option value="other">Other</option>
             </select>
           </p>
