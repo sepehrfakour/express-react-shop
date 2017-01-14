@@ -37,7 +37,7 @@ const AlertDisplay = React.createClass({
   render: function() {
     var alerts = this.state.alerts;
     return(
-      <div id='alert-display' className='hud-window'>
+      <div id='alert-display'>
         <div className='alerts'>{alerts.map(this.buildChildren)}</div>
       </div>
     )
