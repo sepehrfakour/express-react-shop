@@ -34,9 +34,10 @@ const Header = React.createClass({
               <ul className={dropdownClickable}>
                 <li className={dropdownClickable}><Link to="/all">All</Link></li>
                 <li className={dropdownClickable}><Link to="/shop/hats">Hats</Link></li>
-                <li className={dropdownClickable}><Link to="/shop/shirts">Shirts</Link></li>
-                <li className={dropdownClickable}><Link to="/shop/pants">Pants</Link></li>
+                <li className={dropdownClickable}><Link to="/shop/tops">Tops</Link></li>
+                <li className={dropdownClickable}><Link to="/shop/bottoms">Bottoms</Link></li>
                 <li className={dropdownClickable}><Link to="/shop/dresses">Dresses</Link></li>
+                <li className={dropdownClickable}><Link to="/shop/accessories">Accessories</Link></li>
                 <li className={dropdownClickable}><Link to="/shop/other">Other</Link></li>
               </ul>
             </div>

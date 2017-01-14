@@ -48,15 +48,15 @@ class ItemsModel {
     this.executeQuery(queryString, callback, values);
   }
   addItem(data, callback) {
-    let queryString = "INSERT into items (category, name, price, sku, quantity, imageurl) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *",
+    let queryString = "INSERT into items (category, name, item_group, price, size, color, description, sku, quantity, imageurl, status) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *",
         values = [];
-    values.push(data.category, data.name, data.price, data.sku, data.quantity, data.imageurl);
+    values.push(data.category, data.name, data.item_group, data.price, data.size, data.color, data.description, data.sku, data.quantity, data.imageurl, data.status);
     this.executeQuery(queryString, callback, values);
   }
   updateItem(data, callback) {
-    let queryString = "UPDATE items SET (category, name, price, sku, quantity, imageurl) = ($1,$2,$3,$4,$5,$6) WHERE id = ($7)",
+    let queryString = "UPDATE items SET (category, name, item_group, price, size, color, description, sku, quantity, imageurl, status) = ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) WHERE id = ($12)",
         values = [];
-    values.push(data.category, data.name, data.price, data.sku, data.quantity, data.imageurl, data.id);
+    values.push(data.category, data.name, data.item_group, data.price, data.size, data.color, data.description, data.sku, data.quantity, data.imageurl, data.status, data.id);
     this.executeQuery(queryString, callback, values);
   }
   deleteItem(id, callback) {

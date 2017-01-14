@@ -31,10 +31,15 @@ const Dashboard = React.createClass({
       <tr key={item.id} data-id={item.id}>
         <td name="name"><img src={item.imageurl}></img></td>
         <td name="name">{item.name}</td>
+        <td name="item_group">{item.item_group}</td>
         <td name="category">{item.category}</td>
         <td name="price">{item.price}</td>
+        <td name="size">{item.size}</td>
+        <td name="color">{item.color}</td>
+        <td name="description">{item.description}</td>
         <td name="sku">{item.sku}</td>
         <td name="quantity">{item.quantity}</td>
+        <td name="status">{item.status}</td>
         <td>
           <button data-id={item.id} onClick={this._onEditClick}>Edit</button>
           <button data-id={item.id} onClick={this._onDeleteClick}>Delete</button>
@@ -52,10 +57,15 @@ const Dashboard = React.createClass({
             <tr>
               <th>Image</th>
               <th>Name</th>
+              <th>Item Group</th>
               <th>Category</th>
               <th>Price</th>
+              <th>Size</th>
+              <th>Color</th>
+              <th>Description</th>
               <th>Sku</th>
               <th>Quantity</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
