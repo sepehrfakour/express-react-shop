@@ -159,6 +159,7 @@ const logout = function (req, res, next) {
 const api_base_url = '/api/v1/';
 // Items Controller
 const itemsController = require(__dirname + api_base_url + 'controllers/ItemsController.js'),
+      ordersController = require(__dirname + api_base_url + 'controllers/OrdersController.js'),
       s3Controller = require(__dirname + api_base_url + 'controllers/S3Controller.js');
 // - Public API Endpoints
 // Fetch all items, or by category
@@ -184,6 +185,17 @@ app.route(api_base_url + 'item/delete')
 app.route(api_base_url + 'sign-s3')
   .all(authenticate)
   .get(s3Controller.signS3)
+// Fetch all orders, or by email
+app.route(api_base_url + 'orders')
+  .all(authenticate)
+  .get(ordersController.getOrders)
+// Fetch order by id
+app.route(api_base_url + 'order')
+  .all(authenticate)
+  .get(ordersController.getOrder)
+// Insert order
+app.route(api_base_url + 'order/create')
+  .post(ordersController.addOrder)
 
 // Web App
 // Protected Web App Endpoints
