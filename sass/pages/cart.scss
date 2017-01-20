@@ -1,4 +1,5 @@
 #cart-page {
+  .cart-container { margin-top: 30px;}
   .cart-top {
     margin: 0px;
     padding: 15px 0px 30px;
@@ -16,6 +17,7 @@
   }
   table#cart-table {
     display: inline-table;
+    width: 100%;
     margin: 30px auto;
     tr.cart-item {
       border-bottom: 1px solid #EEE;
@@ -25,6 +27,14 @@
         padding: 5px 15px;
         color: #666;
         text-align: left;
+        &:first-of-type {
+          padding-left: 0px;
+        }
+        &:last-of-type {
+          padding-right: 0px;
+          text-align: right;
+          button { padding: 0px; }
+        }
         img {
           max-width: 60px;
         }
@@ -36,13 +46,14 @@
     }
   }
   .cart-bottom {
-    margin: 0px;
     padding: 30px 0px 15px;
     border-top: 1px solid #EEE;
-    text-align: left;
+    text-align: center;
     a {
       @include linkCTA;
-      float: right;
+      width: 100%;
+      padding: 10px 15px;
+      box-sizing: border-box;
       vertical-align: middle;
     }
   }

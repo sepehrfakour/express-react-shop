@@ -49,16 +49,13 @@ const CartPage = React.createClass({
     this.tax_rate = 0.08;
     return(
       <div id="cart-page" className="container-fluid content">
-        <div className="banner">
-          <h1>Cart</h1>
-        </div>
-        <div className="container items-container">
+        <div className="container items-container cart-container">
           <div className="row cart-top">
             <button onClick={this._onKeepShoppingHandler}>Keep shopping</button>
             <Link to="/checkout">Continue to checkout</Link>
           </div>
           <div className="row">
-            <div className="col-xs-12 border-box">
+            <div className="col-xs-12 col-lg-6 offset-lg-3 border-box">
               <table id="cart-table">
                 <tbody>
                   {this.state.items.map(this.buildItems)}
@@ -83,7 +80,9 @@ const CartPage = React.createClass({
             </div>
           </div>
           <div className="row cart-bottom">
-            <Link to="/checkout">Continue to checkout</Link>
+            <div className="col-xs-12 col-lg-6 offset-lg-3 border-box">
+              <Link to="/checkout">Continue to checkout</Link>
+            </div>
           </div>
         </div>
       </div>
