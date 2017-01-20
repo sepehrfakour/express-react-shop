@@ -1,0 +1,37 @@
+#checkout-page {
+  #checkout-progress {
+    height: 30px;
+    &.progress-shipping { section:nth-of-type(1) { background-color: $success-green-trans; } }
+    &.progress-payment { section:nth-of-type(2) { background-color: $success-green-trans; } }
+    &.progress-confirm { section:nth-of-type(3) { background-color: $success-green-trans; } }
+    section {
+      display: inline-block;
+      height: 100%;
+      width: 30%;
+    }
+  }
+  #shipping-form,
+  #payment-form {
+    span { display: inline-block; }
+    label { display: block; }
+  }
+  #shipping-form {}
+  #payment-form {}
+  table#checkout-table {
+    display: inline-table;
+    margin: 15px auto;
+    border-top: 1px solid #EEE;
+    tr.checkout-item {
+      border-bottom: 1px solid #EEE;
+      th,
+      td {
+        padding: 5px 15px;
+        text-align: left;
+        img {
+          max-width: 60px;
+        }
+      }
+    }
+  }
+}
+

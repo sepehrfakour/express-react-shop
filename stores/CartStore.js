@@ -97,6 +97,5 @@ class CartStore extends EventEmitter {
 
 const cartStore = new CartStore;
 dispatcher.register(cartStore.handleActions.bind(cartStore));
-window.cartStore = cartStore;
 
 export default cartStore;

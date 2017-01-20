@@ -150,6 +150,5 @@ class ItemStore extends EventEmitter {
 
 const itemStore = new ItemStore;
 dispatcher.register(itemStore.handleActions.bind(itemStore));
-window.itemStore = itemStore;
 
 export default itemStore;

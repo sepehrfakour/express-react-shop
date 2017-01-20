@@ -67,6 +67,5 @@ class AlertStore extends EventEmitter {
 
 const alertStore = new AlertStore;
 dispatcher.register(alertStore.handleActions.bind(alertStore));
-window.alertStore = alertStore;
 
 export default alertStore;

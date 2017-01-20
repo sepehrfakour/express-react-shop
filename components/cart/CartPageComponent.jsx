@@ -51,18 +51,17 @@ const CartPage = React.createClass({
         <div className="container items-container">
           <div className="row cart-top">
             <button onClick={this._onKeepShoppingHandler}>Keep shopping</button>
+            <Link to="/checkout">Continue to checkout</Link>
           </div>
           <div className="row">
-            <div className="col-xs-12 col-md-6 border-box">
+            <div className="col-xs-12 col-md-10 offset-md-1 border-box">
               <table id="cart-table">
                 <tbody>
                   {this.state.items.map(this.buildItems)}
                 </tbody>
               </table>
-            </div>
-            <div className="col-xs-12 col-md-6 border-box">
               <div className="cart-summary">
-                <button>Continue to checkout</button>
+                <Link to="/checkout">Continue to checkout</Link>
               </div>
             </div>
           </div>

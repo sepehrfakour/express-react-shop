@@ -20,6 +20,7 @@ const MainWindow    = require('./components/MainWindowComponent.jsx').default,
       CategoryPage  = require('./components/items/CategoryPageComponent.jsx').default,
       ItemPage      = require('./components/items/ItemPageComponent.jsx').default,
       CartPage      = require('./components/cart/CartPageComponent.jsx').default,
+      CheckoutPage  = require('./components/checkout/CheckoutPageComponent.jsx').default,
       Admin         = require('./components/admin/DashboardComponent.jsx').default;
 
 // Local Storage Handler
@@ -58,6 +59,7 @@ ReactDOM.render(
       <Route path="shop/:category" component={CategoryPage}/>
       <Route path="item/:id" component={ItemPage}/>
       <Route path="cart" component={CartPage}/>
+      <Route path="checkout" component={CheckoutPage}/>
       <Route path="about" component={About}/>
       <Route path="login" component={Login}/>
       <Route path="admin" component={Admin}/>
