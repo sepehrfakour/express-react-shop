@@ -12,7 +12,7 @@ const ConfirmForm = React.createClass({
   },
   render: function () {
     return(
-      <form id="confirm-form" onSubmit={this._submitCallback} className="container">
+      <form id="confirm-form" onSubmit={this._submitCallback}>
         <p className="row">Click the button to pay and complete your purchase</p>
         <p className="row">
           <span className="col-xs-12">

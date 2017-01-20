@@ -1,4 +1,5 @@
 #checkout-page {
+  .checkout-container { margin-top: 30px; }
   #checkout-progress {
     padding: 0px 30px;
     &.progress-shipping {
@@ -52,7 +53,7 @@
     }
     input,
     select {
-      height: 48px;
+      height: 44px;
       width: 100%;
       padding: 10px 15px;
       border: 2px solid #EEE;

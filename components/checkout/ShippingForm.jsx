@@ -15,7 +15,7 @@ const ShippingForm = React.createClass({
   render: function () {
     let shipping = this.props.shipping;
     return(
-      <form id="shipping-form" onSubmit={this._submitCallback} className="container">
+      <form id="shipping-form" onSubmit={this._submitCallback}>
         <p className="row">
           <span className="col-xs-12 col-md-6">
             <label>First name</label>

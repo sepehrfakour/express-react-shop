@@ -66,45 +66,38 @@ const CheckoutPage = React.createClass({
     let progressClassName = 'row progress-' + this.state.currentForm;
     return(
       <div id="checkout-page" className="container-fluid content">
-        <div className="banner">
-          <h1>Checkout</h1>
-        </div>
-        <div className="container items-container">
+        <div className="container items-container checkout-container">
           <div className="row">
-            <div className="col-xs-12 col-md-8 offset-md-2 border-box">
-              <div className="container">
-                <div id="checkout-progress" className={progressClassName}>
-                  <section className="col-xs-4">Shipping</section>
-                  <section className="col-xs-4">Payment</section>
-                  <section className="col-xs-4">Confirm</section>
-                </div>
+            <div className="col-xs-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 border-box">
+              <div id="checkout-progress" className={progressClassName}>
+                <section className="col-xs-4">Shipping</section>
+                <section className="col-xs-4">Payment</section>
+                <section className="col-xs-4">Confirm</section>
               </div>
               {this.buildForm()}
-              <div className="container">
-                <div className="checkout-summary">
-                  <h2>Order Summary:</h2>
-                  <table id="checkout-table">
-                    <tbody>
-                      {this.state.items.map(this.buildItems)}
-                      <tr>
-                        <td className="cart-summary" colSpan="5">
-                          <p>
-                            <span>Subtotal: </span>
-                            <span>${this.subtotal.toFixed(2)}</span>
-                          </p>
-                          <p>
-                            <span>Tax: </span>
-                            <span>${(this.subtotal * this.tax_rate).toFixed(2)}</span>
-                          </p>
-                          <p>
-                            <span>Total: </span>
-                            <span>${(this.subtotal + (this.subtotal * this.tax_rate)).toFixed(2)}</span>
-                          </p>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+              <div className="checkout-summary">
+                <h2>Order Summary:</h2>
+                <table id="checkout-table">
+                  <tbody>
+                    {this.state.items.map(this.buildItems)}
+                    <tr>
+                      <td className="cart-summary" colSpan="5">
+                        <p>
+                          <span>Subtotal: </span>
+                          <span>${this.subtotal.toFixed(2)}</span>
+                        </p>
+                        <p>
+                          <span>Tax: </span>
+                          <span>${(this.subtotal * this.tax_rate).toFixed(2)}</span>
+                        </p>
+                        <p>
+                          <span>Total: </span>
+                          <span>${(this.subtotal + (this.subtotal * this.tax_rate)).toFixed(2)}</span>
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
