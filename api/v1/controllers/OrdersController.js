@@ -30,6 +30,8 @@ class OrdersController {
     if (req.body) {
       let data = {
         status: req.body.status,
+        customer_first_name: req.body.customer_first_name,
+        customer_last_name: req.body.customer_last_name,
         customer_email: req.body.customer_email,
         customer_phone: req.body.customer_phone,
         currency: req.body.currency,

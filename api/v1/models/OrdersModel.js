@@ -48,15 +48,15 @@ class OrdersModel {
     this.executeQuery(queryString, callback, values);
   }
   addOrder(data, callback) {
-    let queryString = "INSERT into orders (status, customer_email, customer_phone, currency, subtotal_price_amount, total_price_amount, tax_price_amount, shipping_method, shipping_price_amount, shipping_street_1, shipping_street_2, shipping_city, shipping_state, shipping_country, shipping_postal_code, shipping_special_instructions) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING *",
+    let queryString = "INSERT into orders (status, customer_first_name, customer_last_name, customer_email, customer_phone, currency, subtotal_price_amount, total_price_amount, tax_price_amount, shipping_method, shipping_price_amount, shipping_street_1, shipping_street_2, shipping_city, shipping_state, shipping_country, shipping_postal_code, shipping_special_instructions) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) RETURNING *",
         values = [];
-    values.push(data.status, data.customer_email, data.customer_phone, data.currency, data.subtotal_price_amount, data.total_price_amount, data.tax_price_amount, data.shipping_method, data.shipping_price_amount, data.shipping_street_1, data.shipping_street_2, data.shipping_city, data.shipping_state, data.shipping_country, data.shipping_postal_code, data.shipping_special_instructions);
+    values.push(data.status, data.customer_first_name, data.customer_last_name, data.customer_email, data.customer_phone, data.currency, data.subtotal_price_amount, data.total_price_amount, data.tax_price_amount, data.shipping_method, data.shipping_price_amount, data.shipping_street_1, data.shipping_street_2, data.shipping_city, data.shipping_state, data.shipping_country, data.shipping_postal_code, data.shipping_special_instructions);
     this.executeQuery(queryString, callback, values);
   }
   updateOrder(data, callback) {
-    let queryString = "UPDATE orders SET (status, customer_email, customer_phone, currency, subtotal_price_amount, total_price_amount, tax_price_amount, shipping_method, shipping_price_amount, shipping_street_1, shipping_street_2, shipping_city, shipping_state, shipping_country, shipping_postal_code, shipping_special_instructions) = ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) WHERE id = ($17)",
+    let queryString = "UPDATE orders SET (status, customer_first_name, customer_last_name, customer_email, customer_phone, currency, subtotal_price_amount, total_price_amount, tax_price_amount, shipping_method, shipping_price_amount, shipping_street_1, shipping_street_2, shipping_city, shipping_state, shipping_country, shipping_postal_code, shipping_special_instructions) = ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) WHERE id = ($19)",
         values = [];
-    values.push(data.status, data.customer_email, data.customer_phone, data.currency, data.subtotal_price_amount, data.total_price_amount, data.tax_price_amount, data.shipping_method, data.shipping_price_amount, data.shipping_street_1, data.shipping_street_2, data.shipping_city, data.shipping_state, data.shipping_country, data.shipping_postal_code, data.shipping_special_instructions, data.id);
+    values.push(data.status, data.customer_first_name, data.customer_last_name, data.customer_email, data.customer_phone, data.currency, data.subtotal_price_amount, data.total_price_amount, data.tax_price_amount, data.shipping_method, data.shipping_price_amount, data.shipping_street_1, data.shipping_street_2, data.shipping_city, data.shipping_state, data.shipping_country, data.shipping_postal_code, data.shipping_special_instructions, data.id);
     this.executeQuery(queryString, callback, values);
   }
   deleteOrder(id, callback) {

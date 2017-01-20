@@ -21,6 +21,8 @@ CREATE TABLE items(
 CREATE TABLE orders(
   id SERIAL PRIMARY KEY NOT NULL,
   status VARCHAR(32) NOT NULL,
+  customer_first_name VARCHAR(64) NOT NULL,
+  customer_last_name VARCHAR(64) NOT NULL,
   customer_email VARCHAR(64) NOT NULL,
   customer_phone VARCHAR(32) NOT NULL,
   currency VARCHAR(32) NOT NULL,
