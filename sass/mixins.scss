@@ -39,3 +39,19 @@
   padding: 15px 5px;
   font-size: 13px;
 }
+
+@mixin linkCTA {
+  display: inline-block;
+  padding: 5px 15px;
+  color: #FFF;
+  font-weight: 600;
+  background-color: $link;
+  border-radius: 3px;
+}
+
+@mixin transparentButton {
+  @include headerLink;
+  padding: 5px 15px;
+  border: 0px;
+  background: transparent;
+}

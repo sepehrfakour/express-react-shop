@@ -12,10 +12,12 @@ const ConfirmForm = React.createClass({
   },
   render: function () {
     return(
-      <form id="confirm-form" onSubmit={this._submitCallback}>
-        <p>Click the button to pay and complete your purchase</p>
-        <p>
-          <input type="submit" name="checkout-form-submit" value="Complete purchase" onClick={this._submitCallback} />
+      <form id="confirm-form" onSubmit={this._submitCallback} className="container">
+        <p className="row">Click the button to pay and complete your purchase</p>
+        <p className="row">
+          <span className="col-xs-12">
+            <input type="submit" name="checkout-form-submit" value="Complete purchase" onClick={this._submitCallback} />
+          </span>
         </p>
       </form>
     );

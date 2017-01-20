@@ -15,21 +15,29 @@ const PaymentForm = React.createClass({
   render: function () {
     let payment = this.props.payment;
     return(
-      <form id="payment-form" onSubmit={this._submitCallback}>
-        <p>
-          <label>Card number</label>
-          <input type="text" name="card" placeholder="Card" defaultValue={payment.card}/>
+      <form id="payment-form" onSubmit={this._submitCallback} className="container">
+        <p className="row">
+          <span className="col-xs-12 col-md-8 offset-md-2 col-xl-6 offset-xl-3">
+            <label>Card number</label>
+            <input type="text" name="card" placeholder="Card" defaultValue={payment.card}/>
+          </span>
         </p>
-        <p>
-          <label>Expiration date</label>
-          <input type="text" name="expiry" placeholder="Expiry" defaultValue={payment.expiry}/>
+        <p className="row">
+          <span className="col-xs-12 col-md-8 offset-md-2 col-xl-6 offset-xl-3">
+            <label>Expiration date</label>
+            <input type="text" name="expiry" placeholder="Expiry" defaultValue={payment.expiry}/>
+          </span>
         </p>
-        <p>
-          <label>CVC</label>
-          <input type="text" name="cvc" placeholder="CVC" defaultValue={payment.cvc}/>
+        <p className="row">
+          <span className="col-xs-12 col-md-8 offset-md-2 col-xl-6 offset-xl-3">
+            <label>CVC</label>
+            <input type="text" name="cvc" placeholder="CVC" defaultValue={payment.cvc}/>
+          </span>
         </p>
-        <p>
-          <input type="submit" name="checkout-form-submit" value="Continue to confirmation" onClick={this._submitCallback} />
+        <p className="row">
+          <span className="col-xs-12 col-md-8 offset-md-2 col-xl-6 offset-xl-3">
+            <input type="submit" name="checkout-form-submit" value="Continue to confirmation" onClick={this._submitCallback} />
+          </span>
         </p>
       </form>
     );

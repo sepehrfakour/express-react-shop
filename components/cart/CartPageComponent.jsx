@@ -14,7 +14,7 @@ function getCartState() {
 const CartPage = React.createClass({
   getInitialState: function () {
     return {
-      items: getCartState(),
+      items: getCartState()
     };
   },
   componentWillMount: function () {
@@ -30,12 +30,14 @@ const CartPage = React.createClass({
   buildItems: function (cartItem) {
     // TODO: Refactor current method, which, using ItemStore, matches ids to retreive each Cart item's data etc
     let item = ItemStore.getItem(cartItem.id);
+    // Adjust subtotal
+    this.subtotal += (parseFloat(item.price,10) * parseInt(cartItem.quantity,10));
     return (
       <tr key={cartItem.id} data-id={cartItem.id} className="cart-item">
         <td name="image"><img src={item.imageurl}></img></td>
         <td name="name">{item.name}</td>
-        <td name="price">{item.price}</td>
-        <td name="quantity">{cartItem.quantity}</td>
+        <td name="price">${item.price}</td>
+        <td name="quantity">x{cartItem.quantity}</td>
         <td>
           <button data-id={cartItem.id} onClick={this._onRemoveHandler}>Remove</button>
         </td>
@@ -43,6 +45,8 @@ const CartPage = React.createClass({
     )
   },
   render: function () {
+    this.subtotal = 0.00;
+    this.tax_rate = 0.08;
     return(
       <div id="cart-page" className="container-fluid content">
         <div className="banner">
@@ -54,16 +58,32 @@ const CartPage = React.createClass({
             <Link to="/checkout">Continue to checkout</Link>
           </div>
           <div className="row">
-            <div className="col-xs-12 col-md-10 offset-md-1 border-box">
+            <div className="col-xs-12 border-box">
               <table id="cart-table">
                 <tbody>
                   {this.state.items.map(this.buildItems)}
+                  <tr>
+                    <td className="cart-summary" colSpan="5">
+                      <p>
+                        <span>Subtotal: </span>
+                        <span>${this.subtotal.toFixed(2)}</span>
+                      </p>
+                      <p>
+                        <span>Tax: </span>
+                        <span>${(this.subtotal * this.tax_rate).toFixed(2)}</span>
+                      </p>
+                      <p>
+                        <span>Total: </span>
+                        <span>${(this.subtotal + (this.subtotal * this.tax_rate)).toFixed(2)}</span>
+                      </p>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
-              <div className="cart-summary">
-                <Link to="/checkout">Continue to checkout</Link>
-              </div>
             </div>
+          </div>
+          <div className="row cart-bottom">
+            <Link to="/checkout">Continue to checkout</Link>
           </div>
         </div>
       </div>

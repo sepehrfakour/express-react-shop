@@ -40,12 +40,14 @@ const CheckoutPage = React.createClass({
   buildItems: function (cartItem) {
     // TODO: Refactor current method, which, using ItemStore, matches ids to retreive each Cart item's data etc
     let item = ItemStore.getItem(cartItem.id);
+    // Adjust subtotal
+    this.subtotal += (parseFloat(item.price,10) * parseInt(cartItem.quantity,10));
     return (
       <tr key={cartItem.id} data-id={cartItem.id} className="checkout-item">
         <td name="image"><img src={item.imageurl}></img></td>
         <td name="name">{item.name}</td>
-        <td name="price">{item.price}</td>
-        <td name="quantity">{cartItem.quantity}</td>
+        <td name="price">${item.price}</td>
+        <td name="quantity">x{cartItem.quantity}</td>
       </tr>
     );
   },
@@ -59,7 +61,9 @@ const CheckoutPage = React.createClass({
     }
   },
   render: function () {
-    let progressClassName = 'progress-' + this.state.currentForm;
+    this.subtotal = 0.00;
+    this.tax_rate = 0.08;
+    let progressClassName = 'row progress-' + this.state.currentForm;
     return(
       <div id="checkout-page" className="container-fluid content">
         <div className="banner">
@@ -67,18 +71,41 @@ const CheckoutPage = React.createClass({
         </div>
         <div className="container items-container">
           <div className="row">
-            <div className="col-xs-12 border-box">
-              <div id="checkout-progress" className={progressClassName}>
-                <section>Shipping</section>
-                <section>Payment</section>
-                <section>Confirm</section>
+            <div className="col-xs-12 col-md-8 offset-md-2 border-box">
+              <div className="container">
+                <div id="checkout-progress" className={progressClassName}>
+                  <section className="col-xs-4">Shipping</section>
+                  <section className="col-xs-4">Payment</section>
+                  <section className="col-xs-4">Confirm</section>
+                </div>
               </div>
               {this.buildForm()}
-              <table id="checkout-table">
-                <tbody>
-                  {this.state.items.map(this.buildItems)}
-                </tbody>
-              </table>
+              <div className="container">
+                <div className="checkout-summary">
+                  <h2>Order Summary:</h2>
+                  <table id="checkout-table">
+                    <tbody>
+                      {this.state.items.map(this.buildItems)}
+                      <tr>
+                        <td className="cart-summary" colSpan="5">
+                          <p>
+                            <span>Subtotal: </span>
+                            <span>${this.subtotal.toFixed(2)}</span>
+                          </p>
+                          <p>
+                            <span>Tax: </span>
+                            <span>${(this.subtotal * this.tax_rate).toFixed(2)}</span>
+                          </p>
+                          <p>
+                            <span>Total: </span>
+                            <span>${(this.subtotal + (this.subtotal * this.tax_rate)).toFixed(2)}</span>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
