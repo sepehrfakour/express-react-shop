@@ -7,14 +7,16 @@ const ItemStore    = require('../../stores/ItemStore.js').default,
       CartActions  = require('../../actions/CartActions.js'),
       AlertActions = require('../../actions/AlertActions.js');
 
-function getItemState (id) {
-  return ItemStore.getItem(id);
+function getItemState (item_group) {
+  return ItemStore.getItemsByItemGroup(item_group);
 }
 
 const ItemPage = React.createClass({
   getInitialState: function () {
     return {
-      item: getItemState(parseInt(this.props.params.id,10)),
+      items: getItemState(this.props.params.item_group),
+      selectedColor: 1,
+      selectedSize: 1,
       selectedQuantity: 1
     };
   },
@@ -26,54 +28,94 @@ const ItemPage = React.createClass({
     window.removeEventListener('keydown', this._keyPressHandler)
     ItemStore.removeListener("change", this._onChange);
   },
+  getAllColors: function () {
+    let colors = [];
+    this.state.items.map( function (item) {
+      if (colors.indexOf(item.color) === -1) { colors.push(item.color); }
+    })
+    return colors;
+  },
+  getAllSizes: function () {
+    let sizes = [];
+    this.state.items.map( function (item) {
+      if (sizes.indexOf(item.size) === -1) { sizes.push(item.size); }
+    })
+    return sizes;
+  },
+  buildColorInputs: function (color) {
+    this.colorCount++;
+    let className = 'color-' + color,
+        key       = 'color-key-' + color,
+        id        = 'color-id-' + color,
+        checked   = (this.colorCount > 1) ? false : true;
+    return (
+      <span key={key}>
+        <input type="radio" name="color" id={id} value={color} className={className} defaultChecked={checked} onChange={this._onColorChangeHandler}/>
+        <label htmlFor={id}></label>
+      </span>
+    )
+  },
+  buildSizeInputs: function (size) {
+    return (
+      <option key={'size-key-'+size} value={size}>{size}</option>
+    )
+  },
+  buildQuantityInputs: function (quantity) {
+    return (
+      <option key={'quantity-key-'+quantity} value={quantity}>{quantity}</option>
+    )
+  },
   render: function () {
+    let name, price, imageurl, description;
+    if (this.state.items[0]) {
+      name = this.state.items[0].name,
+      price = this.state.items[0].price,
+      imageurl = this.state.items[0].imageurl,
+      description = this.state.items[0].description;
+    }
+    this.colorCount = 0;
+    this.colors = this.getAllColors();
+    this.sizes = this.getAllSizes();
+    this.quantity = [];
+    this.maxQuantity = 10;
+    for (var i = 0; i < this.maxQuantity; i++) {
+      this.quantity[i] = i+1;
+    };
     return(
       <div id="item-page" className="container-fluid content">
         <div className="item-name">
-          <h2>{this.state.item.name}</h2>
+          <h2>{name}</h2>
         </div>
         <div className="container item-container">
           <div className="row">
             <div className="offset-xs-1 col-xs-10 offset-md-0 col-md-6 border-box">
               <div className="item-image">
-                <img src={this.state.item.imageurl}/>
+                <img src={imageurl}/>
               </div>
             </div>
             <div className="offset-xs-1 col-xs-10 offset-md-0 col-md-6 border-box">
               <form className="item-info">
-                <h4>{this.state.item.name}</h4>
-                <div>${this.state.item.price}</div>
+                <h4>{name}</h4>
+                <div>${price}</div>
                 <p>
-                  <label>Color</label>
-                  <input type="radio" name="color" value="white"/>
-                  <input type="radio" name="color" value="grey"/>
-                  <input type="radio" name="color" value="black"/>
+                  { this.colors.map(this.buildColorInputs) }
                 </p>
-                <p>
-                  <label>Size</label>
-                  <select name="size">
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                  </select>
-                </p>
-                <p>
-                  <label>Quantity</label>
-                  <select id="item-quantity-selector" name="quantity" onChange={this._onQuantityChangeHandler}>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                  </select>
+                <p className="item-size-and-quantity">
+                  <span>
+                    <label>Size</label>
+                    <select name="size" onChange={this._onSizeChangeHandler}>
+                      { this.sizes.map(this.buildSizeInputs) }
+                    </select>
+                  </span>
+                  <span>
+                    <label>Quantity</label>
+                    <select id="item-quantity-selector" name="quantity" onChange={this._onQuantityChangeHandler}>
+                      { this.quantity.map(this.buildQuantityInputs) }
+                    </select>
+                  </span>
                 </p>
                 <button onClick={this._addToCartHandler}>Add to bag</button>
-                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                <div className="item-description">{description}</div>
               </form>
             </div>
           </div>
@@ -82,7 +124,17 @@ const ItemPage = React.createClass({
     );
   },
   _onChange: function () {
-    this.setState({ item: getItemState(parseInt(this.props.params.id,10))});
+    this.setState({ items: getItemState(this.props.params.item_group) });
+  },
+  _onColorChangeHandler: function () {
+    let form = document.body.querySelector('.item-info'),
+        color = form.color.value;
+    this.setState({ selectedColor: color });
+  },
+  _onSizeChangeHandler: function () {
+    let form = document.body.querySelector('.item-info'),
+        size = form.size.value;
+    this.setState({ selectedSize: size });
   },
   _onQuantityChangeHandler: function () {
     let quantity = parseInt(document.body.querySelector('#item-quantity-selector').value, 10);
@@ -90,12 +142,25 @@ const ItemPage = React.createClass({
   },
   _addToCartHandler: function (event) {
     event.preventDefault();
+    // Based on the selected color and size, find the correct item from the item_group
+    // Make sure to handle default cases where this.state.color and/or this.state.size are equal to 1
+    let color = (this.state.selectedColor === 1) ? this.state.items[0].color : this.state.selectedColor;
+    let size = (this.state.selectedSize === 1) ? this.state.items[0].size : this.state.selectedSize;
+    let selectedItem = this.state.items.filter(function(item) {
+      if (item.color === color && item.size === size) { return item; }
+    })
+    if (selectedItem[0] === undefined) {
+      // If there is no item from this item_group that matches the selected color and size, display Alert
+      console.warn('No stock left for selected item');
+      AlertActions.addAlert('Oops! Sorry, we are out of the selected size/color.','negative');
+      return false;
+    }
     let item = {
-      id: this.state.item.id,
+      id: selectedItem[0].id,
       quantity: this.state.selectedQuantity
     }
     CartActions.addItem(item);
-    let msg = this.state.item.name + ' added to cart';
+    let msg = selectedItem[0].name + ' added to cart';
     AlertActions.addAlert(msg,'neutral');
     browserHistory.push('/cart');
   },

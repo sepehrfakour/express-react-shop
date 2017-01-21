@@ -43,7 +43,49 @@
     border-radius: 5px;
     overflow: hidden;
   }
-  .item-info {
+  form.item-info {
     text-align: left;
+    p > label { display: block; }
+    .item-size-and-quantity > span {
+      display: inline-block;
+      margin: 0px 5px;
+      &:first-of-type { margin-left: 0px; }
+      &:last-of-type { margin-right: 0px; }
+      select {
+        margin-left: 5px;
+        border: 2px solid #EEE;
+      }
+    }
+    span:first-of-type input[type="radio"] + label:before { margin-left: 0px; }
+    span:last-of-type input[type="radio"] + label:before { margin-right: 0px; }
+    input[type="radio"] {
+      height: 1px;
+      width: 1px;
+      opacity: 0;
+      & + label:before {
+        content: "";
+        display: inline-block;
+        position: relative;
+        bottom: 2px;
+        height: 24px;
+        width: 24px;
+        margin: 0px 5px;
+        border: 2px solid #DDD;
+        border-radius: 50%;
+        vertical-align: bottom;
+        cursor: pointer;
+      }
+      &:checked + label:before {
+        border-color: #FFF;
+        box-shadow: 0px 1px 10px rgba(0,0,0,0.9);
+      }
+    }
+    button {
+      @include buttonCTA;
+      width: 100%;
+    }
+    .item-description {
+      margin-top: 15px;
+    }
   }
 }

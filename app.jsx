@@ -57,7 +57,7 @@ ReactDOM.render(
       <IndexRoute component={Home}/>
       <Route path="all" component={AllItemsPage}/>
       <Route path="shop/:category" component={CategoryPage}/>
-      <Route path="item/:id" component={ItemPage}/>
+      <Route path="item/:item_group" component={ItemPage}/>
       <Route path="cart" component={CartPage}/>
       <Route path="checkout" component={CheckoutPage}/>
       <Route path="about" component={About}/>

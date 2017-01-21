@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 const Item = React.createClass({
   render: function () {
-    let itemPageLink = '/item/' + this.props.item.id,
+    let itemPageLink = '/item/' + this.props.item.item_group,
         inlineStyles = {
           background:'url('+this.props.item.imageurl+')',
           backgroundSize: 'cover',
@@ -12,7 +12,7 @@ const Item = React.createClass({
         };
     return(
       <div className="col-xl-4 item-col">
-        <div data-id={this.props.item.id} className="item">
+        <div data-id={this.props.item.item_group} className="item">
           <Link to={itemPageLink} className="image-overlay">
             <div style={inlineStyles} className="item-image"/>
           </Link>

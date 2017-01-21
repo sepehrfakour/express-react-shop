@@ -49,6 +49,17 @@
   border-radius: 3px;
 }
 
+@mixin buttonCTA {
+  display: inline-block;
+  padding: 5px 15px;
+  color: #FFF;
+  font-weight: 600;
+  background: $link;
+  border: 0px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
 @mixin transparentButton {
   @include headerLink;
   padding: 5px 15px;
