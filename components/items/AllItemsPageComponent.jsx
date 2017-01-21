@@ -22,12 +22,34 @@ const AllItemsPage = React.createClass({
   componentWillUnmount: function () {
     ItemStore.removeListener("change", this._onChange);
   },
+  addToItemGroups: function (item) {
+    if (!this.itemGroups[item.item_group]) {
+      this.itemGroups[item.item_group] = {
+        colors: []
+      };
+    }
+    if (this.itemGroups[item.item_group].colors.indexOf(item.color) === -1) {
+      this.itemGroups[item.item_group].colors.push(item.color);
+    }
+  },
   buildItems: function (item) {
-    return (
-      <Item key={item.id} item={item} />
-    )
+    // Only render one item from each itemGroup, and only render active items
+    if (!this.rendered[item.item_group] && item.status === 'active') {
+      this.rendered[item.item_group] = true;
+      return (
+        <Item
+          key={item.id}
+          item={item}
+          colors={this.itemGroups[item.item_group].colors}
+        />
+      )
+    }
   },
   render: function () {
+    this.rendered = {};
+    // Find all available colors for each item_group
+    this.itemGroups = {};
+    this.state.items.map(this.addToItemGroups);
     return(
       <div id="all-items" className="container-fluid content">
         <div className="banner">

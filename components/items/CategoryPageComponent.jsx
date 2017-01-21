@@ -28,12 +28,35 @@ const CategoryPage = React.createClass({
   updateCategory: function (category) {
     this.setState({ items: getItemState(category) });
   },
+  addToItemGroups: function (item) {
+    if (!this.itemGroups[item.item_group]) {
+      this.itemGroups[item.item_group] = {
+        colors: []
+      };
+    }
+    if (this.itemGroups[item.item_group].colors.indexOf(item.color) === -1) {
+      this.itemGroups[item.item_group].colors.push(item.color);
+    }
+  },
   buildItems: function (item) {
-    return (
-      <Item key={item.id} item={item} />
-    )
+    // Only render one item from each itemGroup, and only render active items
+    if (!this.rendered[item.item_group] && item.status === 'active') {
+      this.rendered[item.item_group] = true;
+      return (
+        <Item
+          key={item.id}
+          item={item}
+          colors={this.itemGroups[item.item_group].colors}
+        />
+      )
+    }
   },
   render: function () {
+    this.rendered = {};
+    // Find all available colors for each item_group
+    this.itemGroups = {};
+    this.state.items.map(this.addToItemGroups);
+    // Capitalize category name in banner
     let categoryName = this.props.params.category.charAt(0).toUpperCase() + this.props.params.category.slice(1);
     return(
       <div id="category-page" className="container-fluid content">

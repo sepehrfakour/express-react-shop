@@ -19,6 +19,7 @@ const Item = React.createClass({
           <Link to={itemPageLink} className="item-info">
             <div name="name">{this.props.item.name}</div>
             <span name="price">{this.props.item.price}</span>
+            <div name="colors">Available in {this.props.colors.join(', ')}</div>
           </Link>
         </div>
       </div>
