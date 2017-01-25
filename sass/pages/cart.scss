@@ -1,5 +1,16 @@
 #cart-page {
   .cart-container { margin-top: 30px;}
+  .cart-top,
+  .cart-bottom {
+    a {
+      @include linkCTA;
+      vertical-align: middle;
+      &.disabled {
+        background-color: #999;
+        cursor: default;
+      }
+    }
+  }
   .cart-top {
     margin: 0px;
     padding: 15px 0px 30px;
@@ -10,9 +21,7 @@
       vertical-align: middle;
     }
     a {
-      @include linkCTA;
       float: right;
-      vertical-align: middle;
     }
   }
   table#cart-table {
@@ -50,11 +59,9 @@
     border-top: 1px solid #EEE;
     text-align: center;
     a {
-      @include linkCTA;
       width: 100%;
       padding: 10px 15px;
       box-sizing: border-box;
-      vertical-align: middle;
     }
   }
 }

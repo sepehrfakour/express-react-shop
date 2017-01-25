@@ -20,7 +20,8 @@ class CheckoutStore extends EventEmitter {
       payment: {
         card: '',
         expiry: '',
-        cvc: ''
+        cvc: '',
+        zip: ''
       }
     };
   }
