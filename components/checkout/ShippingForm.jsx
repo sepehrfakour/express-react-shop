@@ -64,7 +64,7 @@ const ShippingForm = React.createClass({
         </p>
         <p className="row">
           <span className="col-xs-12">
-            <input type="submit" name="checkout-form-submit" value="Continue to payment" onClick={this._submitCallback} />
+            <input type="submit" name="checkout-form-submit" value="Continue to billing" onClick={this._submitCallback} />
           </span>
         </p>
       </form>
@@ -98,26 +98,26 @@ const ShippingForm = React.createClass({
     }
   },
   _validateForm: function (form) {
-    // TODO: validate this form!
-    form.customer_first_name.className = (form.customer_first_name.value === '') ? 'form-field-error' : '';
-    form.customer_last_name.className = (form.customer_last_name.value === '') ? 'form-field-error' : '';
-    form.customer_email.className = (form.customer_email.value === '') ? 'form-field-error' : '';
-    form.customer_phone.className = (form.customer_phone.value === '') ? 'form-field-error' : '';
-    form.shipping_street_1.className = (form.shipping_street_1.value === '') ? 'form-field-error' : '';
-    form.shipping_city.className = (form.shipping_city.value === '') ? 'form-field-error' : '';
-    form.shipping_state.className = (form.shipping_state.value === '') ? 'form-field-error' : '';
+    // TODO: write better validation
+    form.customer_first_name.className  = (form.customer_first_name.value === '')  ? 'form-field-error' : '';
+    form.customer_last_name.className   = (form.customer_last_name.value === '')   ? 'form-field-error' : '';
+    form.customer_email.className       = (form.customer_email.value === '')       ? 'form-field-error' : '';
+    form.customer_phone.className       = (form.customer_phone.value === '')       ? 'form-field-error' : '';
+    form.shipping_street_1.className    = (form.shipping_street_1.value === '')    ? 'form-field-error' : '';
+    form.shipping_city.className        = (form.shipping_city.value === '')        ? 'form-field-error' : '';
+    form.shipping_state.className       = (form.shipping_state.value === '')       ? 'form-field-error' : '';
     form.shipping_postal_code.className = (form.shipping_postal_code.value === '') ? 'form-field-error' : '';
-    if ( form.customer_first_name.value !== ""
-      && form.customer_last_name.value  !== ""
-      && form.customer_email.value  !== ""
-      && form.customer_phone.value  !== ""
-      && form.shipping_street_1.value  !== ""
-      && form.shipping_city.value  !== ""
-      && form.shipping_state.value  !== ""
-      && form.shipping_postal_code.value  !== "" ) {
+
+    if ( form.customer_first_name.value  !== ""
+      && form.customer_last_name.value   !== ""
+      && form.customer_email.value       !== ""
+      && form.customer_phone.value       !== ""
+      && form.shipping_street_1.value    !== ""
+      && form.shipping_city.value        !== ""
+      && form.shipping_state.value       !== ""
+      && form.shipping_postal_code.value !== "" ) {
       return true;
     }
-    console.warn('INVALID FORM!');
     return false;
   }
 })

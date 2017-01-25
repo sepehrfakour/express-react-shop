@@ -1,5 +1,7 @@
 const React = require('react');
 
+const StripeDAO = require('../../dao/StripeDAO.js').default;
+
 const ConfirmForm = React.createClass({
   getInitialState: function () {
     return {};
@@ -17,6 +19,7 @@ const ConfirmForm = React.createClass({
         <p className="row">
           <span className="col-xs-12">
             <input type="submit" name="checkout-form-submit" value="Complete purchase" onClick={this._submitCallback} />
+            <input type="text" id="stripe-token" onChange={this._onToken} />
           </span>
         </p>
       </form>
@@ -31,6 +34,15 @@ const ConfirmForm = React.createClass({
   },
   _submitCallback: function (event) {
     event.preventDefault();
+    StripeDAO.createToken(this.props.payment);
+  },
+  _onToken: function (event) {
+    if (event.target.hasAttribute('data-token')) {
+      let token = event.target.getAttribute('data-token');
+      StripeDAO.submitOrder(this.props.cart,this.props.shipping,token)
+    } else {
+      console.warn('Invalid submission');
+    }
   }
 })
 

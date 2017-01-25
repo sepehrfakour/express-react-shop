@@ -41,6 +41,16 @@ class ItemsModel {
     values.push(category);
     this.executeQuery(queryString, callback, values);
   }
+  getItemsForOrder(ids, callback) {
+    let variableString = '';
+    for (var i = 0; i < ids.length; i++) {
+      variableString += ('$' + (i+1) + ',');
+    }
+    variableString = variableString.slice(0,variableString.length-1);
+    let queryString = "SELECT * FROM items WHERE id in (" + variableString + ") ORDER BY name ASC",
+        values = ids;
+    this.executeQuery(queryString, callback, values);
+  }
   getItem(id, callback) {
     let queryString = "SELECT * FROM items WHERE id = ($1) LIMIT 1",
         values = [];

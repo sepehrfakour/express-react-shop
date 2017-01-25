@@ -71,11 +71,32 @@
     }
     .form-field-error {
       border-color: $error-red-trans;
+      outline-color: $error-red-trans;
     }
   }
   #shipping-form {}
-  #payment-form {}
-  #confirm-form {}
+  #payment-form {
+    .card-type {
+      float: right;
+      position: relative;
+      bottom: 22px;
+      right: 15px;
+      height: 0px;
+      font-size: 13px;
+      line-height: 0px;
+      color: #777;
+      overflow: visible;
+    }
+  }
+  #confirm-form {
+    #stripe-token {
+      height: 0px;
+      width: 0px;
+      margin: 0px;
+      padding: 0px;
+      opacity: 0;
+    }
+  }
   h2 { margin: 15px 0px; }
   .checkout-summary {
     margin: 0px 15px;

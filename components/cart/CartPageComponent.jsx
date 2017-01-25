@@ -18,17 +18,19 @@ const CartPage = React.createClass({
     };
   },
   componentWillMount: function () {
-    // TODO: Refactor this listener on ItemStore (maybe call ItemStore on MainWindow and pass items array as props)
+    // TODO: Refactor this listener on ItemStore (Necessary to display item info on browser page refresh)
+    // (maybe make singular call to ItemStore on MainWindow and pass items array as props)
     ItemStore.on("change", this._onChange);
     CartStore.on("change", this._onChange);
   },
   componentWillUnmount: function () {
-    // TODO: Refactor this listener on ItemStore (maybe call ItemStore on MainWindow and pass items array as props)
+    // TODO: Refactor this listener on ItemStore (Necessary to display item info on browser page refresh)
+    // (maybe make singular call to ItemStore on MainWindow and pass items array as props)
     ItemStore.removeListener("change", this._onChange);
     CartStore.removeListener("change", this._onChange);
   },
   buildItems: function (cartItem) {
-    // TODO: Refactor current method, which, using ItemStore, matches ids to retreive each Cart item's data etc
+    // TODO: Refactor: should we continue fetching item data by id from store one at a time in this buildItems method?
     let item = ItemStore.getItem(cartItem.id);
     // Adjust subtotal
     this.subtotal += (parseFloat(item.price,10) * parseInt(cartItem.quantity,10));
@@ -45,6 +47,7 @@ const CartPage = React.createClass({
     )
   },
   render: function () {
+    let checkoutLinkClassName = (this.state.items.length > 0) ? "" : "disabled" ;
     this.subtotal = 0.00;
     this.tax_rate = 0.08;
     return(
@@ -52,7 +55,7 @@ const CartPage = React.createClass({
         <div className="container items-container cart-container">
           <div className="row cart-top">
             <button onClick={this._onKeepShoppingHandler}>Keep shopping</button>
-            <Link to="/checkout">Continue to checkout</Link>
+            <Link to="/checkout" className={checkoutLinkClassName} onClick={this._onCheckoutClickHandler}>Continue to checkout</Link>
           </div>
           <div className="row">
             <div className="col-xs-12 col-lg-6 offset-lg-3 border-box">
@@ -81,7 +84,7 @@ const CartPage = React.createClass({
           </div>
           <div className="row cart-bottom">
             <div className="col-xs-12 col-lg-6 offset-lg-3 border-box">
-              <Link to="/checkout">Continue to checkout</Link>
+              <Link to="/checkout" className={checkoutLinkClassName} onClick={this._onCheckoutClickHandler}>Continue to checkout</Link>
             </div>
           </div>
         </div>
@@ -98,6 +101,14 @@ const CartPage = React.createClass({
   },
   _onKeepShoppingHandler: function () {
     browserHistory.goBack();
+  },
+  _onCheckoutClickHandler: function (event) {
+    event.preventDefault();
+    if (this.state.items.length > 0) {
+      browserHistory.push('/checkout');
+    } else {
+      AlertActions.addAlert('You must have at least one item in your cart before you can checkout','neutral');
+    }
   }
 })
 

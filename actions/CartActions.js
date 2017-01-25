@@ -23,3 +23,10 @@ export function removeItem(data) {
   })
   CartDAO.removeItemFromCart(data);
 }
+
+export function clearCart() {
+  dispatcher.dispatch({
+    type: "CLEAR_CART"
+  });
+  CartDAO.clearCart();
+}

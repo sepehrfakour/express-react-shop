@@ -73,6 +73,10 @@ class CartStore extends EventEmitter {
     this.cart = cart;
     this.emit("change");
   }
+  clearCart() {
+    this.cart = [];
+    this.emit("change");
+  }
   handleActions(action) {
     console.log("CartStore received an action:", action);
     switch(action.type) {
@@ -86,6 +90,10 @@ class CartStore extends EventEmitter {
       }
       case "REMOVE_ITEM_FROM_CART": {
         this.removeItem(action.data);
+        break;
+      }
+      case "CLEAR_CART": {
+        this.clearCart();
         break;
       }
       default: {

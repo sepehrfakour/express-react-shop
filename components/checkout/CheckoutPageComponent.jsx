@@ -28,14 +28,21 @@ const CheckoutPage = React.createClass({
     };
   },
   componentWillMount: function () {
-    // TODO: Refactor this listener on ItemStore (maybe call ItemStore on MainWindow and pass items array as props)
+    // TODO: Refactor this listener on ItemStore (Necessary to display item info on browser page refresh)
+    // (maybe make singular call to ItemStore on MainWindow and pass items array as props)
     ItemStore.on("change", this._onChange);
     CartStore.on("change", this._onChange);
+    CheckoutStore.on("change", this._onChange);
+  },
+  componentWillUpdate: function () {
+    window.scrollTo(0, 0);
   },
   componentWillUnmount: function () {
-    // TODO: Refactor this listener on ItemStore (maybe call ItemStore on MainWindow and pass items array as props)
+    // TODO: Refactor this listener on ItemStore (Necessary to display item info on browser page refresh)
+    // (maybe make singular call to ItemStore on MainWindow and pass items array as props)
     ItemStore.removeListener("change", this._onChange);
     CartStore.removeListener("change", this._onChange);
+    CheckoutStore.removeListener("change", this._onChange);
   },
   buildItems: function (cartItem) {
     // TODO: Refactor current method, which, using ItemStore, matches ids to retreive each Cart item's data etc
@@ -53,7 +60,7 @@ const CheckoutPage = React.createClass({
   },
   buildForm: function () {
     if (this.state.currentForm === 'confirm') {
-      return ( <ConfirmForm /> );
+      return ( <ConfirmForm cart={this.state.items} shipping={this.state.shipping} payment={this.state.payment} /> );
     } else if (this.state.currentForm === 'payment') {
       return ( <PaymentForm payment={this.state.payment} submitCallback={this._paymentFormCompleteCallback}/> );
     } else {
@@ -71,7 +78,7 @@ const CheckoutPage = React.createClass({
             <div className="col-xs-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 border-box">
               <div id="checkout-progress" className={progressClassName}>
                 <section className="col-xs-4">Shipping</section>
-                <section className="col-xs-4">Payment</section>
+                <section className="col-xs-4">Billing</section>
                 <section className="col-xs-4">Confirm</section>
               </div>
               {this.buildForm()}
@@ -108,7 +115,8 @@ const CheckoutPage = React.createClass({
   _onChange: function () {
     this.setState({
       items: getCartState(),
-      shipping: getShippingState()
+      shipping: getShippingState(),
+      payment: getPaymentState()
     });
   },
   _shippingFormCompleteCallback: function () {

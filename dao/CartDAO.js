@@ -69,6 +69,12 @@ class CartDAO {
     }
     Store.set(this.name,cart);
   }
+  clearCart() {
+    // Removes all items from the cart
+    if (this.enabled) {
+      Store.set(this.name,[]);
+    }
+  }
 }
 
 const cartDAO = new CartDAO;
