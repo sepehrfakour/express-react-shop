@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS items;
 DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS order_items;
 
 CREATE TABLE items(
   id SERIAL PRIMARY KEY NOT NULL,
@@ -38,6 +39,15 @@ CREATE TABLE orders(
   shipping_country VARCHAR(64) NOT NULL,
   shipping_postal_code VARCHAR(32) NOT NULL,
   shipping_special_instructions VARCHAR(128) NOT NULL,
+  date_created date NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  date_updated date NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE order_items(
+  id SERIAL PRIMARY KEY NOT NULL,
+  order_id INTEGER NOT NULL,
+  item_id INTEGER NOT NULL,
+  quantity SMALLINT NOT NULL,
   date_created date NOT NULL DEFAULT CURRENT_TIMESTAMP,
   date_updated date NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

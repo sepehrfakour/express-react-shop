@@ -4,9 +4,9 @@ const ItemStore     = require('../../stores/ItemStore.js').default,
       CartStore     = require('../../stores/CartStore.js').default,
       CheckoutStore = require('../../stores/CheckoutStore.js').default;
 
-const ShippingForm = require('./ShippingForm.jsx').default,
-      PaymentForm  = require('./PaymentForm.jsx').default,
-      ConfirmForm  = require('./ConfirmForm.jsx').default;
+const ShippingForm = require('./ShippingFormComponent.jsx').default,
+      PaymentForm  = require('./PaymentFormComponent.jsx').default,
+      ConfirmForm  = require('./ConfirmFormComponent.jsx').default;
 
 function getCartState() {
   return CartStore.getCart();

@@ -1,14 +1,16 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-const OrdersModel = require('../models/OrdersModel.js'),
-      ItemsModel  = require('../models/ItemsModel.js');
+const OrdersModel     = require('../models/OrdersModel.js'),
+      ItemsModel      = require('../models/ItemsModel.js'),
+      OrderItemsModel = require('../models/OrderItemsModel.js');;
 
 class StripeController {
   constructor() {
     // super();
-    this.preCharge  = this.preCharge.bind(this);
-    this.charge     = this.charge.bind(this);
-    this.postCharge = this.postCharge.bind(this);
+    this.preCharge        = this.preCharge.bind(this);
+    this.charge           = this.charge.bind(this);
+    this.postCharge       = this.postCharge.bind(this);
+    this.insertOrderItems = this.insertOrderItems.bind(this);
     this.currentReq;
   }
   preCharge(req,res) {
@@ -130,9 +132,22 @@ class StripeController {
       console.log("Order insert successful");
       // console.log("Order:",result);
       // console.log("Charge:",charge);
+      that.insertOrderItems(result);
+    });
+  }
+  insertOrderItems(order) {
+    let that = this;
+    console.log("insertOrderItems ORDER:",order);
+    console.log("insertOrderItems IDS:",that.currentReq.cart);
+    let data = {
+      order_id: order.id,
+      cart: that.currentReq.cart
+    }
+    console.log("insertOrderItems DATA:",data);
+    OrderItemsModel.addOrderItems(data, function (result) {
       that.currentReq.res.status(200);
       that.currentReq.res.end();
-    });
+    })
   }
 
 

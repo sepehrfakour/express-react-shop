@@ -46,7 +46,7 @@ class ItemsModel {
     for (var i = 0; i < ids.length; i++) {
       variableString += ('$' + (i+1) + ',');
     }
-    variableString = variableString.slice(0,variableString.length-1);
+    variableString = variableString.slice(0,variableString.length-1); // Remove trailing comma
     let queryString = "SELECT * FROM items WHERE id in (" + variableString + ") ORDER BY name ASC",
         values = ids;
     this.executeQuery(queryString, callback, values);
