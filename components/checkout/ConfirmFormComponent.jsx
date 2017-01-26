@@ -1,6 +1,7 @@
 const React = require('react');
 
-const StripeDAO = require('../../dao/StripeDAO.js').default;
+const StripeDAO = require('../../dao/StripeDAO.js').default,
+      AlertActions = require('../../actions/AlertActions.js');
 
 const ConfirmForm = React.createClass({
   getInitialState: function () {
@@ -34,6 +35,11 @@ const ConfirmForm = React.createClass({
   },
   _submitCallback: function (event) {
     event.preventDefault();
+    if (!this.props.cartHasItems) {
+      // Make sure this form wont submit unless cart has at least one item in it
+      AlertActions.addAlert('You must have at least one item in your cart before you can checkout','neutral');
+      return false;
+    }
     StripeDAO.createToken(this.props.payment);
   },
   _onToken: function (event) {

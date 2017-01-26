@@ -60,16 +60,19 @@ const CheckoutPage = React.createClass({
   },
   buildForm: function () {
     if (this.state.currentForm === 'confirm') {
-      return ( <ConfirmForm cart={this.state.items} shipping={this.state.shipping} payment={this.state.payment} /> );
+      return ( <ConfirmForm cartHasItems={this.cartHasItems} cart={this.state.items} shipping={this.state.shipping} payment={this.state.payment} /> );
     } else if (this.state.currentForm === 'payment') {
-      return ( <PaymentForm payment={this.state.payment} submitCallback={this._paymentFormCompleteCallback}/> );
+      return ( <PaymentForm cartHasItems={this.cartHasItems} payment={this.state.payment} submitCallback={this._paymentFormCompleteCallback}/> );
     } else {
-      return ( <ShippingForm shipping={this.state.shipping} submitCallback={this._shippingFormCompleteCallback}/> );
+      return ( <ShippingForm cartHasItems={this.cartHasItems} shipping={this.state.shipping} submitCallback={this._shippingFormCompleteCallback}/> );
     }
   },
   render: function () {
+    // Initialize amount variables
     this.subtotal = 0.00;
     this.tax_rate = 0.08;
+    // Initialize boolean flag to ensure at least one item in cart
+    this.cartHasItems = (this.state.items.length > 0) ? true : false ;
     let progressClassName = 'row progress-' + this.state.currentForm;
     return(
       <div id="checkout-page" className="container-fluid content">

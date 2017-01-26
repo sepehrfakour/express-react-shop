@@ -1,6 +1,7 @@
 const React = require('react');
 
-const CheckoutActions = require('../../actions/CheckoutActions.js');
+const CheckoutActions = require('../../actions/CheckoutActions.js'),
+      AlertActions = require('../../actions/AlertActions.js');
 
 const ShippingForm = React.createClass({
   getInitialState: function () {
@@ -14,6 +15,7 @@ const ShippingForm = React.createClass({
   },
   render: function () {
     let shipping = this.props.shipping;
+    let submitButtonClassName = (this.props.cartHasItems) ? '' : 'disabled';
     return(
       <form id="shipping-form" onSubmit={this._submitCallback}>
         <p className="row">
@@ -64,7 +66,7 @@ const ShippingForm = React.createClass({
         </p>
         <p className="row">
           <span className="col-xs-12">
-            <input type="submit" name="checkout-form-submit" value="Continue to billing" onClick={this._submitCallback} />
+            <input type="submit" name="checkout-form-submit" className={submitButtonClassName} value="Continue to billing" onClick={this._submitCallback} />
           </span>
         </p>
       </form>
@@ -79,6 +81,11 @@ const ShippingForm = React.createClass({
   },
   _submitCallback: function (event) {
     event.preventDefault();
+    if (!this.props.cartHasItems) {
+      // Make sure this form wont submit unless cart has at least one item in it
+      AlertActions.addAlert('You must have at least one item in your cart before you can checkout','neutral');
+      return false;
+    }
     let form          = document.body.querySelector('#shipping-form'),
         formValidated = false,
         data          = {

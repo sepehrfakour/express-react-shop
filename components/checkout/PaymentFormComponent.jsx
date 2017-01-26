@@ -1,6 +1,7 @@
 const React = require('react');
 
-const CheckoutActions = require('../../actions/CheckoutActions.js');
+const CheckoutActions = require('../../actions/CheckoutActions.js'),
+      AlertActions = require('../../actions/AlertActions.js');
 
 const PaymentForm = React.createClass({
   getInitialState: function () {
@@ -75,6 +76,11 @@ const PaymentForm = React.createClass({
   _submitCallback: function (event) {
     // TODO: Split expiry into two 2-character input fields
     event.preventDefault();
+    if (!this.props.cartHasItems) {
+      // Make sure this form wont submit unless cart has at least one item in it
+      AlertActions.addAlert('You must have at least one item in your cart before you can checkout','neutral');
+      return false;
+    }
     let form          = document.body.querySelector('#payment-form'),
         formValidated = false,
         data          = {

@@ -61,12 +61,15 @@
       box-sizing: border-box;
     }
     input[type="submit"] {
-      font-weight: 600;
-      color: #FFF;
-      background-color: $link;
-      border: none;
+      @include buttonCTA
+      padding: 10px 15px;
       &:hover {
         cursor: pointer;
+      }
+      &.disabled {
+        background-color: #999;
+        cursor: default;
+        &:focus { outline: 0px; }
       }
     }
     .form-field-error {
