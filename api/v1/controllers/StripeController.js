@@ -86,8 +86,9 @@ class StripeController {
     tax = subtotal * that.currentReq.shipping.tax_rate;
     // Calculate total
     total = (subtotal + tax).toFixed(2);
-    // Calculate amount in pennies
-    amount = total * 100;
+    // Calculate amount in pennies (must be INTEGER not float)
+    // Make sure to use parseInt here to remove possible trailing digits as a result of binary addition
+    amount = parseInt((total * 100),10);
     // Set payment amount instance variables
     that.currentReq.payment.subtotal_amount = subtotal.toFixed(2);
     that.currentReq.payment.total_amount = total;
