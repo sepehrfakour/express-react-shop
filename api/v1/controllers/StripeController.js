@@ -222,6 +222,7 @@ class StripeController {
         admin_content_string = 'Customer: ' + order.customer_first_name + '\n\n';
     admin_content_string += 'Customer email: ' + order.customer_email + '\n\n';
     admin_content_string += 'Order ID: ' + order.id + '\n\n';
+    admin_content_string += '----------\n\n'
     admin_content_string += 'Customer Address:' + '\n\n';
     admin_content_string += '----------\n\n'
     admin_content_string += that.currentReq.shipping.shipping_street_1 + '\n\n';
