@@ -1,7 +1,8 @@
 import { browserHistory } from 'react-router';
 
 const CartActions = require('../actions/CartActions.js'),
-      AlertActions = require('../actions/AlertActions.js');
+      AlertActions = require('../actions/AlertActions.js'),
+      OverlayActions = require('../actions/OverlayActions.js');
 
 class StripeDAO {
   constructor() {}
@@ -57,12 +58,14 @@ class StripeDAO {
       if (response.status === 402) {
         // Navigate to cart and display API/Stripe error message
         browserHistory.push('/cart');
+        OverlayActions.setOverlay(false); // Deactivate loading overlay
         AlertActions.addAlert(response.message,'negative');
       } else {
         // Empty cart, navigate to home page, display success message
         CartActions.clearCart();
         browserHistory.push('/');
         let msg = "Hooray! Your order has been placed and you will receive an order confirmation email shortly.";
+        OverlayActions.setOverlay(false); // Deactivate loading overlay
         AlertActions.addAlert(msg,'positive');
       }
     })

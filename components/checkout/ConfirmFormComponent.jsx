@@ -1,11 +1,14 @@
 const React = require('react');
 
-const StripeDAO = require('../../dao/StripeDAO.js').default,
-      AlertActions = require('../../actions/AlertActions.js');
+const StripeDAO      = require('../../dao/StripeDAO.js').default,
+      AlertActions   = require('../../actions/AlertActions.js'),
+      OverlayActions = require('../../actions/OverlayActions.js');
 
 const ConfirmForm = React.createClass({
   getInitialState: function () {
-    return {};
+    return {
+      processing: false
+    };
   },
   componentWillMount: function () {
     window.addEventListener('keydown', this._keyPressHandler)
@@ -35,17 +38,21 @@ const ConfirmForm = React.createClass({
   },
   _submitCallback: function (event) {
     event.preventDefault();
+    if (this.state.processing) { return false; }
     if (!this.props.cartHasItems) {
       // Make sure this form wont submit unless cart has at least one item in it
       AlertActions.addAlert('You must have at least one item in your cart before you can checkout','neutral');
       return false;
     }
+    // Set state to processing to reject any more submissions via click or enter key
+    this.setState({processing: true});
+    OverlayActions.setOverlay(true); // Activate loading overlay
     StripeDAO.createToken(this.props.payment);
   },
   _onToken: function (event) {
     if (event.target.hasAttribute('data-token')) {
       let token = event.target.getAttribute('data-token');
-      StripeDAO.submitOrder(this.props.cart,this.props.shipping,token)
+      StripeDAO.submitOrder(this.props.cart,this.props.shipping,token);
     } else {
       console.warn('Invalid submission');
     }
