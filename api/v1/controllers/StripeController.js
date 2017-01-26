@@ -1,17 +1,20 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY),
+      adminEmail = process.env.ADMIN_EMAIL;
 
 const OrdersModel     = require('../models/OrdersModel.js'),
       ItemsModel      = require('../models/ItemsModel.js'),
-      OrderItemsModel = require('../models/OrderItemsModel.js');;
+      OrderItemsModel = require('../models/OrderItemsModel.js'),
+      MailController  = require('./MailController.js');
 
 class StripeController {
 
   constructor() {
     // super();
-    this.preCharge        = this.preCharge.bind(this);
-    this.charge           = this.charge.bind(this);
-    this.postCharge       = this.postCharge.bind(this);
-    this.insertOrderItems = this.insertOrderItems.bind(this);
+    this.preCharge         = this.preCharge.bind(this);
+    this.charge            = this.charge.bind(this);
+    this.postCharge        = this.postCharge.bind(this);
+    this.insertOrderItems  = this.insertOrderItems.bind(this);
+    this.sendNotifications = this.sendNotifications.bind(this);
     this.currentReq;
   }
   preCharge(req,res) {
@@ -26,6 +29,7 @@ class StripeController {
       cart: req.body.cart,
       shipping: req.body.shipping,
       payment: {},
+      items: [],
       req: req,
       res: res
     };
@@ -53,14 +57,14 @@ class StripeController {
     if (!Array.isArray(result)) {
       // In the case that preCharge db query returned single object, push it into an empty array
       // As long as queried item id matches cart item id, add order_quantity property
-      // Otherwise return a 400/error response
+      // Otherwise send a 400/error response to client
       if (result.id === that.currentReq.cart[0].id) {
         result.order_quantity = parseInt(that.currentReq.cart[0].quantity,10);
         items.push(result);
       } else { that.currentReq.res.status(400).end(); }
     } else {
       // In the case that preCharge db query returned array of objects, map cart quantities into items array with NESTED LOOP
-      // Consider revisiting this nested loop algo
+      // TODO: Consider revisiting this nested loop algo - temp fix could be setting max size limit on cart
       items = result.map( function (item) {
         // Initialize new order_quantity property on each queried item object
         item.order_quantity = 0;
@@ -69,10 +73,12 @@ class StripeController {
             // Update item order_quantity
             item.order_quantity = parseInt(cart_item.quantity,10);
           }
-        })
+        });
         return item;
-      })
+      });
     }
+    // Save items array to instance variable (for use in method further down the callback chain)
+    that.currentReq.items = items;
     // Initialize amount variables
     let subtotal = 0,
         tax = 0,
@@ -104,6 +110,7 @@ class StripeController {
       // asynchronously called
       if(err){
         console.log("Stripe charge error:",err);
+        // Send 402/payment required response back to client
         that.currentReq.res.status(402).write(err.message);
         return that.currentReq.res.end();
       }
@@ -118,6 +125,7 @@ class StripeController {
     * Create and insert a new order, then update the Stripe charge metadata with the order_id
     * ---------------------------------------------------------------------------------------
     */
+    // Create new order
     let that = this;
     let data = {
       status: that.currentReq.payment.status,
@@ -139,6 +147,7 @@ class StripeController {
       shipping_postal_code: that.currentReq.shipping.shipping_postal_code,
       shipping_special_instructions: that.currentReq.shipping.shipping_special_instructions
     };
+    // Insert new order
     OrdersModel.addOrder(data, function (order) {
       console.log("Order insert successful - ORDER ID:",order.id);
       // Update the stripe charge with the new order ID
@@ -149,12 +158,14 @@ class StripeController {
           metadata: { "order_id": order.id }
         },
         function (err, charge) {
-          // asynchronously called
+          // Handle error
           if (err) {
             console.log("Stripe update_charge error:",err);
+            // Send 402/payment required response back to client
             that.currentReq.res.status(402).write(err.message);
             return that.currentReq.res.end();
           }
+          // Handle success
           console.log("Stripe update_charge successful");
           that.insertOrderItems(order);
         }
@@ -176,9 +187,60 @@ class StripeController {
     console.log("insertOrderItems DATA:",data);
     OrderItemsModel.addOrderItems(data, function (result) {
       console.log("Order_Items insert successful\n----------");
+      // Send 200/success response back to client
       that.currentReq.res.status(200);
       that.currentReq.res.end();
+      that.sendNotifications(order);
     })
+  }
+
+  sendNotifications(order) {
+    /*
+    * Create and send notification emails to customer and admin
+    * ---------------------------------------------------------
+    */
+    let that = this;
+    // Create customer notification email
+    let from_string    = 'no-reply@example.com',
+        to_string      = order.customer_email,
+        subject_string = 'Your order has been placed!',
+        item_string    = '',
+        content_string = 'Dear ' + order.customer_first_name + ',\n\n\n';
+    content_string += 'You have successfully placed an order for the following item(s):\n\n';
+    that.currentReq.items.map( function (item) {
+      item_string += 'x' + item.order_quantity + ' ' + item.name + ' (size: ' + item.size + ', color: ' + item.color + ')' + '\n\n';
+    })
+    content_string += item_string;
+    content_string += '\n\n';
+    content_string += 'Total amount: $' + order.total_amount + '\n\n';
+    content_string += 'Your order should arrive in 3-5 business days.\n\n';
+    content_string += 'Thanks, and have a great day!\n';
+    // Send customer notification email
+    MailController.sendMail(from_string,to_string,subject_string,content_string);
+    // Create admin notification email
+    let admin_subject_string = 'New order placed',
+        admin_content_string = 'Customer: ' + order.customer_first_name + '\n\n';
+    admin_content_string += 'Customer email: ' + order.customer_email + '\n\n';
+    admin_content_string += 'Order ID: ' + order.id + '\n\n';
+    admin_content_string += 'Customer Address:' + '\n\n';
+    admin_content_string += '----------\n\n'
+    admin_content_string += that.currentReq.shipping.shipping_street_1 + '\n\n';
+    admin_content_string += that.currentReq.shipping.shipping_street_2 + '\n\n';
+    admin_content_string += that.currentReq.shipping.shipping_city + '\n\n';
+    admin_content_string += that.currentReq.shipping.shipping_state + '\n\n';
+    admin_content_string += that.currentReq.shipping.shipping_postal_code + '\n\n';
+    admin_content_string += that.currentReq.shipping.shipping_country + '\n\n';
+    admin_content_string += '----------\n\n'
+    admin_content_string += 'Item(s):\n\n';
+    admin_content_string += '----------\n\n'
+    admin_content_string += item_string;
+    admin_content_string += '----------\n\n'
+    admin_content_string += 'Subtotal amount: $' + order.subtotal_amount + '\n\n';
+    admin_content_string += 'Tax amount: $' + order.tax_amount + '\n\n';
+    admin_content_string += 'Total amount: $' + order.total_amount + '\n\n';
+    // Send admin notification email
+    MailController.sendMail(from_string,adminEmail,admin_subject_string,admin_content_string);
+    console.log("Email notifications sent to customer and admin\n----------");
   }
 
 

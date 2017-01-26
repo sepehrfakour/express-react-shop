@@ -20,9 +20,17 @@ Be sure to have postgres installed and running
 
 Add connection URL string env var to be parsed config/db
 
-##Setup AWS User + S3 Bucket
+##Setup AWS User + S3 Bucket (for static assets)
 
 Add env vars for AWS_USER, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET
+
+##Setup Stripe (for payments)
+
+Add env vars for STRIPE_SECRET_KEY and STRIPE_PUBLISHABLE_KEY
+
+##Setup Sendgrid (for mail)
+
+Add env vars for SENDGRID_API_KEY
 
 ##ENV Vars
 
@@ -41,6 +49,12 @@ AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY
 
 S3_BUCKET
+
+STRIPE_SECRET_KEY
+
+STRIPE_PUBLISHABLE_KEY
+
+SENDGRID_API_KEY
 
 ##Testing
 
