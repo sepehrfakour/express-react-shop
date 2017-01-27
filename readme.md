@@ -11,7 +11,7 @@ Uses Webpack Dev Server and hot reloading in development environment, and gulp f
 
 ##First time requirements:
 
-- Postgres installed and running (i.e a local db & a production DB)
+- Postgres installed and running (local db and separate production DB)
 
 - AWS account with S3 setup (don't forget to configure CORS to accept requests from your domain(s))
 
@@ -25,11 +25,14 @@ Uses Webpack Dev Server and hot reloading in development environment, and gulp f
 
 - A Mixpanel account
 
+----------------------------------------------
+
 ##First time installation:
 
-###Clone repo
 
-###Set local ENV Vars
+###1 - Clone repo
+
+###2 - Set local ENV Vars
 
 Create a .env file in project root, add to gitignore, set following variables:
 
@@ -55,15 +58,15 @@ STRIPE_PUBLISHABLE_KEY
 
 SENDGRID_API_KEY
 
-###Set production ENV Vars
+###3 - Set production ENV Vars
 
 E.g. on Heroku this can be done via CLI or in your app's settings / config
 
-###Install modules
+###4 - Install modules
 
 `npm install`
 
-###Migrate DB schema and test data
+###5 - Migrate DB schema and test data
 
 Run contents of schema.sql on local Postgres DB (e.g via psql at command-line or PSequel GUI), then sync with production DB
 
@@ -71,39 +74,21 @@ Run contents of schema.sql on local Postgres DB (e.g via psql at command-line or
 
 #Before running locally:
 
-Ensure in webpack.config.js that 'devtools' is set to 'source-map', and that plugins are commented out
+- Ensure in webpack.config.js that 'devtools' is set to 'source-map', and that plugins are commented out
 
-Run `npm run gulp dev` to ensure bundle path points to Webpack Dev Server. This will change the following:
+- Run `npm run gulp dev` to ensure bundle path points to Webpack Dev Server
 
-1: Inside `./views/index.ejs`:
-```
-<script src="/js/app.js" charset="utf-8"></script>
-```
-Will change to:
-```
-<script src="http://localhost:8080/app.js" charset="utf-8"></script>
-```
+- `npm run dev` will run webpack dev server at localhost:8080
 
-`npm run dev` will run webpack dev server at localhost:8080
-
-Run either `heroku local` or `node index.js` to start the application server on localhost:5000
+- Run either `heroku local` or `node index.js` to start the application server on localhost:5000
 
 ----------------------------------------------
 
 #Before deploying to production:
 
-Ensure in webpack.config.js that 'devtools' is set to 'cheap-module-source-map', and that plugins are uncommented
+- Ensure in webpack.config.js that 'devtools' is set to 'cheap-module-source-map', and that plugins are uncommented
 
-Run `npm run gulp production` to ensure bundle path points to public JS folder. This will change the following:
-
-1: Inside `./views/index.ejs`:
-```
-<script src="http://localhost:8080/app.js" charset="utf-8"></script>
-```
-Will change to:
-```
-<script src="/js/app.js" charset="utf-8"></script>
-```
+- Run `npm run gulp production` to ensure bundle path points to public JS folder
 
 ----------------------------------------------
 
