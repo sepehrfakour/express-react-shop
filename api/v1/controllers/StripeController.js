@@ -211,7 +211,7 @@ class StripeController {
         item_string    = '';
     // Build item string
     that.currentReq.items.map( function (item) {
-      item_string += 'x' + item.order_quantity + ' ' + item.name + ' (size: ' + item.size + ', color: ' + item.color + ')' + '\n\n';
+      item_string += '(x' + item.order_quantity + ') ' + item.name + ' (size: ' + item.size + ', color: ' + item.color + ')' + '\n\n';
     })
     // Build content string, injecting item string
     let content_string = '\
@@ -228,7 +228,7 @@ class StripeController {
     // Create admin notification email
     let admin_subject_string = 'New order placed';
     let admin_content_string = '\
-          Customer: ' + order.customer_first_name + '\n\n\
+          Customer: ' + order.customer_first_name + ' ' + order.customer_last_name+ '\n\n\
           Customer email: ' + order.customer_email + '\n\n\
           Order ID: ' + order.id + '\n\n\
           ----------\n\n\
