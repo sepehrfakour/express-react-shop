@@ -49,8 +49,8 @@ const sess = {
 }
 
 // TODO: extract this hard-coded admin config
-const username = 'a',
-      password = 'a';
+const username = process.env.ADMIN_USERNAME,
+      password = process.env.ADMIN_PASSWORD;
 
 // Configuration specific to production env
 if (env == 'production') {
