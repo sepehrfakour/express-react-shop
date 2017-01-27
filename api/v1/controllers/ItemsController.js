@@ -10,8 +10,7 @@ class ItemsController {
       ItemsModel.getItemsByCategory(req.param('cat'), function (results) {
         res.status(200).json(results);
       });
-    }
-    else {
+    } else {
       // Fetch all items
       ItemsModel.getItems(function (results) {
         res.status(200).json(results);
@@ -24,6 +23,8 @@ class ItemsController {
       ItemsModel.getItem(req.param('id'), function (result) {
         res.status(200).json(result);
       });
+    } else {
+      res.status(400).end();
     }
   }
   addItem(req,res) {
@@ -31,14 +32,21 @@ class ItemsController {
       let data = {
         category: req.body.category,
         name: req.body.name,
+        item_group: req.body.item_group,
         price: req.body.price,
+        size: req.body.size,
+        color: req.body.color,
+        description: req.body.description,
         sku: req.body.sku,
         quantity: req.body.quantity,
-        imageurl: req.body.imageurl
+        imageurl: req.body.imageurl,
+        status: req.body.status
       };
       ItemsModel.addItem(data, function (result) {
         res.status(200).json(result);
       });
+    } else {
+      res.status(400).end();
     }
   }
   updateItem(req,res) {
@@ -47,14 +55,21 @@ class ItemsController {
         id: req.body.id,
         category: req.body.category,
         name: req.body.name,
+        item_group: req.body.item_group,
         price: req.body.price,
+        size: req.body.size,
+        color: req.body.color,
+        description: req.body.description,
         sku: req.body.sku,
         quantity: req.body.quantity,
-        imageurl: req.body.imageurl
+        imageurl: req.body.imageurl,
+        status: req.body.status
       };
       ItemsModel.updateItem(data, function (result) {
         res.status(200).json(result);
       });
+    } else {
+      res.status(400).end();
     }
   }
   deleteItem(req,res) {
@@ -63,6 +78,8 @@ class ItemsController {
       ItemsModel.deleteItem(id, function (result) {
         res.status(200).json(result);
       });
+    } else {
+      res.status(400).end();
     }
   }
 }

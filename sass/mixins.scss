@@ -14,3 +14,64 @@
   -o-transition: background 250ms ease-in;
   transition: background 250ms ease-in;
 }
+
+@mixin headerLinkHover {
+  background-color: #EEE;
+  color: $header-link-color-hover;
+  cursor: pointer;
+  @include buttonTransition;
+}
+
+@mixin headerLink {
+  display: inline-block;
+  padding: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $header-link-color;
+  @include buttonTransition;
+  &:hover {
+    @include headerLinkHover;
+  }
+}
+
+@mixin headerLinkMobile {
+  @include headerLink;
+  padding: 15px 5px;
+  font-size: 13px;
+}
+
+@mixin linkCTA {
+  display: inline-block;
+  padding: 5px 15px;
+  color: #FFF;
+  font-weight: 600;
+  background-color: $link;
+  border-radius: 3px;
+}
+
+@mixin buttonCTA {
+  display: inline-block;
+  padding: 5px 15px;
+  color: #FFF;
+  font-weight: 600;
+  background: $link;
+  border: 0px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+@mixin transparentButton {
+  @include headerLink;
+  padding: 5px 15px;
+  border: 0px;
+  background: transparent;
+}
+
+@mixin radial-overlay {
+  background: -webkit-gradient(radial,center center,0px,center center,100%,color-stop(0%,rgba(0,0,0,0.4)),color-stop(100%,rgba(0,0,0,0.75)));
+  background: -webkit-radial-gradient(center,ellipse cover,rgba(0,0,0,0.4) 0,rgba(0,0,0,0.75) 100%);
+  background: -moz-radial-gradient(center,ellipse cover,rgba(0,0,0,0.4) 0,rgba(0,0,0,0.75) 100%);
+  background: -o-radial-gradient(center,ellipse cover,rgba(0,0,0,0.4) 0,rgba(0,0,0,0.75) 100%);
+  background: -ms-radial-gradient(center,ellipse cover,rgba(0,0,0,0.4) 0,rgba(0,0,0,0.75) 100%);
+  background: radial-gradient(center,ellipse cover,rgba(0,0,0,0.4) 0,rgba(0,0,0,0.75) 100%);
+}

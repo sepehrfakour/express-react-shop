@@ -9,8 +9,7 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: __dirname + '/public/js',
-    publicPath: 'http://localhost:8080/' // So Hot Module Reload uses webpack dev server URL not Express app URL
-
+    publicPath: '/' // So Hot Module Reload uses webpack dev server URL not Express app URL
   },
 
   module: {
@@ -31,20 +30,20 @@ module.exports = {
 
   // To run on dev, switch devtools to source-map, comment out plugins, set output.publicPath url to webpack dev server URL
 
-  devtool: 'source-map',
-  // devtool: 'cheap-module-source-map',
+  // devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
 
-  // plugins:[
-  //   new webpack.DefinePlugin({
-  //     'process.env':{
-  //       'NODE_ENV': JSON.stringify('production')
-  //     }
-  //   }),
-  //   new webpack.optimize.UglifyJsPlugin({
-  //     compress:{
-  //       warnings: true
-  //     }
-  //   })
-  // ],
+  plugins:[
+    new webpack.DefinePlugin({
+      'process.env':{
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress:{
+        warnings: true
+      }
+    })
+  ],
 
 }

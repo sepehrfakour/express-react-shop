@@ -2,7 +2,7 @@ const React = require('react');
 
 const S3DAO = require('../../dao/S3DAO.js').default;
 
-var ItemModal = React.createClass({
+const ItemModal = React.createClass({
   getInitialState: function () {
       return {
         loadingImage: false,
@@ -22,21 +22,31 @@ var ItemModal = React.createClass({
   render: function () {
     var id = null,
         name = '',
+        item_group = '',
         category = '',
         price = '',
+        size = '',
+        color = '',
+        description = '',
         sku = '',
         quantity = '',
-        imageurl = '/images/default.png',
+        imageurl = '/img/shoppingCartIcon.png',
+        status = '',
         previewClassName = 'hidden',
         spinnerClassName = 'spinner';
     if (this.props.item) {
       id = this.props.item.id,
       name = this.props.item.name,
+      item_group = this.props.item.item_group,
       category = this.props.item.category,
       price = this.props.item.price,
+      size = this.props.item.size,
+      color = this.props.item.color,
+      description = this.props.item.description,
       sku = this.props.item.sku,
       quantity = this.props.item.quantity,
       imageurl = this.props.item.imageurl,
+      status = this.props.item.status,
       previewClassName = 'visible';
     }
     if (this.state.loadingImage) {
@@ -60,9 +70,10 @@ var ItemModal = React.createClass({
             <label>Category:</label>
             <select name="category" placeholder="Category" defaultValue={category}>
               <option value="hats">Hats</option>
-              <option value="shirts">Shirts</option>
-              <option value="pants">Pants</option>
+              <option value="tops">Tops</option>
+              <option value="bottoms">Bottoms</option>
               <option value="dresses">Dresses</option>
+              <option value="accessories">Accessories</option>
               <option value="other">Other</option>
             </select>
           </p>
@@ -71,8 +82,24 @@ var ItemModal = React.createClass({
             <input type="text" name="name" placeholder="Name" defaultValue={name}/>
           </p>
           <p>
+            <label>Item Group:</label>
+            <input type="text" name="item_group" placeholder="Item Group" defaultValue={item_group}/>
+          </p>
+          <p>
             <label>Price:</label>
             <input type="number" step="any" name="price" placeholder="Price" defaultValue={price}/>
+          </p>
+          <p>
+            <label>Size:</label>
+            <input type="text" name="size" placeholder="Size" defaultValue={size}/>
+          </p>
+          <p>
+            <label>Color:</label>
+            <input type="text" name="color" placeholder="Color" defaultValue={color}/>
+          </p>
+          <p>
+            <label>Description:</label>
+            <textarea name="description" placeholder="Description" defaultValue={description}/>
           </p>
           <p>
             <label>SKU:</label>
@@ -83,18 +110,26 @@ var ItemModal = React.createClass({
             <input type="number" name="quantity" placeholder="Quantity" defaultValue={quantity}/>
           </p>
           <p>
+            <label>Status:</label>
+            <select name="status" placeholder="Status" defaultValue={status}>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </p>
+          <p>
             <input type="submit" name="add-item-form-submit" value={this.props.submitButtonText} onClick={this.props.submitCallback} />
           </p>
         </form>
     );
   },
   _keyPressHandler: function (event) {
-    console.log('keypress handler triggered');
     if ((event.which && event.which == 13) || (event.keyCode && event.keyCode == 13)) {
+      // Handle enter key
       event.stopPropagation();
       this.props.submitCallback(event);
     }
     if ((event.which && event.which == 27) || (event.keyCode && event.keyCode == 27)) {
+      // Handle escape key
       event.stopPropagation();
       this.props.closeCallback(event);
     }

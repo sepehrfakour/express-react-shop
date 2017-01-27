@@ -1,25 +1,137 @@
 #header {
+  position: fixed;
+  width: 100%;
+  padding: 0px;
   background-color: $ghost;
   box-shadow: 0px 1px 0px $shadow;
+  z-index: 1;
+  // Logo
+  #header-logo {
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    width: 98px;
+    padding: 15px 0px;
+    margin-left: -49px;
+    text-align: center;
+    a {
+      @include headerLinkMobile;
+      display: block;
+      font-size: 0.8em;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+  }
+  // Main links
   ul {
-    margin: 0px;
+    margin: 0px 15px;
     padding: 0px;
     list-style-type: none;
-    text-align: right;
+    text-align: left;
     li {
       display: inline-block;
+      padding: 15px 0px;
+      &:hover {
+        cursor: pointer;
+        a {
+          @include headerLinkHover;
+        }
+      }
       a {
+        @include headerLinkMobile;
+      }
+    }
+    #about-link { display: none; }
+    #login-link { display: none; }
+  }
+  // Dropdown button and menu
+  #dropdown-container {
+    &:hover {
+      cursor: default;
+      ul { li { a { @include headerLink; }}}
+    }
+    &.open {
+      border-bottom: 2px inset #DDD;
+    }
+    #items-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: $header-height + 3;
+      left: 0px;
+      background-color: $ghost;
+      &.open {
         display: inline-block;
-        padding: 15px;
-        font-size: 15px;
-        font-weight: 500;
-        color: $link;
-        &:hover {
-          background-color: #EEE;
+        width: 100%;
+      }
+      ul {
+        margin: 15px;
+        li {
+          &:hover {
+            cursor: default;
+          }
+          a {
+            background-color: initial;
+            &:hover {
+              @include headerLinkHover;
+            }
+          }
         }
       }
     }
   }
+  // Shopping cart link
+  #shopping-cart-button {
+    position: absolute;
+    right: 15px;
+    a {
+      height: 24px;
+      width: 30px;
+      background: url("/img/shoppingCartIcon.png");
+      background-position: center;
+      background-size: 50%;
+      background-repeat: no-repeat;
+      opacity: 0.5;
+    }
+    &:hover {
+      a {
+        background: #EEE url("/img/shoppingCartIcon.png");
+        background-position: center;
+        background-size: 50%;
+        background-repeat: no-repeat;
+        opacity: 0.9;
+      }
+    }
+  }
+  /* START Header media queries */
+  @media (min-width: 576px) {
+    ul {
+      margin: 0px 30px;
+      li {
+        a { @include headerLink; }
+      }
+    }
+    #dropdown-container {
+      #items-dropdown-menu {
+        ul { margin: 30px; }
+      }
+    }
+    #shopping-cart-button { right: 30px; }
+  }
+  @media (min-width: 768px) {
+    #header-logo {
+      width: 200px;
+      margin-left: -100px;
+      a {
+        font-size: 1.5em;
+      }
+    }
+    ul {
+      #about-link { display: inline-block; }
+      #login-link { display: inline-block; }
+    }
+  }
+  /* END Header media queries */
 }
 
 #footer {
@@ -28,6 +140,7 @@
   bottom: 0px;
   background-color: $ghost;
   box-shadow: 0px -1px 0px $shadow;
+  // Main links
   ul {
     margin: 0px;
     padding: 30px;
@@ -36,11 +149,19 @@
     li {
       display: inline-block;
       a{
-        display: inline-block;
-        padding: 3px 6px;
-        font-size: 14px;
-        font-weight: 500;
+        @include headerLinkMobile
       }
     }
   }
+  /* START Footer media queries */
+  @media (min-width: 576px) {
+    ul {
+      li {
+        a {
+          @include headerLink;
+        }
+      }
+    }
+  }
+  /* END Footer media queries */
 }

@@ -1,4 +1,4 @@
-const ItemActions = require('../actions/ItemActions.js');
+const HelperActions = require('../actions/HelperActions.js');
 
 class ItemDAO {
   constructor() {}
@@ -26,13 +26,20 @@ class ItemDAO {
     }).then( function(responseText) {
       /* If the response here is from a new item write, capture the new item ID (created by DB server-side).
       Then, use the new (real) ID to update the DOM item element's temporary ID in the Store */
-      if (endpoint === '/api/v1/item/create') { ItemActions.setRealId(data.tempid, JSON.parse(responseText).id) };
+      if (endpoint === '/api/v1/item/create') { HelperActions.setRealId(data.tempid, JSON.parse(responseText).id) };
       console.log("Request executed. Response:",responseText);
     })
 
   }
-  getItems() {
-    // TODO: Create method here
+  getItems(callback) {
+    // Fetch items from DB then run provided callback
+    fetch('/api/v1/items')
+      .then( function (res) {
+        return res.json();
+      })
+      .then( function(json) {
+        callback(json)
+      })
   }
   getItem(id) {
     // TODO: Create method here

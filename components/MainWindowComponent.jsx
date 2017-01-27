@@ -1,9 +1,11 @@
 const React = require('react');
 
-const Header = require('./nav/HeaderComponent.jsx').default,
-      Footer = require('./nav/FooterComponent.jsx').default;
+const Header       = require('./nav/HeaderComponent.jsx').default,
+      Footer       = require('./nav/FooterComponent.jsx').default,
+      AlertDisplay = require('./alert/AlertsDisplayComponent.jsx').default,
+      Overlay      = require('./overlay/OverlayComponent.jsx').default;
 
-var MainWindow = React.createClass({
+const MainWindow = React.createClass({
   getInitialState: function () {
     return {};
   },
@@ -12,6 +14,8 @@ var MainWindow = React.createClass({
     return(
       <div id="main-window">
         <Header loggedIn={this.props.route.loggedIn} />
+        <AlertDisplay />
+        <Overlay />
         {this.props.children}
         <Footer />
       </div>

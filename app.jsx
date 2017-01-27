@@ -12,36 +12,38 @@ import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
 
 // Components
 const MainWindow    = require('./components/MainWindowComponent.jsx').default,
-      NotFound      = require('./components/NotFoundComponent.jsx').default,
       Home          = require('./components/HomeComponent.jsx').default,
-      About         = require('./components/static/AboutComponent.jsx').default,
+      NotFound      = require('./components/static/NotFoundComponent.jsx').default,
       Login         = require('./components/static/LoginComponent.jsx').default,
-      AllItems      = require('./components/items/AllItemsComponent.jsx').default,
-      Category      = require('./components/items/CategoryComponent.jsx').default,
-      Item          = require('./components/items/ItemComponent.jsx').default,
+      About         = require('./components/static/AboutComponent.jsx').default,
+      AllItemsPage  = require('./components/items/AllItemsPageComponent.jsx').default,
+      CategoryPage  = require('./components/items/CategoryPageComponent.jsx').default,
+      ItemPage      = require('./components/items/ItemPageComponent.jsx').default,
+      CartPage      = require('./components/cart/CartPageComponent.jsx').default,
+      CheckoutPage  = require('./components/checkout/CheckoutPageComponent.jsx').default,
       Admin         = require('./components/admin/DashboardComponent.jsx').default;
 
-// LocalStorage Data
-// const LocalStorageHandler = require('./public/js/localStorageHandler.js');
+// Local Storage Handler
+// const store = require('store');
 
 /************************************/
 /*********** 2. Configure ***********/
 /************************************/
 
 // Handle localStorage user data
-// window.sessionDataObject = localStorageHandler.get('exampleStoredObject');
+// window.sessionDataObject = store.get('exampleStoredObject');
 // if (sessionDataObject)
 //     // Apply retrieved localStorage user data
 //     Data.user = sessionDataObject;
 // else {
 //     // Set localStorage user data to defaults
-//     localStorageHandler.set('exampleStoredObject', Data.user)
+//     store.set('exampleStoredObject', Data.user)
 //     window.sessionDataObject = Data.user;
 // }
 
 // Set loggedIn status (retrieve from index view)
 let Data = {
-  loggedIn: (loggedIn === undefined) ? false : loggedIn
+  loggedIn: (window.loggedIn === undefined) ? false : window.loggedIn
 }
 
 /************************************/
@@ -50,12 +52,14 @@ let Data = {
 
 // Render with props
 ReactDOM.render(
-  <Router history={browserHistory}>
+  <Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
     <Route path="/" loggedIn={Data.loggedIn} component={MainWindow}>
       <IndexRoute component={Home}/>
-      <Route path="all" component={AllItems}/>
-      <Route path="category/:category" component={Category}/>
-      <Route path="item/:id" component={Item}/>
+      <Route path="all" component={AllItemsPage}/>
+      <Route path="shop/:category" component={CategoryPage}/>
+      <Route path="item/:item_group" component={ItemPage}/>
+      <Route path="cart" component={CartPage}/>
+      <Route path="checkout" component={CheckoutPage}/>
       <Route path="about" component={About}/>
       <Route path="login" component={Login}/>
       <Route path="admin" component={Admin}/>

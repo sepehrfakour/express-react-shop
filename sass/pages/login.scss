@@ -1,11 +1,11 @@
 #login-form {
-  width: 100%;
   text-align: center;
+  padding: 0px;
   form {
-    display: inline-block;
-    width: 240px;
-    margin-top: 90px;
-    padding: 30px 60px 45px;
+    display: block;
+    width: 160px;
+    margin: 90px auto;
+    padding: 15px 30px 30px;
     background-color: #FFF;
     border-radius: 5px;
     text-align: center;
@@ -53,6 +53,12 @@
           transition: background 200ms ease-in;
         }
       }
+    }
+  }
+  @media (min-width: 576px) {
+    form {
+      width: 240px;
+      padding: 30px 60px 45px;
     }
   }
 }

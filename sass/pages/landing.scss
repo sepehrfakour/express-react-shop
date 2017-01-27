@@ -1,1 +1,10 @@
-#landing-page {}
+#landing-page {
+  .landing-page-banner {
+    height: 340px;
+  }
+  @media (min-width: 576px) {
+    .landing-page-banner {
+      height: 540px;
+    }
+  }
+}

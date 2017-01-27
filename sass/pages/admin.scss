@@ -67,7 +67,8 @@
           font-weight: 500;
         }
         input,
-        select {
+        select,
+        textarea {
           width: 100%;
           margin: 0px;
           padding: 4px 8px;
@@ -146,7 +147,7 @@
       border-bottom: 1px solid #EEE;
       th,
       td {
-        padding: 5px 30px;
+        padding: 5px 5px;
         text-align: left;
         img {
           max-width: 60px;

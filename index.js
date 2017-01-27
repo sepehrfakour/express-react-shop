@@ -17,6 +17,8 @@ const env = process.env.NODE_ENV || 'development'
   , rateLimit       = require('express-rate-limit');
 
 app.set('port', (process.env.PORT || 5000) );
+
+app.set('views', (__dirname + '/views'));
 app.set('view engine', 'ejs');
 
 require('express-helpers')(app);
@@ -111,7 +113,8 @@ app.use( require('request-param')() );
 // Route helper methods
 const renderIndex = function (req, res) {
   res.render('index', {
-    loggedIn: (req.session.authenticated || false)
+    loggedIn: (req.session.authenticated || false),
+    s_pk: process.env.STRIPE_PUBLISHABLE_KEY
   });
 }
 
@@ -159,6 +162,8 @@ const logout = function (req, res, next) {
 const api_base_url = '/api/v1/';
 // Items Controller
 const itemsController = require(__dirname + api_base_url + 'controllers/ItemsController.js'),
+      ordersController = require(__dirname + api_base_url + 'controllers/OrdersController.js'),
+      stripeController = require(__dirname + api_base_url + 'controllers/StripeController.js'),
       s3Controller = require(__dirname + api_base_url + 'controllers/S3Controller.js');
 // - Public API Endpoints
 // Fetch all items, or by category
@@ -184,6 +189,17 @@ app.route(api_base_url + 'item/delete')
 app.route(api_base_url + 'sign-s3')
   .all(authenticate)
   .get(s3Controller.signS3)
+// Fetch all orders, or by email
+app.route(api_base_url + 'orders')
+  .all(authenticate)
+  .get(ordersController.getOrders)
+// Fetch order by id
+app.route(api_base_url + 'order')
+  .all(authenticate)
+  .get(ordersController.getOrder)
+// Create charge and insert order
+app.route(api_base_url + 'charge')
+  .post(stripeController.preCharge)
 
 // Web App
 // Protected Web App Endpoints

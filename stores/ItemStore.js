@@ -2,30 +2,35 @@ import { EventEmitter } from "events";
 
 import dispatcher from "../dispatcher.js";
 
+const ItemDAO = require('../dao/ItemDAO.js').default;
+
 class ItemStore extends EventEmitter {
   constructor() {
     super();
     this.items = [];
-    var that = this;
-    // Async read items from server, then emit change event so components update
-    fetch('/api/v1/items')
-      .then( function (res) {
-        return res.json();
-      })
-      .then( function(json) {
-        that.items = json;
-        that.emit("change");
-      })
+
+    // Async retreive items from server. See this.setItemsCallback for behavior on successful API fetch
+    ItemDAO.getItems(this.setItemsCallback.bind(this));
+
     // this.items = [
     //   {
     //     id: 'ny768uvu2',
     //     name: 'Milagoose Hat',
+    //     item_group: 'milagoose_hat',
     //     category: 'hats',
     //     price: '180.18',
+    //     size: 'S',
+    //     color: 'blue',
+    //     description: 'a really cool hat',
     //     sku: '578098765',
-    //     quantity: 10
+    //     quantity: 10,
+    //     status: 'active',
     //   },
     // ];
+  }
+  setItemsCallback (json) {
+      this.items = json;
+      this.emit("change");
   }
   getItems() {
     return this.items;
@@ -34,6 +39,15 @@ class ItemStore extends EventEmitter {
     let output = [];
     for (var i = 0; i < this.items.length; i++) {
       if (this.items[i].category === category) {
+        output.push(this.items[i]);
+      }
+    }
+    return output;
+  }
+  getItemsByItemGroup(item_group) {
+    let output = [];
+    for (var i = 0; i < this.items.length; i++) {
+      if (this.items[i].item_group === item_group) {
         output.push(this.items[i]);
       }
     }
@@ -49,13 +63,18 @@ class ItemStore extends EventEmitter {
   }
   addItem(data) {
     let item = {
-      id:        data.tempid,
-      name:      data.name,
-      category:  data.category,
-      price:     data.price,
-      sku:       data.sku,
-      quantity:  data.quantity,
-      imageurl:  data.imageurl
+      id:          data.tempid,
+      name:        data.name,
+      item_group:  data.item_group,
+      category:    data.category,
+      price:       data.price,
+      size:        data.size,
+      color:       data.color,
+      description: data.description,
+      sku:         data.sku,
+      quantity:    data.quantity,
+      imageurl:    data.imageurl,
+      status:      data.status
     }
     this.items.push(item);
     this.emit("change");
@@ -131,6 +150,5 @@ class ItemStore extends EventEmitter {
 
 const itemStore = new ItemStore;
 dispatcher.register(itemStore.handleActions.bind(itemStore));
-window.itemStore = itemStore;
 
 export default itemStore;

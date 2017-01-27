@@ -1,14 +1,16 @@
 const React = require('react');
 
-var Home = React.createClass({
+const Home = React.createClass({
   getInitialState: function () {
       return {};
   },
   componentDidMount: function () {},
   render: function () {
     return(
-      <div id="landing-page">
-        <h1>Landing Page</h1>
+      <div id="landing-page" className="container-fluid content">
+        <div className="banner landing-page-banner">
+          <h1>Welcome</h1>
+        </div>
       </div>
     );
   }

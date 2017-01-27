@@ -14,4 +14,5 @@ npm-debug.log
 .env
 
 # Ignore public folder containing webpack-bundled js and css
-/public
+/public/js
+/public/css
