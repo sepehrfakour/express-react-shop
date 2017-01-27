@@ -35,7 +35,7 @@ class StripeDAO {
       stripeToken: token,
       cart: cart,
       shipping: shipping
-    }
+    };
 
     let request = new Request('/api/v1/charge', {
       method: 'POST',
@@ -68,7 +68,7 @@ class StripeDAO {
         OverlayActions.setOverlay(false); // Deactivate loading overlay
         AlertActions.addAlert(msg,'positive');
       }
-    })
+    });
   }
 }
 

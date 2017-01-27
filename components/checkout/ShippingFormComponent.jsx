@@ -105,24 +105,37 @@ const ShippingForm = React.createClass({
     }
   },
   _validateForm: function (form) {
-    // TODO: write better validation
-    form.customer_first_name.className  = (form.customer_first_name.value === '')  ? 'form-field-error' : '';
-    form.customer_last_name.className   = (form.customer_last_name.value === '')   ? 'form-field-error' : '';
-    form.customer_email.className       = (form.customer_email.value === '')       ? 'form-field-error' : '';
-    form.customer_phone.className       = (form.customer_phone.value === '')       ? 'form-field-error' : '';
-    form.shipping_street_1.className    = (form.shipping_street_1.value === '')    ? 'form-field-error' : '';
-    form.shipping_city.className        = (form.shipping_city.value === '')        ? 'form-field-error' : '';
-    form.shipping_state.className       = (form.shipping_state.value === '')       ? 'form-field-error' : '';
-    form.shipping_postal_code.className = (form.shipping_postal_code.value === '') ? 'form-field-error' : '';
-
-    if ( form.customer_first_name.value  !== ""
-      && form.customer_last_name.value   !== ""
-      && form.customer_email.value       !== ""
-      && form.customer_phone.value       !== ""
-      && form.shipping_street_1.value    !== ""
-      && form.shipping_city.value        !== ""
-      && form.shipping_state.value       !== ""
-      && form.shipping_postal_code.value !== "" ) {
+    // Validate that all shipping form fields have content
+    let has_customer_first_name = (form.customer_first_name.value === ''),
+        has_customer_last_name = (form.customer_last_name.value === ''),
+        has_customer_email = (form.customer_email.value === ''),
+        has_customer_phone = (form.customer_phone.value === ''),
+        has_shipping_street_1 = (form.shipping_street_1.value === ''),
+        has_shipping_city = (form.shipping_city.value === ''),
+        has_shipping_state = (form.shipping_state.value === ''),
+        has_shipping_postal_code = (form.shipping_postal_code.value === '');
+    // Set form input error CSS classNames if invalid
+    form.customer_first_name.className  = has_customer_first_name  ? 'form-field-error' : '';
+    form.customer_last_name.className   = has_customer_last_name   ? 'form-field-error' : '';
+    form.customer_email.className       = has_customer_email       ? 'form-field-error' : '';
+    form.customer_phone.className       = has_customer_phone       ? 'form-field-error' : '';
+    form.shipping_street_1.className    = has_shipping_street_1    ? 'form-field-error' : '';
+    form.shipping_city.className        = has_shipping_city        ? 'form-field-error' : '';
+    form.shipping_state.className       = has_shipping_state       ? 'form-field-error' : '';
+    form.shipping_postal_code.className = has_shipping_postal_code ? 'form-field-error' : '';
+    // Email address validation regex from https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address
+    let email_address_regex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    form.customer_email.className = (email_address_regex.test(form.customer_email.value)) ? '' : 'form-field-error';
+    // If validations pass, return true, else return false
+    if ( has_customer_first_name
+      && has_customer_last_name
+      && has_customer_email
+      && has_customer_phone
+      && has_shipping_street_1
+      && has_shipping_city
+      && has_shipping_state
+      && has_shipping_postal_code
+      && email_address_regex.test(form.customer_email.value) ) {
       return true;
     }
     return false;

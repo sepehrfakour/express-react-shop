@@ -1,46 +1,45 @@
+#Simple E-Commerce Web App
 
+An ES2015 javascript e-commerce web app that is simple, maintainable, easily extensible, and quick to get up and running.
+Stack consists of a Node backend running an Express server/API, and a React frontend with vanilla flux pattern.
+Designed for deployment on a cloud application platform like Heroku. Uses Postgres, AWS S3 for hosting static assets,
+Stripe for processing payments, Sendgrid for sending email, Mixpanel for event-tracking, NewRelic for monitoring,
+and Rollbar for error logging. Frontend javascript transpiled with Babel; bundled and uglified with Webpack.
+Uses Webpack Dev Server and hot reloading in development environment, and gulp for running tasks.
 
-#Before running locally:
+----------------------------------------------
 
-##To install and run
+##First time requirements:
 
-`npm install`
+- Postgres installed and running (i.e a local db & a production DB)
 
-`npm run gulp dev` to update the app script url in index.ejs, reversing the corresponding gulp production command
+- AWS account with S3 setup (don't forget to configure CORS to accept requests from your domain(s))
 
-`npm run dev` will run webpack dev server at localhost:8080
+- A Stripe account
 
-####Run either `heroku local` or `node index.js` to start the application server on localhost:5000
+- A Sendgrid account
 
-##Data API
+- A Newrelic account
 
-Be sure to have postgres installed and running
+- A Rollbar account
 
-2 DB's - one local postgres DB, and another one for production
+- A Mixpanel account
 
-Add connection URL string env var to be parsed config/db
+##First time installation:
 
-##Setup AWS User + S3 Bucket (for static assets)
+###Clone repo
 
-Add env vars for AWS_USER, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET
-
-##Setup Stripe (for payments)
-
-Add env vars for STRIPE_SECRET_KEY and STRIPE_PUBLISHABLE_KEY
-
-##Setup Sendgrid (for mail)
-
-Add env vars for SENDGRID_API_KEY
-
-##ENV Vars
+###Set local ENV Vars
 
 Create a .env file in project root, add to gitignore, set following variables:
 
-NODE_ENV ('development' or 'production')
+NODE_ENV (i.e. 'development' vs 'production')
 
 PORT
 
-PG_URL
+ADMIN_EMAIL (where to send email notifications when an order/payment is successfully completed)
+
+DATABASE_URL
 
 AWS_USER
 
@@ -56,35 +55,68 @@ STRIPE_PUBLISHABLE_KEY
 
 SENDGRID_API_KEY
 
-##Testing
+###Set production ENV Vars
 
-In order to run Unit Tests use:
+E.g. on Heroku this can be done via CLI or in your app's settings / config
 
-`mocha --compilers js:babel-core/register`
+###Install modules
 
-###Notes:
-####Webpack Bundle Prep: Inside webpack config, switch devtools to source-map, and comment out plugins
-####Don't forget to run a local redis server (or other DB) if you intend to use redis
+`npm install`
+
+###Migrate DB schema and test data
+
+Run contents of schema.sql on local Postgres DB (e.g via psql at command-line or PSequel GUI), then sync with production DB
+
+----------------------------------------------
+
+#Before running locally:
+
+Ensure in webpack.config.js that 'devtools' is set to 'source-map', and that plugins are commented out
+
+Run `npm run gulp dev` to ensure bundle path points to Webpack Dev Server. This will change the following:
+
+1: Inside `./views/index.ejs`:
+```
+<script src="/js/app.js" charset="utf-8"></script>
+```
+Will change to:
+```
+<script src="http://localhost:8080/app.js" charset="utf-8"></script>
+```
+
+`npm run dev` will run webpack dev server at localhost:8080
+
+Run either `heroku local` or `node index.js` to start the application server on localhost:5000
 
 ----------------------------------------------
 
 #Before deploying to production:
 
-####Run `npm run gulp production`. This will change the following:
+Ensure in webpack.config.js that 'devtools' is set to 'cheap-module-source-map', and that plugins are uncommented
 
-#####1: Inside `./views/index.ejs`:
+Run `npm run gulp production` to ensure bundle path points to public JS folder. This will change the following:
+
+1: Inside `./views/index.ejs`:
 ```
 <script src="http://localhost:8080/app.js" charset="utf-8"></script>
 ```
-#####Will change to:
+Will change to:
 ```
 <script src="/js/app.js" charset="utf-8"></script>
 ```
 
-###Notes:
-####Webpack Bundle Prep: Inside webpack config, switch devtools to cheap-module-source-map, and uncomment plugins
-####Run the `webpack` command (to recompile app.js, etc.) before committing and deploying to production, unless this is handled in the build step (e.g. on Heroku via postinstall script in package.json).
-
 ----------------------------------------------
 
-#Important Note: Deploy and/or push to origin while app is in the `Production` state.
+####Testing
+
+In order to run Unit Tests use:
+
+`mocha --compilers js:babel-core/register`
+
+####Notes:
+
+- If deploying to Heroku, Webpack will auto-compile front-end JS during the build step (via postinstall script in package.json). Otherwise, run the `webpack` command (to recompile app.js, etc.) before committing and deploying to production.
+
+- Has a Redis handler (/lib/redis.js) ready to go
+
+- Recommended to push to origin while app is in `Production` state (i.e. after running `npm run gulp production`)

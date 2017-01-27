@@ -10,8 +10,7 @@ class OrdersController {
       OrdersModel.getOrdersByEmail(req.param('email'), function (results) {
         res.status(200).json(results);
       });
-    }
-    else {
+    } else {
       // Fetch all orders
       OrdersModel.getOrders(function (results) {
         res.status(200).json(results);
@@ -24,6 +23,8 @@ class OrdersController {
       OrdersModel.getOrder(req.param('id'), function (result) {
         res.status(200).json(result);
       });
+    } else {
+      res.status(400).end();
     }
   }
   addOrder(req,res) {
@@ -51,6 +52,8 @@ class OrdersController {
       OrdersModel.addOrder(data, function (result) {
         res.status(200).json(result);
       });
+    } else {
+      res.status(400).end();
     }
   }
   updateOrder(req,res) {
@@ -77,6 +80,8 @@ class OrdersController {
       OrdersModel.updateOrder(data, function (result) {
         res.status(200).json(result);
       });
+    } else {
+      res.status(400).end();
     }
   }
   deleteOrder(req,res) {
@@ -85,6 +90,8 @@ class OrdersController {
       OrdersModel.deleteOrder(id, function (result) {
         res.status(200).json(result);
       });
+    } else {
+      res.status(400).end();
     }
   }
 }

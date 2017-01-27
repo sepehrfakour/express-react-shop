@@ -23,14 +23,18 @@ class StripeController {
     * ------------------------------------------------------------------------------------
     */
     console.log("----------\nCharge request receieved");
-    // TODO: closely double check this user input
+    if (!req.body || !req.body.stripeToken || !req.body.cart || !req.body.shipping) {
+      // Ensure we have a Stripe customer token, a cart of items, and shipping info; otherwise send error response
+      console.log('Bad order/charge request');
+      return res.status(400).end();
+    }
+    // Set current request object instance variable
     this.currentReq = {
       token: req.body.stripeToken,
       cart: req.body.cart,
       shipping: req.body.shipping,
       payment: {},
       items: [],
-      req: req,
       res: res
     };
     // Set additional variables
@@ -204,41 +208,46 @@ class StripeController {
     let from_string    = 'no-reply@example.com',
         to_string      = order.customer_email,
         subject_string = 'Your order has been placed!',
-        item_string    = '',
-        content_string = 'Dear ' + order.customer_first_name + ',\n\n\n';
-    content_string += 'You have successfully placed an order for the following item(s):\n\n';
+        item_string    = '';
+    // Build item string
     that.currentReq.items.map( function (item) {
       item_string += 'x' + item.order_quantity + ' ' + item.name + ' (size: ' + item.size + ', color: ' + item.color + ')' + '\n\n';
     })
-    content_string += item_string;
-    content_string += '\n\n';
-    content_string += 'Total amount: $' + order.total_amount + '\n\n';
-    content_string += 'Your order should arrive in 3-5 business days.\n\n';
-    content_string += 'Thanks, and have a great day!\n';
+    // Build content string, injecting item string
+    let content_string = '\
+          Dear ' + order.customer_first_name + ',\n\n\n\
+          You have successfully placed an order for the following item(s):\n\n\
+          ----------\n\n\
+          ' + item_string + '\n\n\
+          ----------\n\n\
+          Total amount: $' + order.total_amount + '\n\n\
+          Your order should arrive in 3-5 business days.\n\n\
+          Thanks, and have a great day!\n';
     // Send customer notification email
     MailController.sendMail(from_string,to_string,subject_string,content_string);
     // Create admin notification email
-    let admin_subject_string = 'New order placed',
-        admin_content_string = 'Customer: ' + order.customer_first_name + '\n\n';
-    admin_content_string += 'Customer email: ' + order.customer_email + '\n\n';
-    admin_content_string += 'Order ID: ' + order.id + '\n\n';
-    admin_content_string += '----------\n\n'
-    admin_content_string += 'Customer Address:' + '\n\n';
-    admin_content_string += '----------\n\n'
-    admin_content_string += that.currentReq.shipping.shipping_street_1 + '\n\n';
-    admin_content_string += that.currentReq.shipping.shipping_street_2 + '\n\n';
-    admin_content_string += that.currentReq.shipping.shipping_city + '\n\n';
-    admin_content_string += that.currentReq.shipping.shipping_state + '\n\n';
-    admin_content_string += that.currentReq.shipping.shipping_postal_code + '\n\n';
-    admin_content_string += that.currentReq.shipping.shipping_country + '\n\n';
-    admin_content_string += '----------\n\n'
-    admin_content_string += 'Item(s):\n\n';
-    admin_content_string += '----------\n\n'
-    admin_content_string += item_string;
-    admin_content_string += '----------\n\n'
-    admin_content_string += 'Subtotal amount: $' + order.subtotal_amount + '\n\n';
-    admin_content_string += 'Tax amount: $' + order.tax_amount + '\n\n';
-    admin_content_string += 'Total amount: $' + order.total_amount + '\n\n';
+    let admin_subject_string = 'New order placed';
+    let admin_content_string = '\
+          Customer: ' + order.customer_first_name + '\n\n\
+          Customer email: ' + order.customer_email + '\n\n\
+          Order ID: ' + order.id + '\n\n\
+          ----------\n\n\
+          Customer Address:' + '\n\n\
+          ----------\n\n\
+          ' + that.currentReq.shipping.shipping_street_1 + '\n\n\
+          ' + that.currentReq.shipping.shipping_street_2 + '\n\n\
+          ' + that.currentReq.shipping.shipping_city + '\n\n\
+          ' + that.currentReq.shipping.shipping_state + '\n\n\
+          ' + that.currentReq.shipping.shipping_postal_code + '\n\n\
+          ' + that.currentReq.shipping.shipping_country + '\n\n\
+          ----------\n\n\
+          Item(s):\n\n\
+          ----------\n\n\
+          ' + item_string + '\
+          ----------\n\n\
+          Subtotal amount: $' + order.subtotal_amount + '\n\n\
+          Tax amount: $' + order.tax_amount + '\n\n\
+          Total amount: $' + order.total_amount + '\n\n';
     // Send admin notification email
     MailController.sendMail(from_string,adminEmail,admin_subject_string,admin_content_string);
     console.log("Email notifications sent to customer and admin\n----------");
