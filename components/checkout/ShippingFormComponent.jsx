@@ -106,23 +106,23 @@ const ShippingForm = React.createClass({
   },
   _validateForm: function (form) {
     // Validate that all shipping form fields have content
-    let has_customer_first_name = (form.customer_first_name.value === ''),
-        has_customer_last_name = (form.customer_last_name.value === ''),
-        has_customer_email = (form.customer_email.value === ''),
-        has_customer_phone = (form.customer_phone.value === ''),
-        has_shipping_street_1 = (form.shipping_street_1.value === ''),
-        has_shipping_city = (form.shipping_city.value === ''),
-        has_shipping_state = (form.shipping_state.value === ''),
-        has_shipping_postal_code = (form.shipping_postal_code.value === '');
-    // Set form input error CSS classNames if invalid
-    form.customer_first_name.className  = has_customer_first_name  ? 'form-field-error' : '';
-    form.customer_last_name.className   = has_customer_last_name   ? 'form-field-error' : '';
-    form.customer_email.className       = has_customer_email       ? 'form-field-error' : '';
-    form.customer_phone.className       = has_customer_phone       ? 'form-field-error' : '';
-    form.shipping_street_1.className    = has_shipping_street_1    ? 'form-field-error' : '';
-    form.shipping_city.className        = has_shipping_city        ? 'form-field-error' : '';
-    form.shipping_state.className       = has_shipping_state       ? 'form-field-error' : '';
-    form.shipping_postal_code.className = has_shipping_postal_code ? 'form-field-error' : '';
+    let has_customer_first_name = (form.customer_first_name.value !== ''),
+        has_customer_last_name = (form.customer_last_name.value !== ''),
+        has_customer_email = (form.customer_email.value !== ''),
+        has_customer_phone = (form.customer_phone.value !== ''),
+        has_shipping_street_1 = (form.shipping_street_1.value !== ''),
+        has_shipping_city = (form.shipping_city.value !== ''),
+        has_shipping_state = (form.shipping_state.value !== ''),
+        has_shipping_postal_code = (form.shipping_postal_code.value !== '');
+    // Set form input error CSS classNames if invalid (should eventually use component state for this)
+    form.customer_first_name.className  = !has_customer_first_name  ? 'form-field-error' : '';
+    form.customer_last_name.className   = !has_customer_last_name   ? 'form-field-error' : '';
+    form.customer_email.className       = !has_customer_email       ? 'form-field-error' : '';
+    form.customer_phone.className       = !has_customer_phone       ? 'form-field-error' : '';
+    form.shipping_street_1.className    = !has_shipping_street_1    ? 'form-field-error' : '';
+    form.shipping_city.className        = !has_shipping_city        ? 'form-field-error' : '';
+    form.shipping_state.className       = !has_shipping_state       ? 'form-field-error' : '';
+    form.shipping_postal_code.className = !has_shipping_postal_code ? 'form-field-error' : '';
     // Email address validation regex from https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address
     let email_address_regex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     form.customer_email.className = (email_address_regex.test(form.customer_email.value)) ? '' : 'form-field-error';
