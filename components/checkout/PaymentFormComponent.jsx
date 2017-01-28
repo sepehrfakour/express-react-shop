@@ -38,7 +38,7 @@ const PaymentForm = React.createClass({
         </p>
         <p className="row">
           <span className="col-xs-12">
-            <label>Expiration date</label>
+            <label>Expiration</label>
             <input type="text" name="expiry" placeholder="MM/YY" defaultValue={payment.expiry}/>
           </span>
         </p>

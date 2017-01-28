@@ -5,23 +5,33 @@ const CartActions = require('../actions/CartActions.js'),
       OverlayActions = require('../actions/OverlayActions.js');
 
 class StripeDAO {
-  constructor() {}
+  constructor() {
+    this.stripeResponseHandler = this.stripeResponseHandler.bind(this);
+    this.errorBackToCart       = this.errorBackToCart.bind(this);
+  }
   createToken(payment) {
-    if (!window.Stripe) { console.warn('Stripe script not loaded'); }
+    let that = this;
+    if (!window.Stripe) {
+      console.warn('Stripe script not loaded');
+      that.errorBackToCart();
+    }
     else {
       // Get token
       Stripe.setPublishableKey(window.s_pk);
       Stripe.card.createToken({
         number: payment.card,
         cvc: payment.cvc,
-        exp_month: payment.expiry.split(/\//)[0],
-        exp_year: payment.expiry.split(/\//)[1],
+        exp: payment.expiry,
         address_zip: payment.zip
-      }, this.stripeResponseHandler);
+      }, that.stripeResponseHandler);
     }
   }
   stripeResponseHandler(status,response) {
-    if (response.error) { console.warn('Error creating Stripe token'); }
+    let that = this;
+    if (response.error) {
+      console.warn('Error creating Stripe token');
+      that.errorBackToCart(response.error.message);
+    }
     else {
       let token = response.id,
           input = document.body.querySelector('#stripe-token'),
@@ -31,6 +41,7 @@ class StripeDAO {
     }
   }
   submitOrder(cart,shipping,token) {
+    let that = this;
     let data = {
       stripeToken: token,
       cart: cart,
@@ -55,11 +66,9 @@ class StripeDAO {
       });
       // return res.text();
     }).then( function(response) {
-      if (response.status === 402) {
-        // Navigate to cart and display API/Stripe error message
-        browserHistory.push('/cart');
-        OverlayActions.setOverlay(false); // Deactivate loading overlay
-        AlertActions.addAlert(response.message,'negative');
+      let status = response.status;
+      if ((status === 402) || (status === 400)) {
+        that.errorBackToCart(response.message);
       } else {
         // Empty cart, navigate to home page, display success message
         CartActions.clearCart();
@@ -69,6 +78,16 @@ class StripeDAO {
         AlertActions.addAlert(msg,'positive');
       }
     });
+  }
+  errorBackToCart(message) {
+    // Navigate to cart and display API/Stripe error message
+    browserHistory.push('/cart');
+    OverlayActions.setOverlay(false); // Deactivate loading overlay
+    if (message) {
+      AlertActions.addAlert(message,'negative');
+    } else {
+      AlertActions.addAlert("Payment could not be processed. Please try again later.",'negative');
+    }
   }
 }
 
