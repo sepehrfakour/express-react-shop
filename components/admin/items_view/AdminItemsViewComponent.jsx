@@ -1,17 +1,18 @@
 const React = require('react');
 
-const ControlPanel  = require('./ControlPanelComponent.jsx').default,
-      AddItem = require('./AddItemComponent.jsx').default,
+const ItemsNav = require('./AdminItemsNavComponent.jsx').default,
+      AddItem  = require('./AddItemComponent.jsx').default,
       EditItem = require('./EditItemComponent.jsx').default;
 
-const ItemStore   = require('../../stores/ItemStore.js').default,
-      ItemActions = require('../../actions/ItemActions.js');
+const ItemStore      = require('../../../stores/ItemStore.js').default,
+      ItemActions    = require('../../../actions/ItemActions.js'),
+      OverlayActions = require('../../../actions/OverlayActions.js');
 
 function getItemState() {
   return ItemStore.getItems();
 }
 
-const Dashboard = React.createClass({
+const AdminItemsView = React.createClass({
   getInitialState: function () {
     return {
       items: getItemState(),
@@ -49,9 +50,8 @@ const Dashboard = React.createClass({
   },
   render: function () {
     return(
-      <div id="admin-dashboard" className="container-fluid content">
-        <h1>Admin Dashboard</h1>
-        <ControlPanel clickHandler={this._onAddCLick}/>
+      <div id="admin-items-view">
+        <ItemsNav clickHandler={this._onAddCLick}/>
         <table id="admin-items-list">
           <thead>
             <tr>
@@ -82,12 +82,14 @@ const Dashboard = React.createClass({
     this.setState({ items: getItemState()});
   },
   _onAddCLick: function (e) {
+    OverlayActions.setOverlay(true);
     this.setState({
       addModalOpen: true,
       editModalOpen: false
     })
   },
   _onEditClick: function (e) {
+    OverlayActions.setOverlay(true);
     let id = parseInt(e.target.getAttribute('data-id'),10);
     let item = ItemStore.getItem(id);
     this.setState({
@@ -107,6 +109,7 @@ const Dashboard = React.createClass({
   },
   _closeModalsCallback: function (e) {
     e.preventDefault();
+    OverlayActions.setOverlay(false);
     this.setState({
       addModalOpen: false,
       editModalOpen: false,
@@ -115,4 +118,4 @@ const Dashboard = React.createClass({
   }
 })
 
-export default Dashboard;
+export default AdminItemsView;

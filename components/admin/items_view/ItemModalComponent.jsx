@@ -1,6 +1,6 @@
 const React = require('react');
 
-const S3DAO = require('../../dao/S3DAO.js').default;
+const S3DAO = require('../../../dao/S3DAO.js').default;
 
 const ItemModal = React.createClass({
   getInitialState: function () {

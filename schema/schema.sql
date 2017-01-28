@@ -15,8 +15,8 @@ CREATE TABLE items(
   quantity SMALLINT NOT NULL,
   imageurl VARCHAR(128) NOT NULL,
   status VARCHAR(64) NOT NULL,
-  date_created date NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  date_updated date NOT NULL DEFAULT CURRENT_TIMESTAMP
+  date_created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  date_updated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE orders(
@@ -39,8 +39,8 @@ CREATE TABLE orders(
   shipping_country VARCHAR(64) NOT NULL,
   shipping_postal_code VARCHAR(32) NOT NULL,
   shipping_special_instructions VARCHAR(128) NOT NULL,
-  date_created date NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  date_updated date NOT NULL DEFAULT CURRENT_TIMESTAMP
+  date_created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  date_updated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE order_items(
@@ -48,8 +48,8 @@ CREATE TABLE order_items(
   order_id INTEGER NOT NULL,
   item_id INTEGER NOT NULL,
   quantity SMALLINT NOT NULL,
-  date_created date NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  date_updated date NOT NULL DEFAULT CURRENT_TIMESTAMP
+  date_created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  date_updated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO items (category, name, item_group, price, size, color, description, sku, quantity, imageurl, status) VALUES

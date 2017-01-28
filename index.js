@@ -132,6 +132,14 @@ const authenticate = function (req, res, next) {
   }
 }
 
+const authenticateJSON = function (req, res, next) {
+  if (req.session && req.session.authenticated) {
+    next();
+  } else {
+    res.status(403).end();
+  }
+}
+
 const login = function (req, res, next) {
   if (req.body.username && req.body.username === username && req.body.password && req.body.password === password) {
     req.session.authenticated = true;
@@ -161,10 +169,11 @@ const logout = function (req, res, next) {
 // API
 const api_base_url = '/api/v1/';
 // Items Controller
-const itemsController = require(__dirname + api_base_url + 'controllers/ItemsController.js'),
+const itemsController  = require(__dirname + api_base_url + 'controllers/ItemsController.js'),
       ordersController = require(__dirname + api_base_url + 'controllers/OrdersController.js'),
       stripeController = require(__dirname + api_base_url + 'controllers/StripeController.js'),
-      s3Controller = require(__dirname + api_base_url + 'controllers/S3Controller.js');
+      s3Controller     = require(__dirname + api_base_url + 'controllers/S3Controller.js');
+
 // - Public API Endpoints
 // Fetch all items, or by category
 app.route(api_base_url + 'items')
@@ -172,18 +181,22 @@ app.route(api_base_url + 'items')
 // Fetch item by id
 app.route(api_base_url + 'item')
   .get(itemsController.getItem)
+// Create charge and insert order
+app.route(api_base_url + 'charge')
+  .post(stripeController.preCharge)
+
 // - Protected API Endpoints
 // Insert item
 app.route(api_base_url + 'item/create')
-  .all(authenticate)
+  .all(authenticateJSON)
   .post(itemsController.addItem)
 // Update item
 app.route(api_base_url + 'item/update')
-  .all(authenticate)
+  .all(authenticateJSON)
   .post(itemsController.updateItem)
 // Delete item
 app.route(api_base_url + 'item/delete')
-  .all(authenticate)
+  .all(authenticateJSON)
   .post(itemsController.deleteItem)
 // Sign S3
 app.route(api_base_url + 'sign-s3')
@@ -191,15 +204,12 @@ app.route(api_base_url + 'sign-s3')
   .get(s3Controller.signS3)
 // Fetch all orders, or by email
 app.route(api_base_url + 'orders')
-  .all(authenticate)
+  .all(authenticateJSON)
   .get(ordersController.getOrders)
 // Fetch order by id
 app.route(api_base_url + 'order')
-  .all(authenticate)
+  .all(authenticateJSON)
   .get(ordersController.getOrder)
-// Create charge and insert order
-app.route(api_base_url + 'charge')
-  .post(stripeController.preCharge)
 
 // Web App
 // Protected Web App Endpoints
