@@ -43,7 +43,6 @@ const AdminItemsView = React.createClass({
         <td name="status">{item.status}</td>
         <td>
           <button data-id={item.id} onClick={this._onEditClick}>Edit</button>
-          <button data-id={item.id} onClick={this._onDeleteClick}>Delete</button>
         </td>
       </tr>
     )
@@ -97,15 +96,6 @@ const AdminItemsView = React.createClass({
       editModalOpen: true,
       selectedForEdit: item
     })
-  },
-  _onDeleteClick: function (e) {
-    var confirmed = confirm("Are you sure you want to delete this item?");
-    if (confirmed) {
-      let data= {
-        id: parseInt(e.target.getAttribute('data-id'),10)
-      }
-      ItemActions.deleteItem(data);
-    }
   },
   _closeModalsCallback: function (e) {
     e.preventDefault();

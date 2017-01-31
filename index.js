@@ -195,9 +195,9 @@ app.route(api_base_url + 'item/update')
   .all(authenticateJSON)
   .post(itemsController.updateItem)
 // Delete item
-app.route(api_base_url + 'item/delete')
-  .all(authenticateJSON)
-  .post(itemsController.deleteItem)
+// app.route(api_base_url + 'item/delete')
+  // .all(authenticateJSON)
+  // .post(itemsController.deleteItem)
 // Sign S3
 app.route(api_base_url + 'sign-s3')
   .all(authenticate)
