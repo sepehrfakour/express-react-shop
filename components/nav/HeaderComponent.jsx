@@ -45,7 +45,7 @@ const Header = React.createClass({
           <li id="about-link"><Link to="/about">About</Link></li>
           <li id="login-link">{this.getLoginLink(this.props.loggedIn)}</li>
           <li id="shopping-cart-button">
-            <Link to="/cart"></Link>
+            <Link to="/cart"><i className="icon-shopping-bag"></i></Link>
           </li>
         </ul>
       </div>

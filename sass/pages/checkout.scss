@@ -1,30 +1,20 @@
 #checkout-page {
-  .checkout-container { margin-top: 30px; }
+  .checkout-container { margin-top: 15px; }
   #checkout-progress {
     padding: 0px 30px;
-    &.progress-shipping {
-      section:nth-of-type(1) {
-        color: $success-green-trans;
-        border-bottom: 2px solid $success-green-trans;
-      }
-    }
-    &.progress-payment {
-      section:nth-of-type(2) {
-        color: $success-green-trans;
-        border-bottom: 2px solid $success-green-trans;
-      }
-    }
-    &.progress-confirm {
-      section:nth-of-type(3) {
-        color: $success-green-trans;
-        border-bottom: 2px solid $success-green-trans;
-      }
+    &.progress-shipping section:nth-of-type(1),
+    &.progress-payment section:nth-of-type(2),
+    &.progress-confirm section:nth-of-type(3) {
+      font-weight: 700;
+      color: $success-green-trans;
+      border-bottom: 2px solid $success-green-trans;
     }
     section {
       display: inline-block;
       height: 100%;
       padding: 15px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 500;
       color: #999;
       border-bottom: 2px solid #EEE;
       box-sizing: border-box;
@@ -34,10 +24,11 @@
   #payment-form,
   #confirm-form {
     padding-top: 30px;
-    padding-bottom: 15px;
-    p {
+    padding-bottom: 10px;
+    p,
+    div {
       margin: 15px 0px;
-      &:last-of-type { margin: 30px 0px; }
+      &:last-of-type { margin: 45px 0px; }
     }
     span {
       box-sizing: border-box;
@@ -49,6 +40,9 @@
     }
     label {
       display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #444;
       text-align: left;
     }
     input,
@@ -56,9 +50,12 @@
       height: 44px;
       width: 100%;
       padding: 10px 15px;
-      border: 2px solid #EEE;
+      font-size: 14px;
+      background-color: #FEFEFE;
+      border: 1px solid #CCC;
       border-radius: 5px;
       box-sizing: border-box;
+      box-shadow: 0px 1px 0px $shadow-2;
     }
     input[type="submit"] {
       @include buttonCTA
@@ -75,10 +72,21 @@
     .form-field-error {
       border-color: $error-red-trans;
       outline-color: $error-red-trans;
+      box-shadow: $error-red-shadow;
     }
   }
   #shipping-form {}
   #payment-form {
+    .secure-stripe {
+      margin-top: 20px;
+      font-size: 13px;
+      font-weight: 400;
+      text-align: left;
+      color: #777;
+      i {
+        font-size: 18px;
+      }
+    }
     .card-type {
       float: right;
       position: relative;
@@ -92,20 +100,45 @@
     }
   }
   #confirm-form {
+    section {
+      font-size: 14px;
+      font-weight: 400;
+      color: #444;
+      border-bottom: 1px dotted #DDD;
+      text-align: left;
+      span {
+        &:last-of-type {
+          float: right;
+          font-size: 15px;
+          font-weight: 600;
+          color: #555;
+        }
+      }
+    }
     #stripe-token {
       height: 0px;
       width: 0px;
       margin: 0px;
       padding: 0px;
       opacity: 0;
+      float: left;
     }
   }
-  h2 { margin: 15px 0px; }
+  h2 {
+    margin: 15px 0px;
+    font-size: 18px;
+    color: #444;
+  }
+  h4 {
+    text-align: left;
+  }
   .checkout-summary {
     margin: 0px 15px;
     padding: 15px 30px;
-    border: 2px solid #EEE;
+    border: 1px solid #CCC;
+    border-top-color: #DDD;
     border-radius: 5px;
+    box-shadow: 0px 1px 0px $shadow-2;
   }
   table#checkout-table {
     display: inline-table;
@@ -117,6 +150,9 @@
       th,
       td {
         padding: 5px 15px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #444;
         text-align: left;
         img {
           max-width: 60px;

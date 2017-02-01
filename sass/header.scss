@@ -31,7 +31,9 @@
     text-align: left;
     li {
       display: inline-block;
+      max-height: $header-height;
       padding: 15px 0px;
+      box-sizing: border-box;
       &:hover {
         cursor: pointer;
         a {
@@ -57,7 +59,7 @@
     #items-dropdown-menu {
       display: none;
       position: absolute;
-      top: $header-height + 3;
+      top: $header-height;
       left: 0px;
       background-color: $ghost;
       &.open {
@@ -85,21 +87,19 @@
     position: absolute;
     right: 15px;
     a {
-      height: 24px;
-      width: 30px;
-      background: url("/img/shoppingCartIcon.png");
-      background-position: center;
-      background-size: 50%;
-      background-repeat: no-repeat;
-      opacity: 0.5;
+      font-size: 18px;
+      text-align: center;
+      i {
+        display: inline-block;
+      }
     }
     &:hover {
       a {
-        background: #EEE url("/img/shoppingCartIcon.png");
-        background-position: center;
-        background-size: 50%;
-        background-repeat: no-repeat;
-        opacity: 0.9;
+        @include buttonTransition;
+        i {
+          @include buttonTransition;
+          border-color: #EEE;
+        }
       }
     }
   }

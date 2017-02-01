@@ -18,7 +18,7 @@ const ShippingForm = React.createClass({
     let submitButtonClassName = (this.props.cartHasItems) ? '' : 'disabled';
     return(
       <form id="shipping-form" onSubmit={this._submitCallback}>
-        <p className="row">
+        <div className="row">
           <span className="col-xs-12 col-md-6">
             <label>First name</label>
             <input type="text" name="customer_first_name" placeholder="First name" defaultValue={shipping.customer_first_name}/>
@@ -27,8 +27,8 @@ const ShippingForm = React.createClass({
             <label>Last name</label>
             <input type="text" name="customer_last_name" placeholder="Last name" defaultValue={shipping.customer_last_name}/>
           </span>
-        </p>
-        <p className="row">
+        </div>
+        <div className="row">
           <span className="col-xs-12 col-md-8">
             <label>Email</label>
             <input type="email" name="customer_email" placeholder="Email" defaultValue={shipping.customer_email}/>
@@ -37,8 +37,8 @@ const ShippingForm = React.createClass({
             <label>Phone</label>
             <input type="tel" name="customer_phone" placeholder="Phone" defaultValue={shipping.customer_phone}/>
           </span>
-        </p>
-        <p className="row">
+        </div>
+        <div className="row">
           <span className="col-xs-12">
             <label>Shippping address</label>
             <input type="text" name="shipping_street_1" placeholder="Street 1" defaultValue={shipping.shipping_street_1}/>
@@ -47,8 +47,8 @@ const ShippingForm = React.createClass({
           <span className="col-xs-12">
             <input type="text" name="shipping_street_2" placeholder="Street 2" defaultValue={shipping.shipping_street_2}/>
           </span>
-        </p>
-        <p className="row">
+        </div>
+        <div className="row">
           <span className="col-xs-12 col-md-5">
             <label>City</label>
             <input type="text" name="shipping_city" placeholder="City" defaultValue={shipping.shipping_city}/>
@@ -63,12 +63,12 @@ const ShippingForm = React.createClass({
             <label>Zipcode</label>
             <input type="text" name="shipping_postal_code" placeholder="Zipcode" defaultValue={shipping.shipping_postal_code}/>
           </span>
-        </p>
-        <p className="row">
+        </div>
+        <div className="row">
           <span className="col-xs-12">
             <input type="submit" name="checkout-form-submit" className={submitButtonClassName} value="Continue to billing" onClick={this._submitCallback} />
           </span>
-        </p>
+        </div>
       </form>
     );
   },

@@ -29,36 +29,38 @@ const PaymentForm = React.createClass({
     let cardType = (this.state.cardType === 'Unknown') ? '' : this.state.cardType;
     return(
       <form id="payment-form" onSubmit={this._submitCallback}>
-        <p className="row">
+        <div className="row">
           <span className="col-xs-12">
             <label>Card number</label>
             <input type="text" name="card" placeholder="#### #### #### ####" onChange={this._onCardChangeHandler} defaultValue={payment.card}/>
             <span className="card-type">{cardType}</span>
           </span>
-        </p>
-        <p className="row">
-          <span className="col-xs-12">
+        </div>
+        <div className="row">
+          <span className="col-xs-4">
             <label>Expiration</label>
             <input type="text" name="expiry" placeholder="MM/YY" defaultValue={payment.expiry}/>
           </span>
-        </p>
-        <p className="row">
-          <span className="col-xs-12">
+          <span className="col-xs-4">
             <label>CVC</label>
             <input type="text" name="cvc" placeholder="###" defaultValue={payment.cvc}/>
           </span>
-        </p>
-        <p className="row">
-          <span className="col-xs-12">
+          <span className="col-xs-4">
             <label>Zipcode</label>
             <input type="text" name="zip" placeholder="#####" defaultValue={payment.zip}/>
           </span>
-        </p>
-        <p className="row">
+        </div>
+        <div className="row secure-stripe">
+          <span className="col-xs-12">
+            <i className="icon-lock"></i>
+            <span>Payments securely processed with <a href="https://www.stripe.com" target="_blank">Stripe</a></span>
+          </span>
+        </div>
+        <div className="row">
           <span className="col-xs-12">
             <input type="submit" name="checkout-form-submit" value="Continue to confirmation" onClick={this._submitCallback} />
           </span>
-        </p>
+        </div>
       </form>
     );
   },

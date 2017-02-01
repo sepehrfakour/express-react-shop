@@ -1,4 +1,4 @@
-#Express React Web App
+#Express React E-Commerce Web App
 
 #A simple and fast e-commerce web application
 
