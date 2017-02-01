@@ -47,7 +47,8 @@ const CartPage = React.createClass({
     )
   },
   render: function () {
-    let checkoutLinkClassName = (this.state.items.length > 0) ? "" : "disabled" ;
+    let cartHasItems = (this.state.items.length > 0) ? true : false,
+        checkoutLinkClassName = (cartHasItems) ? "" : "disabled" ;
     this.subtotal = 0.00;
     this.tax_rate = 0.08;
     return(
@@ -61,7 +62,9 @@ const CartPage = React.createClass({
             <div className="col-xs-12 col-lg-6 offset-lg-3 border-box">
               <table id="cart-table">
                 <tbody>
-                  {this.state.items.map(this.buildItems)}
+                  {
+                    (cartHasItems) ? this.state.items.map(this.buildItems) : <tr><td>— Cart empty —</td></tr>
+                  }
                   <tr>
                     <td className="cart-summary" colSpan="5">
                       <p>
