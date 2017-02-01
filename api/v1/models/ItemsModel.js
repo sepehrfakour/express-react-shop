@@ -32,11 +32,11 @@ class ItemsModel {
     });
   }
   getItems(callback) {
-    let queryString = "SELECT * FROM items ORDER BY id DESC";
+    let queryString = "SELECT * FROM items ORDER BY id DESC LIMIT 1000";
     this.executeQuery(queryString, callback);
   }
   getItemsByCategory(category, callback) {
-    let queryString = "SELECT * FROM items WHERE category = ($1) ORDER BY name ASC",
+    let queryString = "SELECT * FROM items WHERE category = ($1) ORDER BY name ASC LIMIT 1000",
         values = [];
     values.push(category);
     this.executeQuery(queryString, callback, values);
