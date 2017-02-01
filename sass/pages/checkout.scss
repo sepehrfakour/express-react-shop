@@ -13,7 +13,7 @@
       display: inline-block;
       height: 100%;
       padding: 15px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       color: #999;
       border-bottom: 2px solid #EEE;
@@ -23,12 +23,12 @@
   #shipping-form,
   #payment-form,
   #confirm-form {
-    padding-top: 30px;
+    padding-top: 15px;
     padding-bottom: 10px;
     p,
     div {
       margin: 15px 0px;
-      &:last-of-type { margin: 45px 0px; }
+      &:last-of-type { margin: 15px 0px; }
     }
     span {
       box-sizing: border-box;
@@ -47,10 +47,10 @@
     }
     input,
     select {
-      height: 44px;
+      height: 36px;
       width: 100%;
-      padding: 10px 15px;
-      font-size: 14px;
+      padding: 5px 5px;
+      font-size: 12px;
       background-color: #FEFEFE;
       border: 1px solid #CCC;
       border-radius: 5px;
@@ -79,18 +79,18 @@
   #payment-form {
     .secure-stripe {
       margin-top: 20px;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 400;
       text-align: left;
       color: #777;
       i {
-        font-size: 18px;
+        font-size: 14px;
       }
     }
     .card-type {
       float: right;
       position: relative;
-      bottom: 22px;
+      bottom: 18px;
       right: 15px;
       height: 0px;
       font-size: 13px;
@@ -109,7 +109,7 @@
       span {
         &:last-of-type {
           float: right;
-          font-size: 15px;
+          font-size: 13px;
           font-weight: 600;
           color: #555;
         }
@@ -134,7 +134,7 @@
   }
   .checkout-summary {
     margin: 0px 15px;
-    padding: 15px 30px;
+    padding: 15px 15px;
     border: 1px solid #CCC;
     border-top-color: #DDD;
     border-radius: 5px;
@@ -145,15 +145,23 @@
     width: 100%;
     margin: 15px auto;
     tr.checkout-item {
+      font-weight: 600;
+      color: #444;
       border-bottom: 1px solid #EEE;
       &:last-of-type { border-bottom: 0px; }
       th,
       td {
-        padding: 5px 15px;
-        font-size: 14px;
-        font-weight: 600;
-        color: #444;
-        text-align: left;
+        max-width: 50px;
+        padding: 5px 0px;
+        font-size: 12px;
+        line-height: 16px;
+        text-align: center;
+        &:first-of-type {
+          text-align: left;
+        }
+        &:last-of-type {
+          text-align: right;
+        }
         img {
           max-width: 60px;
         }
@@ -166,3 +174,91 @@
   }
 }
 
+@media (min-width: 576px) {
+  #checkout-page {
+    #checkout-progress {
+      section {
+        font-size: 13px;
+      }
+    }
+    #shipping-form,
+    #payment-form,
+    #confirm-form {
+      padding-top: 30px;
+      div {
+        &:last-of-type { margin: 45px 0px; }
+      }
+      input,
+      select {
+        height: 44px;
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+      section {
+        span:last-of-type {
+          font-size: 15px;
+        }
+      }
+      .secure-stripe {
+        font-size: 13px;
+        i {
+          font-size: 18px;
+        }
+      }
+      .card-type {
+        bottom: 22px;
+      }
+    }
+    .checkout-summary {
+      padding: 15px 30px;
+      table#checkout-table {
+        tr.checkout-item {
+          td {
+            max-width: 103.2px;
+            font-size: 13px;
+            line-height: inherit;
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  #checkout-page {
+    .checkout-summary {
+      table#checkout-table {
+        tr.checkout-item {
+          td {
+            max-width: 141.6px;
+            margin: 30px auto;
+            padding: 5px 15px;
+            font-size: 14px;
+            vertical-align: middle;
+            &:first-of-type {
+              padding-left: 0px;
+            }
+            &:last-of-type {
+              padding-right: 0px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  #checkout-page {
+    .checkout-summary {
+      table#checkout-table {
+        tr.checkout-item {
+          td {
+            max-width: none;
+          }
+        }
+      }
+    }
+  }
+}

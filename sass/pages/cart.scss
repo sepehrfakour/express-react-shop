@@ -1,5 +1,5 @@
 #cart-page {
-  .cart-container { margin-top: 30px;}
+  .cart-container { margin-top: 15px;}
   .cart-top,
   .cart-bottom {
     a {
@@ -13,15 +13,17 @@
   }
   .cart-top {
     margin: 0px;
-    padding: 15px 0px 30px;
+    padding: 0px 0px 30px;
     border-bottom: 1px solid #EEE;
-    text-align: left;
+    text-align: center;
     button {
       @include transparentButton;
+      font-size: 13px;
       vertical-align: middle;
     }
     a {
-      float: right;
+      display: block;
+      margin-top: 15px;
     }
   }
   table#cart-table {
@@ -37,11 +39,17 @@
         &:last-of-type { border-bottom: 0px; }
         th,
         td {
-          padding: 5px 15px;
+          max-width: 52px;
+          margin: 5px auto;
+          padding: 5px 0px;
+          font-size: 12px;
+          line-height: 16px;
           color: #444;
-          text-align: left;
+          text-align: center;
+          box-sizing: border-box;
+          vertical-align: top;
           &:first-of-type {
-            padding-left: 0px;
+            text-align: left;
           }
           &:last-of-type {
             padding-right: 0px;
@@ -53,6 +61,7 @@
           }
           button {
             @include transparentButton;
+            font-size: inherit;
             vertical-align: middle;
           }
         }
@@ -88,6 +97,73 @@
       font-size: 14px;
       font-weight: 600;
       color: #555;
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  #cart-page {
+    .cart-container { margin-top: 30px; }
+    .cart-top {
+      padding-top: 15px;
+      text-align: left;
+      button {
+        font-size: 14px;
+      }
+      a {
+        display: inline-block;
+        float: right;
+        margin-top: 0px;
+      }
+    }
+    table#cart-table {
+      tr.cart-item {
+        td {
+          max-width: 103.2px;
+          font-size: 13px;
+          line-height: inherit;
+          text-align: left;
+          &:first-of-type {
+            text-align: left;
+          }
+          &:last-of-type {
+            button {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  #cart-page {
+    table#cart-table {
+      tr.cart-item {
+        td {
+          max-width: 141.6px;
+          margin: 30px auto;
+          padding: 5px 15px;
+          font-size: 14px;
+          vertical-align: middle;
+          &:first-of-type {
+            padding-left: 0px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  #cart-page {
+    table#cart-table {
+      tr.cart-item {
+        td {
+          max-width: none;
+        }
+      }
     }
   }
 }
