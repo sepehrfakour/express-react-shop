@@ -1,5 +1,3 @@
-const ItemActions = require('../actions/CartActions.js');
-
 const Store = require('store');
 
 const AlertActions = require('../actions/AlertActions.js');

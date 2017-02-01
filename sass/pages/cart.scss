@@ -28,30 +28,33 @@
     display: inline-table;
     width: 100%;
     margin: 30px auto;
-    tr.cart-item {
-      border-bottom: 1px solid #EEE;
-      &:last-of-type { border-bottom: 0px; }
-      th,
-      td {
-        padding: 5px 15px;
-        font-size: 14px;
-        font-weight: 600;
-        color: #444;
-        text-align: left;
-        &:first-of-type {
-          padding-left: 0px;
-        }
-        &:last-of-type {
-          padding-right: 0px;
-          text-align: right;
-          button { padding: 0px; }
-        }
-        img {
-          max-width: 60px;
-        }
-        button {
-          @include transparentButton;
-          vertical-align: middle;
+    tr {
+      font-size: 14px;
+      font-weight: 600;
+      color: #999;
+      &.cart-item {
+        border-bottom: 1px solid #EEE;
+        &:last-of-type { border-bottom: 0px; }
+        th,
+        td {
+          padding: 5px 15px;
+          color: #444;
+          text-align: left;
+          &:first-of-type {
+            padding-left: 0px;
+          }
+          &:last-of-type {
+            padding-right: 0px;
+            text-align: right;
+            button { padding: 0px; }
+          }
+          img {
+            max-width: 60px;
+          }
+          button {
+            @include transparentButton;
+            vertical-align: middle;
+          }
         }
       }
     }

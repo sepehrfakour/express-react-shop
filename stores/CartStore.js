@@ -8,15 +8,6 @@ class CartStore extends EventEmitter {
   constructor() {
     super();
     // Retreive cart from local storage if available
-
-    // TODO: Make sure CartDAO checks for Store.enabled (and if false, returns empty array)
-    // TODO: Do something like
-    // if (CartDAO.enabled === true ) {
-    //   this.cart = CartDAO.getCart();
-    // } else {
-    //   this.cart =[];
-    // }
-
     this.cart = CartDAO.getCart();
     // this.cart = [
     //   {
@@ -31,6 +22,13 @@ class CartStore extends EventEmitter {
   }
   getCart() {
     return this.cart;
+  }
+  getCartItemCount() {
+    let count = 0;
+    this.cart.map( function (item) {
+      count += item.quantity;
+    });
+    return count;
   }
   addItem(data) {
     let cart = this.cart,

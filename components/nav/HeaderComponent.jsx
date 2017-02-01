@@ -2,11 +2,24 @@ const React = require('react');
 
 import {Link} from 'react-router';
 
+var CartStore = require('../../stores/CartStore.js').default;
+
+function getCartItemCountState() {
+  return CartStore.getCartItemCount();
+}
+
 const Header = React.createClass({
   getInitialState: function () {
     return {
-      open: false
+      open: false,
+      itemCount: getCartItemCountState()
     }
+  },
+  componentWillMount: function () {
+    CartStore.on("change", this._onCartStoreChange);
+  },
+  componentWillUnmount: function () {
+    CartStore.removeListener("change", this._onCartStoreChange);
   },
   hasClass: function (element, cls) {
     return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
@@ -19,9 +32,13 @@ const Header = React.createClass({
     }
   },
   render: function () {
-    let dropdownClickable = "dropdown-clickable",
+    // Determine item count and if dropdown is open/closed
+    let itemCount = '',
+        dropdownClickable = 'dropdown-clickable',
         openClassName = dropdownClickable;
     openClassName += (this.state.open) ? ' open' : ' closed';
+    if (this.state.itemCount === 1) { itemCount = ' 1 item' }
+    else if (this.state.itemCount > 1) { itemCount = ' ' + this.state.itemCount + ' items' };
     return(
       <div id="header">
         <div id="header-logo">
@@ -45,7 +62,10 @@ const Header = React.createClass({
           <li id="about-link"><Link to="/about">About</Link></li>
           <li id="login-link">{this.getLoginLink(this.props.loggedIn)}</li>
           <li id="shopping-cart-button">
-            <Link to="/cart"><i className="icon-shopping-bag"></i></Link>
+            <Link to="/cart">
+              <i className="icon-shopping-bag"></i>
+              <span className="cart-item-count">{itemCount}</span>
+            </Link>
           </li>
         </ul>
       </div>
@@ -70,6 +90,9 @@ const Header = React.createClass({
       this.setState({ open: false });
       window.removeEventListener("click", this._onDOMClick);
     }
+  },
+  _onCartStoreChange: function () {
+    this.setState({ itemCount: getCartItemCountState()});
   }
 })
 
