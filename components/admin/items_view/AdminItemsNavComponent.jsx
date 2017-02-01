@@ -8,13 +8,16 @@ const AdminItemsNav = React.createClass({
   },
   componentDidMount: function () {},
   render: function () {
-    // TODO: Add validation to form
+    let viewInactiveClassName = (this.props.toggled) ? 'toggled' : 'not-toggled';
     return(
       <div id="items-nav">
         <span>Manage Items:</span>
         <ul>
           <li>
-            <a href="#" id="open-add-item-modal" onClick={this.props.clickHandler}>+ Add Item</a>
+            <a href="#" id="open-add-item-modal" onClick={this.props.addClickHandler}>+ Add Item</a>
+          </li>
+          <li>
+            <a href="#" id="view-inactive-items" className={viewInactiveClassName} onClick={this.props.toggleInactiveHandler}>View Inactive Items</a>
           </li>
         </ul>
       </div>

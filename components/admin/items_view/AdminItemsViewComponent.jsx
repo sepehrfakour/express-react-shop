@@ -18,7 +18,8 @@ const AdminItemsView = React.createClass({
       items: getItemState(),
       addModalOpen: false,
       editModalOpen: false,
-      selectedForEdit: false
+      selectedForEdit: false,
+      viewInactive: false
     }
   },
   componentWillMount: function () {
@@ -28,6 +29,9 @@ const AdminItemsView = React.createClass({
     ItemStore.removeListener("change", this._onChange);
   },
   buildItems: function (item) {
+    if ((this.state.viewInactive === false) && (item.status === 'inactive')) {
+      return;
+    }
     return (
       <tr key={item.id} data-id={item.id}>
         <td name="name"><img src={item.imageurl}></img></td>
@@ -50,7 +54,11 @@ const AdminItemsView = React.createClass({
   render: function () {
     return(
       <div id="admin-items-view">
-        <ItemsNav clickHandler={this._onAddCLick}/>
+        <ItemsNav
+          addClickHandler={this._onAddCLick}
+          toggleInactiveHandler={this._toggleViewInactiveCallback}
+          toggled={this.state.viewInactive}
+        />
         <table id="admin-items-list">
           <thead>
             <tr>
@@ -104,6 +112,12 @@ const AdminItemsView = React.createClass({
       addModalOpen: false,
       editModalOpen: false,
       selectedForEdit: false
+    })
+  },
+  _toggleViewInactiveCallback: function (e) {
+    let viewInactive = (this.state.viewInactive) ? false : true;
+    this.setState({
+      viewInactive: viewInactive
     })
   }
 })

@@ -47,6 +47,13 @@
       }
       a {
         @include headerLink;
+        &.toggled {
+          &:after {
+            content: '✓';
+            margin-left: 5px;
+            color: $success-green-trans;
+          }
+        }
       }
     }
   }
