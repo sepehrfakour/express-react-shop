@@ -32,7 +32,7 @@ const PaymentForm = React.createClass({
         <div className="row">
           <span className="col-xs-12">
             <label>Card number</label>
-            <input type="text" name="card" placeholder="#### #### #### ####" onChange={this._onCardChangeHandler} defaultValue={payment.card}/>
+            <input type="text" name="card" placeholder="#### #### #### ####" pattern="\d*" onKeyDown={this._numericKeyPressHandler} onChange={this._onCardChangeHandler} defaultValue={payment.card}/>
             <span className="card-type">{cardType}</span>
           </span>
         </div>
@@ -43,7 +43,7 @@ const PaymentForm = React.createClass({
           </span>
           <span className="col-xs-4">
             <label>CVC</label>
-            <input type="text" name="cvc" placeholder="###" defaultValue={payment.cvc}/>
+            <input type="text" name="cvc" placeholder="###" pattern="\d*" onKeyDown={this._numericKeyPressHandler} defaultValue={payment.cvc}/>
           </span>
           <span className="col-xs-4">
             <label>Zipcode</label>
@@ -69,6 +69,17 @@ const PaymentForm = React.createClass({
       // Handle enter key
       event.stopPropagation();
       this._submitCallback(event);
+    }
+  },
+  _numericKeyPressHandler: function (event) {
+    // Allow numbers, backspace, tab, enter, esc, left, up, right, down, delete
+    if ( (event.which && event.which >= 48 && event.which <= 57) ||
+         (event.keyCode && event.keyCode >= 48 && event.keyCode <= 57) ||
+         (event.which && [8,9,13,27,37,38,39,40,46].indexOf(event.which) !== -1) ||
+         (event.keyCode && [8,9,13,27,37,38,39,40,46].indexOf(event.keyCode) !== -1) ) {
+      return;
+    } else {
+      event.preventDefault();
     }
   },
   _onCardChangeHandler: function (event) {
