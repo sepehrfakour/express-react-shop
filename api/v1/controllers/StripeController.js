@@ -17,6 +17,7 @@ class StripeController {
     this.sendNotifications = this.sendNotifications.bind(this);
     this.currentReq;
   }
+
   preCharge(req,res) {
     /*
     * Set instance variables and retreive items from DB in preparation for making a charge
