@@ -2,10 +2,7 @@
 
 #A simple and fast e-commerce web application
 
-An ES2015 javascript single-page e-commerce web app that is simple, maintainable, easily extensible, and quick to get up and running. Stack consists of a Node backend running an Express server/API, and a React frontend with vanilla flux pattern.
-Designed for deployment on a cloud application platform like Heroku. Uses Postgres, AWS S3 for hosting static assets,
-Stripe for processing payments, Sendgrid for sending email, Mixpanel for event-tracking, NewRelic for monitoring,
-and Rollbar for error logging. Frontend javascript transpiled with Babel; bundled and uglified with Webpack. SASS compiled and bundled via middleware. Uses Webpack Dev Server for bundling/hot-reloading in development environment, and gulp for running tasks.
+An ES2015 javascript single-page e-commerce web app that is simple, maintainable, easily extensible, and quick to get up and running. Stack consists of a Node backend running an Express server/API, and a React frontend using the vanilla flux pattern. Designed for deployment on a cloud application platform like Heroku. Configured to use Postgres, AWS S3 for hosting static assets, Stripe for processing payments, Sendgrid for sending email, Mixpanel for event-tracking, NewRelic for monitoring, and Rollbar for error logging. Frontend javascript transpiled, bundled, and uglified with Webpack/Babel. SASS compiled and bundled via middleware. Uses Webpack Dev Server for bundling/hot-reloading in development environment, and Gulp for running tasks.
 
 ----------------------------------------------
 
@@ -106,6 +103,18 @@ In order to run Unit Tests use:
 
 - If deploying to Heroku, Webpack will auto-compile front-end JS during the build step (via postinstall script in package.json). Otherwise, run the `webpack` command (to recompile app.js, etc.) before committing and deploying to production.
 
+- Current session/user authentication system is suitable for having one or a small number of admin accounts only. Use an appropriate (external) session store for handling customer/user accounts.
+
 - Has a Redis handler (/lib/redis.js) ready to go, just add REDIS_URL environment variable
 
 - Recommended to push to origin while app is in `Production` state (i.e. after running `npm run gulp production`)
+
+####Roadmap:
+
+- Allow admin to add items as a group, set order status / issue refunds, edit banner images
+
+- Add pagination
+
+- Add New Relic and Rollbar
+
+- Lazy load images
