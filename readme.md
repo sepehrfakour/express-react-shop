@@ -6,7 +6,7 @@ An ES2015 javascript single-page e-commerce web app that is simple, maintainable
 
 ----------------------------------------------
 
-##First time requirements:
+##Requirements:
 
 - Postgres installed and running (local db and separate production DB)
 
@@ -21,6 +21,8 @@ An ES2015 javascript single-page e-commerce web app that is simple, maintainable
 - A Rollbar account
 
 - A Mixpanel account
+
+- All above accounts are essentially free to get started with
 
 ----------------------------------------------
 
@@ -69,7 +71,7 @@ E.g. on Heroku this can be done via CLI or in your app's settings / config
 
 ####5 - Migrate DB schema and test data
 
-Run contents of schema.sql on local Postgres DB (e.g via psql at command-line or PSequel GUI), then sync with production DB
+Run contents of schema.sql on local Postgres DB (e.g via psql at command-line or PSequel GUI), then sync with production DB. Mock and insert a few rows of test data into items table in local DB.
 
 ----------------------------------------------
 
