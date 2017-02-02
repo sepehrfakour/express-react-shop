@@ -17,15 +17,30 @@ const ConfirmForm = React.createClass({
     window.removeEventListener('keydown', this._keyPressHandler)
   },
   render: function () {
+    let name = this.props.shipping.customer_first_name + ' ' + this.props.shipping.customer_last_name,
+        street = this.props.shipping.shipping_street_1 + ', ' + this.props.shipping.shipping_street_2,
+        card = this.props.payment.card.replace(/\D/g,''), // Remove all non-digit characters like trailing spaces
+        lastFour = Array(card.length-4).join('•') + card.slice(card.length-4,card.length);
     return(
       <form id="confirm-form" onSubmit={this._submitCallback}>
-        <p className="row">Click the button to pay and complete your purchase</p>
-        <p className="row">
+        <div className="row">
           <span className="col-xs-12">
-            <input type="submit" name="checkout-form-submit" value="Complete purchase" onClick={this._submitCallback} />
+            <section>Name: <span>{name}</span></section>
+            <section>Email: <span>{this.props.shipping.customer_email}</span></section>
+            <section>Phone: <span>{this.props.shipping.customer_phone}</span></section>
+            <section>Street: <span>{street}</span></section>
+            <section>City: <span>{this.props.shipping.shipping_city}</span></section>
+            <section>State: <span>{this.props.shipping.shipping_state}</span></section>
+            <section>Zip Code: <span>{this.props.shipping.shipping_postal_code}</span></section>
+            <section>Card: <span>{lastFour}</span></section>
+          </span>
+        </div>
+        <div className="row">
+          <span className="col-xs-12">
+            <input type="submit" name="checkout-form-submit" value="Place order" onClick={this._submitCallback} />
             <input type="text" id="stripe-token" onChange={this._onToken} />
           </span>
-        </p>
+        </div>
       </form>
     );
   },

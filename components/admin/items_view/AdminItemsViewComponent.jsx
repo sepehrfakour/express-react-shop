@@ -1,23 +1,25 @@
 const React = require('react');
 
-const ControlPanel  = require('./ControlPanelComponent.jsx').default,
-      AddItem = require('./AddItemComponent.jsx').default,
+const ItemsNav = require('./AdminItemsNavComponent.jsx').default,
+      AddItem  = require('./AddItemComponent.jsx').default,
       EditItem = require('./EditItemComponent.jsx').default;
 
-const ItemStore   = require('../../stores/ItemStore.js').default,
-      ItemActions = require('../../actions/ItemActions.js');
+const ItemStore      = require('../../../stores/ItemStore.js').default,
+      ItemActions    = require('../../../actions/ItemActions.js'),
+      OverlayActions = require('../../../actions/OverlayActions.js');
 
 function getItemState() {
   return ItemStore.getItems();
 }
 
-const Dashboard = React.createClass({
+const AdminItemsView = React.createClass({
   getInitialState: function () {
     return {
       items: getItemState(),
       addModalOpen: false,
       editModalOpen: false,
-      selectedForEdit: false
+      selectedForEdit: false,
+      viewInactive: false
     }
   },
   componentWillMount: function () {
@@ -27,6 +29,9 @@ const Dashboard = React.createClass({
     ItemStore.removeListener("change", this._onChange);
   },
   buildItems: function (item) {
+    if ((this.state.viewInactive === false) && (item.status === 'inactive')) {
+      return;
+    }
     return (
       <tr key={item.id} data-id={item.id}>
         <td name="name"><img src={item.imageurl}></img></td>
@@ -42,16 +47,18 @@ const Dashboard = React.createClass({
         <td name="status">{item.status}</td>
         <td>
           <button data-id={item.id} onClick={this._onEditClick}>Edit</button>
-          <button data-id={item.id} onClick={this._onDeleteClick}>Delete</button>
         </td>
       </tr>
     )
   },
   render: function () {
     return(
-      <div id="admin-dashboard" className="container-fluid content">
-        <h1>Admin Dashboard</h1>
-        <ControlPanel clickHandler={this._onAddCLick}/>
+      <div id="admin-items-view">
+        <ItemsNav
+          addClickHandler={this._onAddCLick}
+          toggleInactiveHandler={this._toggleViewInactiveCallback}
+          toggled={this.state.viewInactive}
+        />
         <table id="admin-items-list">
           <thead>
             <tr>
@@ -82,12 +89,14 @@ const Dashboard = React.createClass({
     this.setState({ items: getItemState()});
   },
   _onAddCLick: function (e) {
+    OverlayActions.setOverlay(true);
     this.setState({
       addModalOpen: true,
       editModalOpen: false
     })
   },
   _onEditClick: function (e) {
+    OverlayActions.setOverlay(true);
     let id = parseInt(e.target.getAttribute('data-id'),10);
     let item = ItemStore.getItem(id);
     this.setState({
@@ -96,23 +105,21 @@ const Dashboard = React.createClass({
       selectedForEdit: item
     })
   },
-  _onDeleteClick: function (e) {
-    var confirmed = confirm("Are you sure you want to delete this item?");
-    if (confirmed) {
-      let data= {
-        id: parseInt(e.target.getAttribute('data-id'),10)
-      }
-      ItemActions.deleteItem(data);
-    }
-  },
   _closeModalsCallback: function (e) {
     e.preventDefault();
+    OverlayActions.setOverlay(false);
     this.setState({
       addModalOpen: false,
       editModalOpen: false,
       selectedForEdit: false
     })
+  },
+  _toggleViewInactiveCallback: function (e) {
+    let viewInactive = (this.state.viewInactive) ? false : true;
+    this.setState({
+      viewInactive: viewInactive
+    })
   }
 })
 
-export default Dashboard;
+export default AdminItemsView;

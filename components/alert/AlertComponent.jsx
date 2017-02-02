@@ -13,11 +13,11 @@ const Alert = React.createClass({
     alert.addEventListener( 'transitionend', this._onTransitionEnd);
     setTimeout(function () {
       alert.className = 'alert rendered alert-' + tone;
-    },1000)
+    },1000);
   },
   componentWillUnmount: function () {
     var alert = document.getElementById(this.props.id);
-    alert.removeEventListener( 'transitionend', this._onTransitionEnd)
+    alert.removeEventListener( 'transitionend', this._onTransitionEnd);
   },
   render: function() {
     let className = 'alert alert-' + this.props.tone;

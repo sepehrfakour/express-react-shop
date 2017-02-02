@@ -1,6 +1,6 @@
 const pg      = require('pg'),
       URL     = require('url'),
-      connect = process.env.DATABASE_URL || "postgres://S:@localhost:5432/plocal",
+      connect = process.env.DATABASE_URL,
       params  = URL.parse(connect),
       auth    = params.auth.split(':'),
       config  = {

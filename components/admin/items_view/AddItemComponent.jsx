@@ -2,7 +2,7 @@ const React = require('react');
 
 const ItemModal = require('./ItemModalComponent.jsx').default;
 
-const ItemActions = require('../../actions/ItemActions.js');
+const ItemActions = require('../../../actions/ItemActions.js');
 
 const AddItem = React.createClass({
   getInitialState: function () {
@@ -27,26 +27,26 @@ const AddItem = React.createClass({
           name:        form.name.value,
           item_group:  form.item_group.value,
           category:    form.category.value,
-          price:       parseInt(form.price.value, 10),
-          size:        form.size.value,
-          color:       form.color.value,
+          price:       parseFloat(parseFloat(form.price.value).toFixed(2)),
+          size:        form.size.value.toUpperCase(),
+          color:       form.color.value.toLowerCase(),
           description: form.description.value,
           sku:         form.sku.value,
           quantity:    parseInt(form.quantity.value,10),
           imageurl:    form.imageurl.value,
           status:      form.status.value
         };
-    if ( form.name.value !== ""
-      && form.item_group.value !== ""
-      && form.category.value !== ""
-      && form.price.value !== ""
-      && form.size.value !== ""
-      && form.color.value !== ""
-      && form.description.value !== ""
-      && form.sku.value !== ""
-      && form.quantity.value !== ""
-      && form.imageurl.value !== "/images/default.png"
-      && form.status.value !== "" ) {
+    if ( data.name
+      && data.item_group
+      && data.category
+      && data.price
+      && data.size
+      && data.color
+      && data.description
+      && data.sku
+      && data.quantity
+      && data.imageurl !== "/images/default.png"
+      && data.status ) {
       formValidated = true;
     }
     if (formValidated) {

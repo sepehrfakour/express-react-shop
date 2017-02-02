@@ -31,7 +31,9 @@
     text-align: left;
     li {
       display: inline-block;
+      max-height: $header-height;
       padding: 15px 0px;
+      box-sizing: border-box;
       &:hover {
         cursor: pointer;
         a {
@@ -57,9 +59,10 @@
     #items-dropdown-menu {
       display: none;
       position: absolute;
-      top: $header-height + 3;
+      top: $header-height + 1;
       left: 0px;
       background-color: $ghost;
+      box-shadow: 0px 1px 0px $shadow;
       &.open {
         display: inline-block;
         width: 100%;
@@ -67,10 +70,15 @@
       ul {
         margin: 15px;
         li {
+          display: block;
+          padding: 5px 0px;
           &:hover {
             cursor: default;
           }
           a {
+            width: 100%;
+            padding: 5px 0px;
+            text-indent: 5px;
             background-color: initial;
             &:hover {
               @include headerLinkHover;
@@ -85,21 +93,23 @@
     position: absolute;
     right: 15px;
     a {
-      height: 24px;
-      width: 30px;
-      background: url("/img/shoppingCartIcon.png");
-      background-position: center;
-      background-size: 50%;
-      background-repeat: no-repeat;
-      opacity: 0.5;
+      font-size: 18px;
+      text-align: center;
+      i {
+        display: inline-block;
+      }
+      span {
+        font-size: 12px;
+        font-weight: 400;
+      }
     }
     &:hover {
       a {
-        background: #EEE url("/img/shoppingCartIcon.png");
-        background-position: center;
-        background-size: 50%;
-        background-repeat: no-repeat;
-        opacity: 0.9;
+        @include buttonTransition;
+        i {
+          @include buttonTransition;
+          border-color: #EEE;
+        }
       }
     }
   }
@@ -113,7 +123,18 @@
     }
     #dropdown-container {
       #items-dropdown-menu {
-        ul { margin: 30px; }
+        ul {
+          margin: 30px;
+          li {
+            display: inline-block;
+            padding: 15px 0px;
+            a {
+              width: auto;
+              padding: 15px;
+              text-indent: 0px;
+            }
+          }
+        }
       }
     }
     #shopping-cart-button { right: 30px; }

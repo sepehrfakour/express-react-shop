@@ -21,7 +21,7 @@ const MainWindow    = require('./components/MainWindowComponent.jsx').default,
       ItemPage      = require('./components/items/ItemPageComponent.jsx').default,
       CartPage      = require('./components/cart/CartPageComponent.jsx').default,
       CheckoutPage  = require('./components/checkout/CheckoutPageComponent.jsx').default,
-      Admin         = require('./components/admin/DashboardComponent.jsx').default;
+      Admin         = require('./components/admin/AdminDashboardComponent.jsx').default;
 
 // Local Storage Handler
 // const store = require('store');

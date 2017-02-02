@@ -16,3 +16,6 @@ npm-debug.log
 # Ignore public folder containing webpack-bundled js and css
 /public/js
 /public/css
+
+#Ignore test data
+/schema/test_data.sql

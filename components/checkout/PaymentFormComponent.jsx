@@ -29,36 +29,38 @@ const PaymentForm = React.createClass({
     let cardType = (this.state.cardType === 'Unknown') ? '' : this.state.cardType;
     return(
       <form id="payment-form" onSubmit={this._submitCallback}>
-        <p className="row">
+        <div className="row">
           <span className="col-xs-12">
             <label>Card number</label>
-            <input type="text" name="card" placeholder="#### #### #### ####" onChange={this._onCardChangeHandler} defaultValue={payment.card}/>
+            <input type="text" name="card" placeholder="#### #### #### ####" pattern="\d*" onKeyDown={this._numericKeyPressHandler} onChange={this._onCardChangeHandler} defaultValue={payment.card}/>
             <span className="card-type">{cardType}</span>
           </span>
-        </p>
-        <p className="row">
-          <span className="col-xs-12">
-            <label>Expiration date</label>
+        </div>
+        <div className="row">
+          <span className="col-xs-4">
+            <label>Expiration</label>
             <input type="text" name="expiry" placeholder="MM/YY" defaultValue={payment.expiry}/>
           </span>
-        </p>
-        <p className="row">
-          <span className="col-xs-12">
+          <span className="col-xs-4">
             <label>CVC</label>
-            <input type="text" name="cvc" placeholder="###" defaultValue={payment.cvc}/>
+            <input type="text" name="cvc" placeholder="###" pattern="\d*" onKeyDown={this._numericKeyPressHandler} defaultValue={payment.cvc}/>
           </span>
-        </p>
-        <p className="row">
-          <span className="col-xs-12">
+          <span className="col-xs-4">
             <label>Zipcode</label>
             <input type="text" name="zip" placeholder="#####" defaultValue={payment.zip}/>
           </span>
-        </p>
-        <p className="row">
+        </div>
+        <div className="row secure-stripe">
+          <span className="col-xs-12">
+            <i className="icon-lock"></i>
+            <span>Payments securely processed with <a href="https://www.stripe.com" target="_blank">Stripe</a></span>
+          </span>
+        </div>
+        <div className="row">
           <span className="col-xs-12">
             <input type="submit" name="checkout-form-submit" value="Continue to confirmation" onClick={this._submitCallback} />
           </span>
-        </p>
+        </div>
       </form>
     );
   },
@@ -67,6 +69,17 @@ const PaymentForm = React.createClass({
       // Handle enter key
       event.stopPropagation();
       this._submitCallback(event);
+    }
+  },
+  _numericKeyPressHandler: function (event) {
+    // Allow numbers, backspace, tab, enter, esc, left, up, right, down, delete
+    if ( (event.which && event.which >= 48 && event.which <= 57) ||
+         (event.keyCode && event.keyCode >= 48 && event.keyCode <= 57) ||
+         (event.which && [8,9,13,27,37,38,39,40,46].indexOf(event.which) !== -1) ||
+         (event.keyCode && [8,9,13,27,37,38,39,40,46].indexOf(event.keyCode) !== -1) ) {
+      return;
+    } else {
+      event.preventDefault();
     }
   },
   _onCardChangeHandler: function (event) {
