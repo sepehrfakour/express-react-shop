@@ -114,7 +114,8 @@ app.use( require('request-param')() );
 const renderIndex = function (req, res) {
   res.render('index', {
     loggedIn: (req.session.authenticated || false),
-    s_pk: process.env.STRIPE_PUBLISHABLE_KEY
+    s_pk: process.env.STRIPE_PUBLISHABLE_KEY,
+    mixpanel_token: process.env.MIXPANEL_TOKEN
   });
 }
 
