@@ -74,5 +74,5 @@ ReactDOM.render(
 /************************************/
 
 // Require Mixpanel
-// const Mixpanel = require('./lib/helpers/mixpanel.js');
-// mixpanel.track('App Instance Loaded');
+const Mixpanel = require('./lib/helpers/mixpanel.js');
+mixpanel.track('App Instance Loaded');
