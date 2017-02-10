@@ -28,30 +28,51 @@ const AdminItemsView = React.createClass({
   componentWillUnmount: function () {
     ItemStore.removeListener("change", this._onChange);
   },
+  addToItemGroups: function (item) {
+    if (!this.itemGroups[item.item_group]) {
+      this.itemGroups[item.item_group] = {
+        colors: [],
+        sizes: []
+      };
+    }
+    if (this.itemGroups[item.item_group].colors.indexOf(item.color) === -1) {
+      this.itemGroups[item.item_group].colors.push(item.color);
+    }
+    if (this.itemGroups[item.item_group].sizes.indexOf(item.size) === -1) {
+      this.itemGroups[item.item_group].sizes.push(item.size);
+    }
+  },
   buildItems: function (item) {
     if ((this.state.viewInactive === false) && (item.status === 'inactive')) {
       return;
     }
-    return (
-      <tr key={item.id} data-id={item.id}>
-        <td name="name"><img src={item.imageurl}></img></td>
-        <td name="name">{item.name}</td>
-        <td name="item_group">{item.item_group}</td>
-        <td name="category">{item.category}</td>
-        <td name="price">{item.price}</td>
-        <td name="size">{item.size}</td>
-        <td name="color">{item.color}</td>
-        <td name="description">{item.description}</td>
-        <td name="sku">{item.sku}</td>
-        <td name="quantity">{item.quantity}</td>
-        <td name="status">{item.status}</td>
-        <td>
-          <button data-id={item.id} onClick={this._onEditClick}>Edit</button>
-        </td>
-      </tr>
-    )
+    if (!this.rendered[item.item_group]) {
+      this.rendered[item.item_group] = true;
+      return (
+        <tr key={item.id} data-id={item.id}>
+          <td name="name"><img src={item.imageurl}></img></td>
+          <td name="name">{item.name}</td>
+          <td name="item_group">{item.item_group}</td>
+          <td name="category">{item.category}</td>
+          <td name="price">{item.price}</td>
+          <td name="size">{this.itemGroups[item.item_group].sizes.join(', ')}</td>
+          <td name="color">{this.itemGroups[item.item_group].colors.join(', ')}</td>
+          <td name="description">{item.description}</td>
+          <td name="sku">{item.sku}</td>
+          <td name="quantity">{item.quantity}</td>
+          <td name="status">{item.status}</td>
+          <td>
+            <button data-id={item.id} onClick={this._onEditClick}>Edit</button>
+          </td>
+        </tr>
+      )
+    }
   },
   render: function () {
+    this.rendered = {};
+    // Find all available colors for each item_group
+    this.itemGroups = {};
+    this.state.items.map(this.addToItemGroups);
     return(
       <div id="admin-items-view">
         <ItemsNav

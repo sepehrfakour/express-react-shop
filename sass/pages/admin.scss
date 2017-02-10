@@ -6,9 +6,11 @@
     margin: 15px auto;
     tr {
       border-bottom: 1px solid #EEE;
+      &:hover { background-color: #EEE; }
       th,
       td {
         padding: 5px 5px;
+        font-size: 14px;
         text-align: left;
         img {
           max-width: 60px;
@@ -48,9 +50,11 @@
       a {
         @include headerLink;
         &.toggled {
+          color: #FFF;
+          background-color: #444;
           &:after {
             content: '✓';
-            margin-left: 5px;
+            margin-left: 6px;
             color: $success-green-trans;
           }
         }
