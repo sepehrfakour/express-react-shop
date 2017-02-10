@@ -25,13 +25,13 @@ const AddItem = React.createClass({
           // Create a temporary ID until we are returned a real one from DB following AJAX promise resolution in DAO
           tempid:      Math.random()*1000000,
           name:        form.name.value,
-          item_group:  form.item_group.value,
+          item_group:  form.name.value.toLowerCase().split(" ").join("_"),
           category:    form.category.value,
           price:       parseFloat(parseFloat(form.price.value).toFixed(2)),
           size:        form.size.value.toUpperCase(),
           color:       form.color.value.toLowerCase(),
           description: form.description.value,
-          sku:         form.sku.value,
+          sku:         "no_sku",
           quantity:    parseInt(form.quantity.value,10),
           imageurl:    form.imageurl.value,
           status:      form.status.value

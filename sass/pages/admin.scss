@@ -6,16 +6,19 @@
     margin: 15px auto;
     tr {
       border-bottom: 1px solid #EEE;
-      &:hover { background-color: #EEE; }
       th,
       td {
-        padding: 5px 5px;
+        padding: 5px 15px;
         font-size: 14px;
         text-align: left;
         img {
           max-width: 60px;
         }
       }
+    }
+    tbody tr:hover {
+      background-color: #EEE;
+      cursor: pointer;
     }
   }
 }
@@ -70,6 +73,7 @@
 
 #admin-items-view {
   #items-nav { padding: 0px 30px; }
+  #item-group-modal,
   #add-item-modal,
   #edit-item-modal {
     display: block;
@@ -78,7 +82,8 @@
     left: 0px;
     width: 100%;
     text-align: center;
-    form {
+    form,
+    .inner-modal {
       position: relative;
       width: 300px;
       margin: 0px auto;
@@ -187,6 +192,9 @@
           }
         }
       }
+    }
+    .inner-modal {
+      width: 780px;
     }
   }
 }

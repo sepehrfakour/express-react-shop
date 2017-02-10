@@ -1,8 +1,9 @@
 const React = require('react');
 
-const ItemsNav = require('./AdminItemsNavComponent.jsx').default,
-      AddItem  = require('./AddItemComponent.jsx').default,
-      EditItem = require('./EditItemComponent.jsx').default;
+const ItemsNav  = require('./AdminItemsNavComponent.jsx').default,
+      ItemGroup = require('./ItemGroupModalComponent.jsx').default,
+      AddItem   = require('./AddItemComponent.jsx').default,
+      EditItem  = require('./EditItemComponent.jsx').default;
 
 const ItemStore      = require('../../../stores/ItemStore.js').default,
       ItemActions    = require('../../../actions/ItemActions.js'),
@@ -16,6 +17,7 @@ const AdminItemsView = React.createClass({
   getInitialState: function () {
     return {
       items: getItemState(),
+      itemGroupModalOpen: false,
       addModalOpen: false,
       editModalOpen: false,
       selectedForEdit: false,
@@ -49,21 +51,15 @@ const AdminItemsView = React.createClass({
     if (!this.rendered[item.item_group]) {
       this.rendered[item.item_group] = true;
       return (
-        <tr key={item.id} data-id={item.id}>
-          <td name="name"><img src={item.imageurl}></img></td>
+        <tr key={item.id} data-id={item.id} data-item-group={item.item_group} onClick={this._onItemGroupClick}>
+          <td name="image"><img src={item.imageurl}></img></td>
           <td name="name">{item.name}</td>
-          <td name="item_group">{item.item_group}</td>
           <td name="category">{item.category}</td>
           <td name="price">{item.price}</td>
           <td name="size">{this.itemGroups[item.item_group].sizes.join(', ')}</td>
           <td name="color">{this.itemGroups[item.item_group].colors.join(', ')}</td>
-          <td name="description">{item.description}</td>
-          <td name="sku">{item.sku}</td>
           <td name="quantity">{item.quantity}</td>
           <td name="status">{item.status}</td>
-          <td>
-            <button data-id={item.id} onClick={this._onEditClick}>Edit</button>
-          </td>
         </tr>
       )
     }
@@ -77,7 +73,7 @@ const AdminItemsView = React.createClass({
       <div id="admin-items-view">
         <ItemsNav
           addClickHandler={this._onAddCLick}
-          toggleInactiveHandler={this._toggleViewInactiveCallback}
+          toggleInactiveHandler={this._toggleInactiveCallback}
           toggled={this.state.viewInactive}
         />
         <table id="admin-items-list">
@@ -85,22 +81,19 @@ const AdminItemsView = React.createClass({
             <tr>
               <th>Image</th>
               <th>Name</th>
-              <th>Item Group</th>
               <th>Category</th>
               <th>Price</th>
-              <th>Size</th>
-              <th>Color</th>
-              <th>Description</th>
-              <th>Sku</th>
+              <th>Sizes</th>
+              <th>Colors</th>
               <th>Quantity</th>
               <th>Status</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {this.state.items.map(this.buildItems)}
           </tbody>
         </table>
+        {this.state.itemGroupModalOpen ? <ItemGroup closeModal={this._closeModalsCallback} items={this.state.selectedForEdit} editClickHandler={this._onEditClick}/> : <span style={{display:'none'}}></span>}
         {this.state.addModalOpen ? <AddItem closeModal={this._closeModalsCallback} /> : <span style={{display:'none'}}></span>}
         {this.state.editModalOpen ? <EditItem closeModal={this._closeModalsCallback} item={this.state.selectedForEdit} /> : <span style={{display:'none'}}></span>}
       </div>
@@ -109,18 +102,36 @@ const AdminItemsView = React.createClass({
   _onChange: function () {
     this.setState({ items: getItemState()});
   },
+  _onItemGroupClick: function (e) {
+    let target = (e.target.nodeName === "TR") ? e.target : e.target.parentElement,
+        item_group = target.getAttribute('data-item-group'),
+        items = ItemStore.getItemsByItemGroup(item_group);
+    OverlayActions.setOverlay(true);
+    window.scrollTo(0, 0);
+    this.setState({
+      itemGroupModalOpen: true,
+      addModalOpen: false,
+      editModalOpen: false,
+      selectedForEdit: items
+    })
+  },
   _onAddCLick: function (e) {
     OverlayActions.setOverlay(true);
+    window.scrollTo(0, 0);
     this.setState({
+      itemGroupModalOpen: false,
       addModalOpen: true,
       editModalOpen: false
     })
   },
   _onEditClick: function (e) {
+    let target = (e.target.nodeName === "TR") ? e.target : e.target.parentElement,
+        id     = parseInt(target.getAttribute('data-id'),10),
+        item   = ItemStore.getItem(id);
     OverlayActions.setOverlay(true);
-    let id = parseInt(e.target.getAttribute('data-id'),10);
-    let item = ItemStore.getItem(id);
+    window.scrollTo(0, 0);
     this.setState({
+      itemGroupModalOpen: false,
       addModalOpen: false,
       editModalOpen: true,
       selectedForEdit: item
@@ -130,12 +141,13 @@ const AdminItemsView = React.createClass({
     e.preventDefault();
     OverlayActions.setOverlay(false);
     this.setState({
+      itemGroupModalOpen: false,
       addModalOpen: false,
       editModalOpen: false,
       selectedForEdit: false
     })
   },
-  _toggleViewInactiveCallback: function (e) {
+  _toggleInactiveCallback: function (e) {
     let viewInactive = (this.state.viewInactive) ? false : true;
     this.setState({
       viewInactive: viewInactive
