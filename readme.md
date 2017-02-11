@@ -2,7 +2,7 @@
 
 #A simple and fast e-commerce web application
 
-An ES2015 javascript single-page e-commerce web app that is simple, maintainable, easily extensible, and quick to get up and running. Stack consists of a Node backend running an Express server/API, and a React frontend using the vanilla flux pattern. Designed for deployment on a cloud application platform like Heroku. Configured to use Postgres, AWS S3 for hosting static assets, Stripe for processing payments, Sendgrid for sending email, Mixpanel for event-tracking, NewRelic for monitoring, and Rollbar for error logging. Frontend javascript transpiled, bundled, and uglified with Webpack/Babel. SASS compiled and bundled via middleware. Uses Webpack Dev Server for bundling/hot-reloading in development environment, and Gulp for running tasks.
+An ES2015 javascript single-page e-commerce web app that is simple, maintainable, easily extensible, and quick to get up and running. Stack consists of a Node backend running an Express server/API, and a React frontend using flux pattern. Configured to use Postgres, AWS S3 for static assets, Stripe for processing payments, Sendgrid for sending email, Mixpanel for event-tracking, NewRelic for monitoring, and Rollbar for error logging. Frontend javascript transpiled, bundled, and uglified with Webpack/Babel. SASS bundled via middleware. Uses Webpack Dev Server with hot-reloading. Uses Gulp for running tasks.
 
 ----------------------------------------------
 
@@ -10,68 +10,66 @@ An ES2015 javascript single-page e-commerce web app that is simple, maintainable
 
 - Postgres installed and running (local db and separate production DB)
 
-- AWS account with S3 setup (don't forget to configure CORS to accept requests from your domain(s))
+- Accounts for the following services:
 
-- A Stripe account
+- AWS account with S3
 
-- A Sendgrid account
+- Stripe
 
-- A Newrelic account
+- Sendgrid
 
-- A Rollbar account
+- Newrelic
 
-- A Mixpanel account
+- Rollbar
 
-- All above accounts are essentially free to get started with
+- Mixpanel
 
 ----------------------------------------------
 
 ##First time installation:
 
 
-####1 - Clone repo
+####1 - Clone repo, `npm install`
 
-####2 - Set local ENV Vars
+####2 - Set local environment variables
 
-Create a .env file in project root and set the following variables:
+Create a .env file in project root and set the following:
 
-NODE_ENV (i.e. 'development' vs 'production')
+- NODE_ENV ('development' or 'production')
 
-PORT
+- PORT
 
-ADMIN_EMAIL (where to send email notifications when an order/payment is successfully completed)
+- ADMIN_EMAIL (where to send email notifications when an order/payment is successfully completed)
 
-ADMIN_USERNAME (for authentication to use admin dashboard)
+- ADMIN_USERNAME (admin dashboard authentication)
 
-ADMIN_PASSWORD (for authentication to use admin dashboard)
+- ADMIN_PASSWORD (admin dashboard authentication)
 
-DATABASE_URL
+- DATABASE_URL
 
-AWS_USER
+- AWS_USER
 
-AWS_ACCESS_KEY_ID
+- AWS_ACCESS_KEY_ID
 
-AWS_SECRET_ACCESS_KEY
+- AWS_SECRET_ACCESS_KEY
 
-S3_BUCKET
+- S3_BUCKET
 
-STRIPE_SECRET_KEY
+- STRIPE_SECRET_KEY
 
-STRIPE_PUBLISHABLE_KEY
+- STRIPE_PUBLISHABLE_KEY
 
-SENDGRID_API_KEY
+- SENDGRID_API_KEY
 
-####3 - Set production ENV Vars
-
-E.g. on Heroku this can be done via CLI or in your app's settings / config
+####3 - Set production environment variables
 
 ####4 - Install modules
 
 `npm install`
 
-####5 - Migrate DB schema and test data
+####5 - Migrate DB schema and seed
 
-Run contents of schema.sql on local Postgres DB (e.g via psql at command-line or PSequel GUI), then sync with production DB. Mock and insert a few rows of test data into items table in local DB.
+Run contents of schema.sql on local Postgres DB (use psql from the command line or a GUI like PSequel), then sync with production DB. Insert a few rows of test data into items table in local DB.
 
 ----------------------------------------------
 
@@ -113,10 +111,10 @@ In order to run Unit Tests use:
 
 ####Roadmap:
 
-- Allow admin to add items as a group, set order status / issue refunds, edit banner images
+- Allow admin to add items as a group, set order status, edit banner images
 
-- Add pagination
+- Add pagination for admin items and orders views
 
 - Add New Relic and Rollbar
 
-- Lazy load images
+- Lazy load images a bit below the fold

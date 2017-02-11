@@ -23,23 +23,9 @@ const MainWindow    = require('./components/MainWindowComponent.jsx').default,
       CheckoutPage  = require('./components/checkout/CheckoutPageComponent.jsx').default,
       Admin         = require('./components/admin/AdminDashboardComponent.jsx').default;
 
-// Local Storage Handler
-// const store = require('store');
-
 /************************************/
 /*********** 2. Configure ***********/
 /************************************/
-
-// Handle localStorage user data
-// window.sessionDataObject = store.get('exampleStoredObject');
-// if (sessionDataObject)
-//     // Apply retrieved localStorage user data
-//     Data.user = sessionDataObject;
-// else {
-//     // Set localStorage user data to defaults
-//     store.set('exampleStoredObject', Data.user)
-//     window.sessionDataObject = Data.user;
-// }
 
 // Set loggedIn status (retrieve from index view)
 let Data = {
