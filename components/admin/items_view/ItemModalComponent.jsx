@@ -10,50 +10,46 @@ const ItemModal = React.createClass({
       };
   },
   componentWillMount: function () {
-    window.addEventListener('keydown', this._keyPressHandler)
+    window.addEventListener('keydown', this._keyPressHandler);
   },
   componentDidMount: function () {
     document.getElementById("file-input").addEventListener('change', this._fileInputChangeHandler);
   },
   componentWillUnmount: function () {
-    window.removeEventListener('keydown', this._keyPressHandler)
+    window.removeEventListener('keydown', this._keyPressHandler);
     document.getElementById("file-input").removeEventListener('change', this._fileInputChangeHandler);
   },
   render: function () {
-    var id = null,
-        name = '',
-        item_group = '',
-        category = '',
-        price = '',
-        size = '',
-        color = '',
+    let item = this.props.item,
+        id          = null,
+        name        = '',
+        category    = '',
+        price       = '',
+        size        = '',
+        color       = '',
         description = '',
-        sku = '',
-        quantity = '',
-        imageurl = '/img/shoppingCartIcon.png',
-        status = '',
+        quantity    = '',
+        imageurl    = '/img/shoppingCartIcon.png',
+        status      = '',
         previewClassName = 'hidden',
         spinnerClassName = 'spinner';
-    if (this.props.item) {
-      id = this.props.item.id,
-      name = this.props.item.name,
-      item_group = this.props.item.item_group,
-      category = this.props.item.category,
-      price = this.props.item.price,
-      size = this.props.item.size,
-      color = this.props.item.color,
-      description = this.props.item.description,
-      sku = this.props.item.sku,
-      quantity = this.props.item.quantity,
-      imageurl = this.props.item.imageurl,
-      status = this.props.item.status,
+    if (item) {
+      id = item.id,
+      name = item.name,
+      category = item.category,
+      price = item.price,
+      size = item.size,
+      color = item.color,
+      description = item.description,
+      quantity = item.quantity,
+      imageurl = item.imageurl,
+      status = item.status,
       previewClassName = 'visible';
     }
     if (this.state.loadingImage) {
       spinnerClassName = 'spinner visible';
     }
     // TODO: Add validation to form
-    // TODO: Consider moving file input elements out of form
     return(
         <form id={this.props.type} data-id={id} onSubmit={this.props.submitCallback}>
           <h2>{this.props.submitButtonText + " Form"}</h2>
@@ -82,10 +78,6 @@ const ItemModal = React.createClass({
             <input type="text" name="name" placeholder="Name" defaultValue={name}/>
           </p>
           <p>
-            <label>Item Group:</label>
-            <input type="text" name="item_group" placeholder="Item Group" defaultValue={item_group}/>
-          </p>
-          <p>
             <label>Price:</label>
             <input type="number" step="any" name="price" placeholder="Price" defaultValue={price}/>
           </p>
@@ -100,10 +92,6 @@ const ItemModal = React.createClass({
           <p>
             <label>Description:</label>
             <textarea name="description" placeholder="Description" defaultValue={description}/>
-          </p>
-          <p>
-            <label>SKU:</label>
-            <input type="text" name="sku" placeholder="Sku" defaultValue={sku}/>
           </p>
           <p>
             <label>Quantity:</label>
@@ -135,19 +123,18 @@ const ItemModal = React.createClass({
     }
   },
   _fileInputChangeHandler: function () {
-    const files = document.getElementById('file-input').files;
-    const file = files[0];
+    let files = document.getElementById('file-input').files,
+        file = files[0];
     if(file == null){
       return alert('No file selected.');
     } else {
-      // Set upload pseudo button innerHTML to filename &
+      // Set upload pseudo button innerHTML to filename
       // Inject loading spinner
       this.setState({
         loadingImage: true,
         filename: file.name
       })
     }
-    // debugger;
     S3DAO.getSignedRequest(file, this._updateImagePreviewCallback);
   },
   _updateImagePreviewCallback: function (url) {

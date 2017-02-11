@@ -28,7 +28,7 @@ class ItemDAO {
       Then, use the new (real) ID to update the DOM item element's temporary ID in the Store */
       if (endpoint === '/api/v1/item/create') { HelperActions.setRealId(data.tempid, JSON.parse(responseText).id) };
       console.log("Request executed. Response:",responseText);
-    })
+    });
 
   }
   getItems(callback) {
@@ -38,8 +38,8 @@ class ItemDAO {
         return res.json();
       })
       .then( function(json) {
-        callback(json)
-      })
+        callback(json);
+      });
   }
   getItem(id) {
     // TODO: Create method here

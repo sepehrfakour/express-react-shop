@@ -24,13 +24,13 @@ const EditItem = React.createClass({
         data          = {
           id:          this.props.item.id,
           name:        form.name.value,
-          item_group:  form.item_group.value,
+          item_group:  form.name.value.toLowerCase().split(" ").join("_"),
           category:    form.category.value,
           price:       parseFloat(parseFloat(form.price.value).toFixed(2)),
           size:        form.size.value.toUpperCase(),
           color:       form.color.value.toLowerCase(),
           description: form.description.value,
-          sku:         form.sku.value,
+          sku:         "no_sku",
           quantity:    parseInt(form.quantity.value,10),
           imageurl:    form.imageurl.value,
           status:      form.status.value

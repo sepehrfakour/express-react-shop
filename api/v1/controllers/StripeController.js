@@ -9,209 +9,163 @@ const OrdersModel     = require('../models/OrdersModel.js'),
 class StripeController {
 
   constructor() {
-    // super();
     this.preCharge         = this.preCharge.bind(this);
     this.charge            = this.charge.bind(this);
     this.postCharge        = this.postCharge.bind(this);
     this.insertOrderItems  = this.insertOrderItems.bind(this);
     this.sendNotifications = this.sendNotifications.bind(this);
-    this.currentReq;
   }
 
   preCharge(req,res) {
-    /*
-    * Set instance variables and retreive items from DB in preparation for making a charge
-    * ------------------------------------------------------------------------------------
-    */
     console.log("----------\nCharge request receieved");
     if (!req.body || !req.body.stripeToken || !req.body.cart || !req.body.shipping) {
-      // Ensure we have a Stripe customer token, a cart of items, and shipping info; otherwise send error response
       console.log('Bad order/charge request');
       return res.status(400).end();
     }
-    // Set current request object instance variable
-    this.currentReq = {
-      token: req.body.stripeToken,
-      cart: req.body.cart,
-      shipping: req.body.shipping,
-      payment: {},
-      items: [],
-      res: res
+    // Add some default options to request.body object
+    req.body.payment = {
+      status: 'uncharged',
+      currency: 'usd'
     };
-    // Set additional variables
-    this.currentReq.payment.status = 'uncharged';
-    this.currentReq.payment.currency = 'usd';
-    this.currentReq.shipping.shipping_method = 'standard';
-    this.currentReq.shipping.shipping_amount = 0.00;
-    this.currentReq.shipping.shipping_country = 'usa';
-    this.currentReq.shipping.tax_rate = 0.08;
-    this.currentReq.shipping.shipping_special_instructions = '';
-    // Map cart to new array of IDs for querying
-    let itemIds = this.currentReq.cart.map(function(item) { return item.id });
-    ItemsModel.getItemsForOrder(itemIds,this.charge);
+    req.body.items = [];
+    req.body.shipping.shipping_method = 'standard';
+    req.body.shipping.shipping_amount = 0.00;
+    req.body.shipping.shipping_country = 'usa';
+    req.body.shipping.tax_rate = 0.08;
+    req.body.shipping.shipping_special_instructions = '';
+    // Retrieve cart items by ID
+    let that    = this,
+        cart    = req.body.cart,
+        itemIds = cart.map(function(item) { return item.id });
+    ItemsModel.getItemsForOrder(itemIds, function (items) {
+      that.charge(req,res,items);
+    });
   }
-  charge(result) {
-    /*
-    * Calculate amounts and create a new charge via Stripe API
-    * --------------------------------------------------------
-    */
-    // First, get each queried item, find associated cart item by id, append order_quantity from cart item onto queried item
-    let items = [];
-    let that = this;
-    // Ensure result is an array
-    if (!Array.isArray(result)) {
-      // In the case that preCharge db query returned single object, push it into an empty array
-      // As long as queried item id matches cart item id, add order_quantity property
-      // Otherwise send a 400/error response to client
-      if (result.id === that.currentReq.cart[0].id) {
-        result.order_quantity = parseInt(that.currentReq.cart[0].quantity,10);
-        items.push(result);
-      } else { that.currentReq.res.status(400).end(); }
-    } else {
-      // In the case that preCharge db query returned array of objects, map cart quantities into items array with NESTED LOOP
-      // TODO: Consider revisiting this nested loop algo - temp fix could be setting max size limit on cart
-      items = result.map( function (item) {
-        // Initialize new order_quantity property on each queried item object
+
+  charge(req,res,items) {
+    let temp = [],
+        that = this;
+    // Append order_quantity to each queried item
+    if (!Array.isArray(items)) { // Only one item was retrieved
+      items.order_quantity = parseInt(req.body.cart[0].quantity,10); // Add order_quantity property
+      temp.push(items);
+    } else { // Multiple items were retrieved
+      // Nested loop OK here for code clarity. Items array max possible size limited to # of 'active' items
+      temp = items.map( function (item) {
         item.order_quantity = 0;
-        that.currentReq.cart.map( function (cart_item) {
+        req.body.cart.map( function (cart_item) {
           if (item.id === cart_item.id) {
-            // Update item order_quantity
-            item.order_quantity = parseInt(cart_item.quantity,10);
+            item.order_quantity = parseInt(cart_item.quantity,10); // Add order_quantity property
           }
         });
         return item;
       });
     }
-    // Save items array to instance variable (for use in method further down the callback chain)
-    that.currentReq.items = items;
-    // Initialize amount variables
-    let subtotal = 0,
-        tax = 0,
-        total = 0,
-        amount = 0;
-    // Calculate subtotal
-    items.map( function (item) {
+    // Save temp array for later use
+    req.body.items = temp;
+    // CALCULATE AMOUNTS
+    let subtotal=0, tax=0, total=0, amount=0; // Initialize amount variables
+    temp.map( function (item) { // Calculate subtotal
       subtotal += (item.price * item.order_quantity);
     });
-    // Calculate tax
-    tax = subtotal * that.currentReq.shipping.tax_rate;
-    // Calculate total
-    total = (subtotal + tax).toFixed(2);
-    // Calculate amount in pennies (must be INTEGER not float)
-    // Make sure to use parseInt here to remove possible trailing digits as a result of binary addition
-    amount = parseInt((total * 100),10);
-    // Set payment amount instance variables
-    that.currentReq.payment.subtotal_amount = subtotal.toFixed(2);
-    that.currentReq.payment.total_amount = total;
-    that.currentReq.payment.tax_amount = tax.toFixed(2);
-    console.log("Payment Total_Amount:",that.currentReq.payment.total_amount);
-    // Create Stripe charge
+    tax    = subtotal * req.body.shipping.tax_rate; // Calculate tax
+    total  = (subtotal + tax).toFixed(2); // Calculate total
+    amount = parseInt((total * 100),10); // Calculate INTEGER amount in pennies (binary addition can yield floats)
+    // Save payment amounts
+    req.body.payment.subtotal_amount = subtotal.toFixed(2);
+    req.body.payment.tax_amount      = tax.toFixed(2);
+    req.body.payment.total_amount    = total;
+    console.log("Payment Total_Amount:",req.body.payment.total_amount);
+
+    // CREATE STRIPE CHARGE
     let charge = stripe.charges.create({
       amount: amount,
-      currency: that.currentReq.payment.currency,
+      currency: req.body.payment.currency,
       description: "Completed charge",
-      source: that.currentReq.token,
-    }, function(err, charge) {
-      // asynchronously called
-      if(err){
+      source: req.body.stripeToken,
+    }, function (err, charge) {
+      if (err) { // Handle error
         console.log("Stripe charge error:",err);
-        // Send 402/payment required response back to client
-        that.currentReq.res.status(402).write(err.message);
-        return that.currentReq.res.end();
+        res.status(402).write(err.message);
+        return res.end();
       }
+      // Handle success
       console.log("Stripe charge successful - CHARGE ID:",charge.id);
-      that.currentReq.payment.status = 'charged';
-      that.postCharge(charge);
+      req.body.payment.status = 'charged';
+      that.postCharge(req,res,charge);
     });
   }
 
-  postCharge(charge) {
-    /*
-    * Create and insert a new order, then update the Stripe charge metadata with the order_id
-    * ---------------------------------------------------------------------------------------
-    */
+  postCharge(req,res,charge) {
     // Create new order
-    let that = this;
-    let data = {
-      status: that.currentReq.payment.status,
-      customer_first_name: that.currentReq.shipping.customer_first_name,
-      customer_last_name: that.currentReq.shipping.customer_last_name,
-      customer_email: that.currentReq.shipping.customer_email,
-      customer_phone: that.currentReq.shipping.customer_phone,
-      currency: that.currentReq.payment.currency,
-      subtotal_amount: that.currentReq.payment.subtotal_amount,
-      total_amount: that.currentReq.payment.total_amount,
-      tax_amount: that.currentReq.payment.tax_amount,
-      shipping_method: that.currentReq.shipping.shipping_method,
-      shipping_amount: that.currentReq.shipping.shipping_amount,
-      shipping_street_1: that.currentReq.shipping.shipping_street_1,
-      shipping_street_2: that.currentReq.shipping.shipping_street_2,
-      shipping_city: that.currentReq.shipping.shipping_city,
-      shipping_state: that.currentReq.shipping.shipping_state,
-      shipping_country: that.currentReq.shipping.shipping_country,
-      shipping_postal_code: that.currentReq.shipping.shipping_postal_code,
-      shipping_special_instructions: that.currentReq.shipping.shipping_special_instructions
+    let that = this,
+        data = {
+      status: req.body.payment.status,
+      customer_first_name: req.body.shipping.customer_first_name,
+      customer_last_name: req.body.shipping.customer_last_name,
+      customer_email: req.body.shipping.customer_email,
+      customer_phone: req.body.shipping.customer_phone,
+      currency: req.body.payment.currency,
+      subtotal_amount: req.body.payment.subtotal_amount,
+      total_amount: req.body.payment.total_amount,
+      tax_amount: req.body.payment.tax_amount,
+      shipping_method: req.body.shipping.shipping_method,
+      shipping_amount: req.body.shipping.shipping_amount,
+      shipping_street_1: req.body.shipping.shipping_street_1,
+      shipping_street_2: req.body.shipping.shipping_street_2,
+      shipping_city: req.body.shipping.shipping_city,
+      shipping_state: req.body.shipping.shipping_state,
+      shipping_country: req.body.shipping.shipping_country,
+      shipping_postal_code: req.body.shipping.shipping_postal_code,
+      shipping_special_instructions: req.body.shipping.shipping_special_instructions
     };
     // Insert new order
     OrdersModel.addOrder(data, function (order) {
       console.log("Order insert successful - ORDER ID:",order.id);
-      // Update the stripe charge with the new order ID
+      // Update the stripe charge metadata with the new order ID
       stripe.charges.update(
-        // TODO: Consider adding a description of the order here
         charge.id,
-        {
-          metadata: { "order_id": order.id }
-        },
+        { metadata: { "order_id": order.id } },
         function (err, charge) {
-          // Handle error
-          if (err) {
+          if (err) { // Handle error
             console.log("Stripe update_charge error:",err);
-            // Send 402/payment required response back to client
-            that.currentReq.res.status(402).write(err.message);
-            return that.currentReq.res.end();
+            res.status(402).write(err.message);
+            return res.end();
           }
           // Handle success
           console.log("Stripe update_charge successful");
-          that.insertOrderItems(order);
+          that.insertOrderItems(req,res,order);
         }
       );
     });
   }
 
-  insertOrderItems(order) {
-    /*
-    * Create and insert new order_items for every item in the cart, then send 200/Success response to client
-    * ------------------------------------------------------------------------------------------------------
-    */
+  insertOrderItems(req,res,order) {
     // Insert item_ids into order_items table, associating them with the order_id
-    let that = this;
-    let data = {
+    let that = this,
+        data = {
       order_id: order.id,
-      cart: that.currentReq.cart
+      cart: req.body.cart
     }
     console.log("insertOrderItems DATA:",data);
     OrderItemsModel.addOrderItems(data, function (result) {
+      // Handle success
       console.log("Order_Items insert successful\n----------");
-      // Send 200/success response back to client
-      that.currentReq.res.status(200);
-      that.currentReq.res.end();
-      that.sendNotifications(order);
+      res.status(200);
+      res.end();
+      that.sendNotifications(req,res,order);
     })
   }
 
-  sendNotifications(order) {
-    /*
-    * Create and send notification emails to customer and admin
-    * ---------------------------------------------------------
-    */
-    let that = this;
+  sendNotifications(req,res,order) {
     // Create customer notification email
-    let from_string    = 'no-reply@example.com',
+    let that = this,
+        from_string    = 'no-reply@example.com',
         to_string      = order.customer_email,
         subject_string = 'Your order has been placed!',
         item_string    = '';
     // Build item string
-    that.currentReq.items.map( function (item) {
+    req.body.items.map( function (item) {
       item_string += '(x' + item.order_quantity + ') ' + item.name + ' (size: ' + item.size + ', color: ' + item.color + ')' + '\n\n';
     })
     // Build content string, injecting item string
@@ -226,21 +180,22 @@ class StripeController {
           Thanks, and have a great day!\n';
     // Send customer notification email
     MailController.sendMail(from_string,to_string,subject_string,content_string);
+
     // Create admin notification email
-    let admin_subject_string = 'New order placed';
-    let admin_content_string = '\
+    let admin_subject_string = 'New order placed',
+        admin_content_string = '\
           Customer: ' + order.customer_first_name + ' ' + order.customer_last_name+ '\n\n\
           Customer email: ' + order.customer_email + '\n\n\
           Order ID: ' + order.id + '\n\n\
           ----------\n\n\
           Customer Address:' + '\n\n\
           ----------\n\n\
-          ' + that.currentReq.shipping.shipping_street_1 + '\n\n\
-          ' + that.currentReq.shipping.shipping_street_2 + '\n\n\
-          ' + that.currentReq.shipping.shipping_city + '\n\n\
-          ' + that.currentReq.shipping.shipping_state + '\n\n\
-          ' + that.currentReq.shipping.shipping_postal_code + '\n\n\
-          ' + that.currentReq.shipping.shipping_country + '\n\n\
+          ' + req.body.shipping.shipping_street_1 + '\n\n\
+          ' + req.body.shipping.shipping_street_2 + '\n\n\
+          ' + req.body.shipping.shipping_city + '\n\n\
+          ' + req.body.shipping.shipping_state + '\n\n\
+          ' + req.body.shipping.shipping_postal_code + '\n\n\
+          ' + req.body.shipping.shipping_country + '\n\n\
           ----------\n\n\
           Item(s):\n\n\
           ----------\n\n\
@@ -253,8 +208,6 @@ class StripeController {
     MailController.sendMail(from_string,adminEmail,admin_subject_string,admin_content_string);
     console.log("Email notifications sent to customer and admin\n----------");
   }
-
-
 
 }
 

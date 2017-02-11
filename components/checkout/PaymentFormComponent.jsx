@@ -72,11 +72,11 @@ const PaymentForm = React.createClass({
     }
   },
   _numericKeyPressHandler: function (event) {
-    // Allow numbers, backspace, tab, enter, esc, left, up, right, down, delete
+    // Allow numbers, backspace, tab, enter, control/command, esc, space, left, up, right, down, delete, c, v, mac command (91/224)
     if ( (event.which && event.which >= 48 && event.which <= 57) ||
          (event.keyCode && event.keyCode >= 48 && event.keyCode <= 57) ||
-         (event.which && [8,9,13,27,37,38,39,40,46].indexOf(event.which) !== -1) ||
-         (event.keyCode && [8,9,13,27,37,38,39,40,46].indexOf(event.keyCode) !== -1) ) {
+         (event.which && [8,9,13,17,27,32,37,38,39,40,46,67,86,91,224].indexOf(event.which) !== -1) ||
+         (event.keyCode && [8,9,13,17,27,32,37,38,39,40,46,67,86,91,224].indexOf(event.keyCode) !== -1) ) {
       return;
     } else {
       event.preventDefault();
