@@ -3,7 +3,7 @@ var webpack = require('webpack');
 module.exports = {
   context: __dirname + '/',
   entry: {
-    app: ['whatwg-fetch','./entry.js'],
+    app: ['whatwg-fetch','./client/entry.js'],
   },
 
   output: {
