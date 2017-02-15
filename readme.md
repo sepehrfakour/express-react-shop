@@ -45,6 +45,10 @@ Create a .env file in project root and set the following:
 
 - ADMIN_PASSWORD (admin dashboard authentication)
 
+- SESSION_SECRET (for configuring express-session middleware)
+
+- SESSION_NAME (for configuring express-session middleware)
+
 - DATABASE_URL
 
 - AWS_USER
