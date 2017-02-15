@@ -25,7 +25,7 @@ require('express-helpers')(app);
 
 app.use(
   sassMiddleware({
-    src: __dirname + '/sass',
+    src: __dirname + '/client/sass',
     dest: __dirname + '/public/css',
     prefix:  '/css',
     debug: true,
@@ -33,24 +33,18 @@ app.use(
 );
 
 // Session config
-const expiry = new Date( Date.now() + 60 * 60 * 1000 ),
-      oneHourOfMilliseconds = 60 * 60 * 1000;
+const ONEHOURINMILLISECONDS = 60 * 60 * 1000;
 const sess = {
-  secret: 'meow8waka_Zerg',
-  name: 'arbitrarySessionName07856809875671798376',
-  // TODO update resave and saveUninitialized
+  secret: process.env.SESSION_SECRET,
+  name: process.env.SESSION_NAME,
+  // Consider updating resave and saveUninitialized options as necessary if you modify user session setup
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    maxAge: oneHourOfMilliseconds
-    // expires: expiry
+    maxAge: ONEHOURINMILLISECONDS
   }
 }
-
-// TODO: extract this hard-coded admin config
-const username = process.env.ADMIN_USERNAME,
-      password = process.env.ADMIN_PASSWORD;
 
 // Configuration specific to production env
 if (env == 'production') {
@@ -65,8 +59,10 @@ if (env == 'production') {
 
 // Static assets path
 app.use(express.static(__dirname + '/public'));
+
 // Use helmet
 app.use(helmet());
+
 // Use sessions
 app.use(session(sess));
 
@@ -101,143 +97,12 @@ app.use(bodyParser.urlencoded({
 // Parse request params like in Express 3.0
 app.use( require('request-param')() );
 
-
-
-
-
-
-
-
-
-
-// Route helper methods
-const renderIndex = function (req, res) {
-  res.render('index', {
-    loggedIn: (req.session.authenticated || false),
-    s_pk: process.env.STRIPE_PUBLISHABLE_KEY,
-    mixpanel_token: process.env.MIXPANEL_TOKEN
-  });
-}
-
-const renderLogin = function (req, res) {
-  res.render('login', {
-    loggedIn: (req.session.authenticated || false)
-  });
-}
-
-const authenticate = function (req, res, next) {
-  if (req.session && req.session.authenticated) {
-    next();
-  } else {
-    res.redirect("/login");
-  }
-}
-
-const authenticateJSON = function (req, res, next) {
-  if (req.session && req.session.authenticated) {
-    next();
-  } else {
-    res.status(403).end();
-  }
-}
-
-const login = function (req, res, next) {
-  if (req.body.username && req.body.username === username && req.body.password && req.body.password === password) {
-    req.session.authenticated = true;
-    res.redirect('/admin');
-  } else {
-    res.status(403).send('Error: Incorrect Username and/or Password');
-    // res.status(403).redirect('/login');
-  }
-}
-
-const logout = function (req, res, next) {
-  delete req.session.authenticated;
-  res.redirect('/');
-}
-
-
-
-
-
-
-
-
 /****************************/
 /******** 2. Routing ********/
 /****************************/
 
-// API
-const api_base_url = '/api/v1/';
-// Items Controller
-const itemsController  = require(__dirname + api_base_url + 'controllers/ItemsController.js'),
-      ordersController = require(__dirname + api_base_url + 'controllers/OrdersController.js'),
-      stripeController = require(__dirname + api_base_url + 'controllers/StripeController.js'),
-      s3Controller     = require(__dirname + api_base_url + 'controllers/S3Controller.js');
-
-// - Public API Endpoints
-// Fetch all items, or by category
-app.route(api_base_url + 'items')
-  .get(itemsController.getItems)
-// Fetch item by id
-app.route(api_base_url + 'item')
-  .get(itemsController.getItem)
-// Create charge and insert order
-app.route(api_base_url + 'charge')
-  .post(stripeController.preCharge)
-
-// - Protected API Endpoints
-// Insert item
-app.route(api_base_url + 'item/create')
-  .all(authenticateJSON)
-  .post(itemsController.addItem)
-// Update item
-app.route(api_base_url + 'item/update')
-  .all(authenticateJSON)
-  .post(itemsController.updateItem)
-// Delete item
-// app.route(api_base_url + 'item/delete')
-  // .all(authenticateJSON)
-  // .post(itemsController.deleteItem)
-// Sign S3
-app.route(api_base_url + 'sign-s3')
-  .all(authenticate)
-  .get(s3Controller.signS3)
-// Fetch all orders, or by email
-app.route(api_base_url + 'orders')
-  .all(authenticateJSON)
-  .get(ordersController.getOrders)
-// Fetch order by id
-app.route(api_base_url + 'order')
-  .all(authenticateJSON)
-  .get(ordersController.getOrder)
-
-// Web App
-// Protected Web App Endpoints
-// Admin dashboard
-app.route('/admin')
-  .all(authenticate)
-// Public Web App Endpoints
-// Log in
-app.route('/login')
-  .post(login)
-// Log out
-app.route('/logout')
-  .get(logout)
-// Root route
-app.route('*')
-  .all()
-  .get(renderIndex)
-  .post(renderIndex);
-
-
-
-
-
-
-
-
-
+const initializeRoutes = require('./lib/routes/routes.js').init;
+initializeRoutes(app);
 
 /***************************/
 /******** 3. Server ********/

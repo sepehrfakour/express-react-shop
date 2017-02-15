@@ -27,7 +27,7 @@ const MainWindow    = require('./components/MainWindowComponent.jsx').default,
 /*********** 2. Configure ***********/
 /************************************/
 
-// Set loggedIn status (retrieve from index view)
+// Set loggedIn status (retrieve from views/index)
 let Data = {
   loggedIn: (window.loggedIn === undefined) ? false : window.loggedIn
 }
@@ -60,5 +60,5 @@ ReactDOM.render(
 /************************************/
 
 // Require Mixpanel
-const Mixpanel = require('./lib/helpers/mixpanel.js');
+const Mixpanel = require('./helpers/mixpanel/mixpanel.js');
 mixpanel.track('App Instance Loaded');
