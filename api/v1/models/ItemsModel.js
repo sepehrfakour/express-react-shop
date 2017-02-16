@@ -69,6 +69,18 @@ class ItemsModel {
     values.push(data.category, data.name, data.item_group, data.price, data.size, data.color, data.description, data.sku, data.quantity, data.imageurl, data.status, data.id);
     this.executeQuery(queryString, callback, values);
   }
+  decrementItemQuantities(items, callback) {
+    let variableString = '',
+        values = [];
+    for (var i = 0; i < items.length; i++) {
+      values.push(items[i].id, items[i].order_quantity);
+      let varNum = (1 + (i*2));
+      variableString += '($' + (varNum) + ',$' + (varNum+1) + '),';
+    }
+    variableString = variableString.slice(0,variableString.length-1); // Remove trailing comma
+    let queryString = "UPDATE items AS i SET (quantity) = ( i.quantity - CAST (c.quantity AS integer) ) FROM (VALUES " + variableString + ") as c(id, quantity) where CAST (c.id AS integer) = i.id";
+    this.executeQuery(queryString, callback, values);
+  }
   deleteItem(id, callback) {
     let queryString = "DELETE FROM items WHERE id = $1",
         values = [];

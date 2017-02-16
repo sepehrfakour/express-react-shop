@@ -34,10 +34,10 @@ class OrderItemsModel {
   addOrderItems(data, callback) {
     let variableString = '',
         values = [data.order_id];
-    for (var i = 0; i < data.cart.length; i++) {
+    for (var i = 0; i < data.items.length; i++) {
       // Example values array: [order_id, item_id, quantity, item_id, quantity, item_id, quantity]
-      values.push(data.cart[i].id);
-      values.push(data.cart[i].quantity);
+      values.push(data.items[i].id);
+      values.push(data.items[i].order_quantity);
       // Example variableString: ($1,$2,$3), ($1,$4,$5), ($1,$6,$7),
       let varNum = (2 + (i*2));
       variableString += ( '($1, $' + (varNum) + ', $' + (varNum+1) + '),' );

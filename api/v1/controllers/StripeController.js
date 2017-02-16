@@ -167,20 +167,33 @@ class StripeController {
     // Insert item_ids into order_items table, associating them with the order_id
     let that = this,
         data = {
-      order_id: order.id,
-      cart: req.body.cart
-    }
+          order_id: order.id,
+          items: req.body.items
+        };
     console.log("insertOrderItems DATA:",data);
     OrderItemsModel.addOrderItems(data, function (result) {
       // Handle success
       console.log("Order_Items insert successful\n----------");
       res.status(200);
       res.end();
+      that.updateItemQuantities(req,res,order);
+    })
+  }
+
+  updateItemQuantities(req,res,order) {
+    let that = this,
+        items = req.body.items;
+    console.log("updateItemQuantities DATA:",items);
+    ItemsModel.decrementItemQuantities(items, function (result) {
+      // Handle success
+      console.log("Item quantities update successful\n----------");
       that.sendNotifications(req,res,order);
     })
   }
 
   sendNotifications(req,res,order) {
+    console.log("MADE IT TO THE END FOR NOW");
+    return false;
     // Create customer notification email
     let that = this,
         from_string    = 'no-reply@example.com',
