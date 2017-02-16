@@ -75,8 +75,6 @@ Create a .env file in project root and set the following:
 
 - ROLLBAR_ACCESS_TOKEN (only used on 'production' env)
 
-- ROLLBAR_ENDPOINT (only used on 'production' env)
-
 ####3 - Set production environment variables
 
 ####4 - Install modules
