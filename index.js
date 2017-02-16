@@ -108,7 +108,7 @@ initializeRoutes(app);
 
 // Use Rollbar (must define error-handling middleware last, after other app.use() and routes calls)
 if (env === 'production') {
-  const rollbar = require('rollbar'),
+  const rollbar         = require('rollbar'),
         rollbar_options = { exitOnUncaughtException: true };
   app.use(rollbar.errorHandler(process.env.ROLLBAR_ACCESS_TOKEN, {
     environment: env
