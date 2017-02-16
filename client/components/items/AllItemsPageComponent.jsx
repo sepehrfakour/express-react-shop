@@ -7,7 +7,7 @@ const ItemStore   = require('../../stores/ItemStore.js').default,
       ItemActions = require('../../actions/ItemActions.js');
 
 function getItemState() {
-  return ItemStore.getItems();
+  return ItemStore.getValidItems();
 }
 
 const AllItemsPage = React.createClass({
@@ -34,7 +34,7 @@ const AllItemsPage = React.createClass({
   },
   buildItems: function (item) {
     // Only render one item from each itemGroup, and only render active items
-    if (!this.rendered[item.item_group] && item.status === 'active') {
+    if (!this.rendered[item.item_group]) {
       this.rendered[item.item_group] = true;
       return (
         <Item
