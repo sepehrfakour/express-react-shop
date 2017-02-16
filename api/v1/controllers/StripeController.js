@@ -48,7 +48,7 @@ class StripeController {
     // Ensure query result (items) is defined
     if (items === undefined) {
       console.log('Cart items query result is undefined.');
-      res.status(400).write('Could not retrieve items from cart. Remove all items from your cart, and add them again.');
+      res.status(400).write('Oops! Something went wrong. Try removing all items from your bag, and then adding them again.');
       return res.end();
     }
     // Populate temp array with queried items. Append order_quantity to each item.
@@ -199,8 +199,6 @@ class StripeController {
   }
 
   sendNotifications(req,res,order) {
-    console.log("MADE IT TO THE END FOR NOW");
-    return false;
     // Create customer notification email
     let that = this,
         from_string    = 'no-reply@example.com',
