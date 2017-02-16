@@ -3,12 +3,19 @@
 /******** 1. Config ********/
 /***************************/
 
+// Set environment
+const env = process.env.NODE_ENV || 'development'
+
+// Use New Relic (must be defined before any other require calls)
+if (env === 'production') { require('newrelic'); };
+
+// Define global variables
 global.rootRequire = function (name) {
   return require(__dirname + '/' + name);
 }
 
-const env            = process.env.NODE_ENV || 'development',
-      express        = require('express'),
+// Initialize
+const express        = require('express'),
       app            = express(),
       sassMiddleware = require('node-sass-middleware'),
       helmet         = require('helmet'),
@@ -16,13 +23,11 @@ const env            = process.env.NODE_ENV || 'development',
       bodyParser     = require('body-parser'),
       rateLimit      = require('express-rate-limit');
 
+// Configure
 app.set('port', (process.env.PORT || 5000) );
-
 app.set('views', (__dirname + '/views'));
 app.set('view engine', 'ejs');
-
 require('express-helpers')(app);
-
 app.use(
   sassMiddleware({
     src: __dirname + '/client/sass',
@@ -54,11 +59,6 @@ if (env == 'production') {
   // Use secure cookies
   app.set('trust proxy', 1) // trust first proxy
   sess.cookie.secure = true // serve secure cookies
-  // Use New Relic
-  require('newrelic');
-  // Use Rollbar
-  const rollbar = require('rollbar');
-  app.use(rollbar.errorHandler(process.env.ROLLBAR_ACCESS_TOKEN));
 }
 
 // Static assets path
@@ -83,10 +83,8 @@ const loginAttemptLimiter = new rateLimit({
   max: 60, // start blocking after 60 requests
   message: "Too many login attempts from this IP, please try again after an hour"
 });
-// only apply to requests that begin with /api/
 app.use('/api/', apiLimiter);
 app.use('/login', loginAttemptLimiter);
-
 
 // Support JSON-encoded bodies
 app.use(bodyParser.json({
@@ -107,6 +105,12 @@ app.use( require('request-param')() );
 
 const initializeRoutes = require('./lib/routes/routes.js').init;
 initializeRoutes(app);
+
+// Use Rollbar (must define error-handling middleware last, after other app.use() and routes calls)
+if (env === 'production') {
+  const rollbar = require('rollbar');
+  app.use(rollbar.errorHandler(process.env.ROLLBAR_ACCESS_TOKEN));
+}
 
 /***************************/
 /******** 3. Server ********/
