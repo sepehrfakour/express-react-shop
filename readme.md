@@ -65,13 +65,17 @@ Create a .env file in project root and set the following:
 
 - SENDGRID_API_KEY
 
-- NEW_RELIC_APP_NAME (e.g. use different names on different environments)
+- NEW_RELIC_APP_NAME (only used on 'production' env. use different names on different environments)
 
-- NEW_RELIC_LICENSE_KEY
+- NEW_RELIC_LICENSE_KEY (only used on 'production' env)
 
-- NEW_RELIC_NO_CONFIG_FILE (I recommend setting to `true` i.e. no config file)
+- NEW_RELIC_NO_CONFIG_FILE (only used on 'production' env. recommended setting: `true` i.e. no config file)
 
-- NEW_RELIC_LOG (I recommend setting to `stdout` i.e. no log file)
+- NEW_RELIC_LOG (only used on 'production' env. recommended setting: `stdout` i.e. no log file)
+
+- ROLLBAR_ACCESS_TOKEN (only used on 'production' env)
+
+- ROLLBAR_ENDPOINT (only used on 'production' env)
 
 ####3 - Set production environment variables
 

@@ -37,9 +37,8 @@ const ONEHOURINMILLISECONDS = 60 * 60 * 1000;
 const sess = {
   secret: process.env.SESSION_SECRET,
   name: process.env.SESSION_NAME,
-  // Consider updating resave and saveUninitialized options as necessary if you modify user session setup
-  resave: false,
-  saveUninitialized: false,
+  resave: false, // Re-examine this option if/when altering user session setup
+  saveUninitialized: false, // Re-examine this option if/when altering user session setup
   cookie: {
     httpOnly: true,
     maxAge: ONEHOURINMILLISECONDS
@@ -48,15 +47,18 @@ const sess = {
 
 // Configuration specific to production env
 if (env == 'production') {
-  // Force SSL on heroku by checking the 'x-forwarded-proto' header
+  // Force SSL on heroku
   const forceSSL = require('express-force-ssl');
   app.set('forceSSLOptions', {trustXFPHeader: true});
   app.use(forceSSL);
-  // Use secure cookies in production
+  // Use secure cookies
   app.set('trust proxy', 1) // trust first proxy
   sess.cookie.secure = true // serve secure cookies
-  // Use New Relic in production
+  // Use New Relic
   require('newrelic');
+  // Use Rollbar
+  const rollbar = require('rollbar');
+  app.use(rollbar.errorHandler(process.env.ROLLBAR_ACCESS_TOKEN));
 }
 
 // Static assets path
