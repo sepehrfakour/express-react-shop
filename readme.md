@@ -1,8 +1,8 @@
-#Express React E-Commerce Web App
+#Express React Shop
 
-#A simple and fast e-commerce web application
+##A simple and fast marketplace web application
 
-An ES2015 javascript single-page e-commerce web app that is simple, maintainable, easily extensible, and quick to get up and running. Stack consists of a Node backend running an Express server/API, and a React frontend using flux pattern. Configured to use Postgres, AWS S3 for static assets, Stripe for processing payments, Sendgrid for sending email, Mixpanel for event-tracking, NewRelic for monitoring, and Rollbar for error logging. Frontend javascript transpiled, bundled, and uglified with Webpack/Babel. SASS bundled via middleware. Uses Webpack Dev Server with hot-reloading. Uses Gulp for running tasks.
+An ES2015 javascript single-page marketplace app that is simple, maintainable, easily extensible, and quick to get up and running. Stack consists of a Node backend running an Express server/API, and a React frontend using flux pattern. Configured to use Postgres, AWS S3 for static assets, Stripe for processing payments, Sendgrid for sending email, Mixpanel for event-tracking, NewRelic for monitoring, and Rollbar for error logging. Frontend javascript transpiled, bundled, and uglified with Webpack/Babel. SASS bundled via middleware. Uses Webpack Dev Server with hot-reloading. Uses Gulp for running tasks.
 
 ----------------------------------------------
 
@@ -64,6 +64,14 @@ Create a .env file in project root and set the following:
 - STRIPE_PUBLISHABLE_KEY
 
 - SENDGRID_API_KEY
+
+- NEW_RELIC_APP_NAME (e.g. use different names on different environments)
+
+- NEW_RELIC_LICENSE_KEY
+
+- NEW_RELIC_NO_CONFIG_FILE (I recommend setting to `true` i.e. no config file)
+
+- NEW_RELIC_LOG (I recommend setting to `stdout` i.e. no log file)
 
 ####3 - Set production environment variables
 

@@ -7,14 +7,14 @@ global.rootRequire = function (name) {
   return require(__dirname + '/' + name);
 }
 
-const env = process.env.NODE_ENV || 'development'
-  , express         = require('express')
-  , sassMiddleware  = require('node-sass-middleware')
-  , app             = express()
-  , helmet          = require('helmet')
-  , session         = require('express-session')
-  , bodyParser      = require('body-parser')
-  , rateLimit       = require('express-rate-limit');
+const env            = process.env.NODE_ENV || 'development',
+      express        = require('express'),
+      app            = express(),
+      sassMiddleware = require('node-sass-middleware'),
+      helmet         = require('helmet'),
+      session        = require('express-session'),
+      bodyParser     = require('body-parser'),
+      rateLimit      = require('express-rate-limit');
 
 app.set('port', (process.env.PORT || 5000) );
 
@@ -55,6 +55,8 @@ if (env == 'production') {
   // Use secure cookies in production
   app.set('trust proxy', 1) // trust first proxy
   sess.cookie.secure = true // serve secure cookies
+  // Use New Relic in production
+  require('newrelic');
 }
 
 // Static assets path
