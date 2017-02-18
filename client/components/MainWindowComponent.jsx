@@ -12,7 +12,7 @@ const MainWindow = React.createClass({
   componentDidMount: function () {},
   render: function () {
     // Fire event on URL update
-    mixpanel.track('Path - ' + this.props.location.pathname);
+    mixpanel.track(this.props.location.pathname);
     return(
       <div id="main-window">
         <Header loggedIn={this.props.route.loggedIn} />

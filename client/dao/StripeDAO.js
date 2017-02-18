@@ -76,6 +76,7 @@ class StripeDAO {
         let msg = "Your order has been placed! You will receive an order confirmation email shortly.";
         OverlayActions.setOverlay(false); // Deactivate loading overlay
         AlertActions.addAlert(msg,'positive');
+        mixpanel.track('Payment Success');
       }
     });
   }
@@ -85,8 +86,10 @@ class StripeDAO {
     OverlayActions.setOverlay(false); // Deactivate loading overlay
     if (message) {
       AlertActions.addAlert(message,'negative');
+      mixpanel.track('Payment Failure', {message: message});
     } else {
       AlertActions.addAlert("Payment could not be processed. Please try again later.",'negative');
+      mixpanel.track('Payment Failure', {message: "No message."});
     }
   }
 }
