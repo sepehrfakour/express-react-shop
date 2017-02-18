@@ -38,10 +38,12 @@ const CartPage = React.createClass({
       <tr key={cartItem.id} data-id={cartItem.id} className="cart-item">
         <td name="image"><img src={item.imageurl}></img></td>
         <td name="name">{item.name}</td>
+        <td name="color">{item.color}</td>
+        <td name="size">{item.size}</td>
         <td name="price">${item.price}</td>
         <td name="quantity">x{cartItem.quantity}</td>
         <td>
-          <button data-id={cartItem.id} onClick={this._onRemoveHandler}>Remove</button>
+          <button data-id={cartItem.id} onClick={this._onRemoveHandler}>X</button>
         </td>
       </tr>
     )
@@ -59,14 +61,14 @@ const CartPage = React.createClass({
             <Link to="/checkout" className={checkoutLinkClassName} onClick={this._onCheckoutClickHandler}>Continue to checkout</Link>
           </div>
           <div className="row">
-            <div className="col-xs-12 col-lg-6 offset-lg-3 border-box">
+            <div className="col-xs-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2 border-box">
               <table id="cart-table">
                 <tbody>
                   {
                     (cartHasItems) ? this.state.items.map(this.buildItems) : <tr><td>— Cart empty —</td></tr>
                   }
                   <tr>
-                    <td className="cart-summary" colSpan="5">
+                    <td className="cart-summary" colSpan="7">
                       <p>
                         <span>Subtotal: </span>
                         <span>${this.subtotal.toFixed(2)}</span>
@@ -86,7 +88,7 @@ const CartPage = React.createClass({
             </div>
           </div>
           <div className="row cart-bottom">
-            <div className="col-xs-12 col-lg-6 offset-lg-3 border-box">
+            <div className="col-xs-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2 border-box">
               <Link to="/checkout" className={checkoutLinkClassName} onClick={this._onCheckoutClickHandler}>Continue to checkout</Link>
             </div>
           </div>
