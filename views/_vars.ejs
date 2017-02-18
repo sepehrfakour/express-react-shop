@@ -1,4 +1,5 @@
 <script>
+  var csrf_token = <%- JSON.stringify(csrfToken) %>;
   var loggedIn = <%= loggedIn %>;
   var s_pk = <%- JSON.stringify(s_pk) %>;
   var mp_token = <%- JSON.stringify(mixpanel_token) %>;

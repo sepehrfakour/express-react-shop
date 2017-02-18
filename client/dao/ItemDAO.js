@@ -17,9 +17,10 @@ class ItemDAO {
       method: 'POST',
       body: JSON.stringify(data),
       headers: new Headers({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': window.csrf_token
       }),
-      credentials: 'include'
+      credentials: 'same-origin'
     });
     fetch(request).then( function (res) {
       return res.text();
