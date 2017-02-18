@@ -24,11 +24,9 @@ class CartStore extends EventEmitter {
     return this.cart;
   }
   getCartItemCount() {
-    let count = 0;
-    this.cart.map( function (item) {
-      count += item.quantity;
-    });
-    return count;
+    return this.cart.reduce( function (prev,curr) {
+      return prev + curr.quantity;
+    },0);
   }
   addItem(data) {
     let cart = this.cart,
