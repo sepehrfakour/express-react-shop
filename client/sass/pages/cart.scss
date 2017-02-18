@@ -32,7 +32,7 @@
     margin: 30px auto;
     tr {
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 400;
       color: #999;
       &.cart-item {
         border-bottom: 1px solid #EEE;
@@ -54,10 +54,16 @@
           &:last-of-type {
             padding-right: 0px;
             text-align: right;
-            button { padding: 0px; }
+            button {
+              padding: 0px;
+              font-size: 14px;
+              color: #AAA;
+              text-align: text-top;
+              &:hover { color: $error-red-trans; }
+            }
           }
           img {
-            max-width: 60px;
+            max-width: 30px;
           }
           button {
             @include transparentButton;
@@ -118,6 +124,7 @@
     }
     table#cart-table {
       tr.cart-item {
+        font-weight: 600;
         td {
           max-width: 103.2px;
           font-size: 13px;
@@ -128,8 +135,11 @@
           }
           &:last-of-type {
             button {
-              font-size: 14px;
+              font-size: 18px;
             }
+          }
+          img {
+            max-width: 60px;
           }
         }
       }

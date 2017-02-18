@@ -45,8 +45,14 @@ class StripeController {
   charge(req,res,items) {
     let temp = [],
         that = this;
-    // Append order_quantity to each queried item
-    if (!Array.isArray(items)) { // Only one item was retrieved
+    // Ensure query result (items) is defined
+    if (items === undefined) {
+      console.log('Cart items query result is undefined.');
+      res.status(400).write('Oops! Something went wrong. Try removing all items from your bag, and then adding them again.');
+      return res.end();
+    }
+    // Populate temp array with queried items. Append order_quantity to each item.
+    if (!Array.isArray(items)) { // At most one item was retrieved
       items.order_quantity = parseInt(req.body.cart[0].quantity,10); // Add order_quantity property
       temp.push(items);
     } else { // Multiple items were retrieved
@@ -60,6 +66,30 @@ class StripeController {
         });
         return item;
       });
+    }
+    // Ensure we have enough of each item to meet request
+    let insufficientItems = temp.filter( function (item) {
+      return item.order_quantity > item.quantity;
+    });
+    if (insufficientItems.length > 0) { // We are sold out of some of the items
+      // Concat names of sold out items
+      let sold_out_items = '';
+      if (insufficientItems.length === 1) {
+        sold_out_items = insufficientItems[0].name + '(' + insufficientItems[0].quantity + ' remain)';
+      } else {
+        sold_out_items = insufficientItems.reduce( function(prev,curr) {
+          if (typeof(prev) === 'object') {
+            return  prev.name + ' - ' + prev.color + ' - ' + prev.size + ' - (' + prev.quantity + ' remain)\n\n' +
+                    curr.name + ' - ' + curr.color + ' - ' + curr.size + ' - (' + curr.quantity + ' remain)';
+          } else {
+            return  prev + '\n\n' +
+                    curr.name + ' - ' + curr.color + ' - ' + curr.size + ' - (' + curr.quantity + ' remain)';
+          }
+        });
+      };
+      console.log('Cannot fulfill order - Insufficient quantity of following items:\n\n',sold_out_items);
+      res.status(400).write('Insufficient inventory for the following item(s):\n\n' + sold_out_items);
+      return res.end();
     }
     // Save temp array for later use
     req.body.items = temp;
@@ -144,15 +174,26 @@ class StripeController {
     // Insert item_ids into order_items table, associating them with the order_id
     let that = this,
         data = {
-      order_id: order.id,
-      cart: req.body.cart
-    }
+          order_id: order.id,
+          items: req.body.items
+        };
     console.log("insertOrderItems DATA:",data);
     OrderItemsModel.addOrderItems(data, function (result) {
       // Handle success
       console.log("Order_Items insert successful\n----------");
       res.status(200);
       res.end();
+      that.updateItemQuantities(req,res,order);
+    })
+  }
+
+  updateItemQuantities(req,res,order) {
+    let that = this,
+        items = req.body.items;
+    console.log("updateItemQuantities DATA:",items);
+    ItemsModel.decrementItemQuantities(items, function (result) {
+      // Handle success
+      console.log("Item quantities update successful\n----------");
       that.sendNotifications(req,res,order);
     })
   }

@@ -19,3 +19,6 @@ npm-debug.log
 
 #Ignore test data
 /schema/test_data.sql
+
+#Ignore newrelic generated logfile
+newrelic_agent.log

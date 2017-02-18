@@ -35,6 +35,11 @@ class ItemStore extends EventEmitter {
   getItems() {
     return this.items;
   }
+  getValidItems() {
+    return this.items.filter( function (item) {
+      return (item.status === 'active' && item.quantity > 0);
+    });
+  }
   getItemsByCategory(category) {
     let output = [];
     for (var i = 0; i < this.items.length; i++) {
@@ -44,6 +49,17 @@ class ItemStore extends EventEmitter {
     }
     return output;
   }
+  getValidItemsByCategory(category) {
+    let output = [];
+    for (var i = 0; i < this.items.length; i++) {
+      if (this.items[i].category === category) {
+        output.push(this.items[i]);
+      }
+    }
+    return output.filter( function (item) {
+      return (item.status === 'active' && item.quantity > 0);
+    });
+  }
   getItemsByItemGroup(item_group) {
     let output = [];
     for (var i = 0; i < this.items.length; i++) {
@@ -52,6 +68,17 @@ class ItemStore extends EventEmitter {
       }
     }
     return output;
+  }
+  getValidItemsByItemGroup(item_group) {
+    let output = [];
+    for (var i = 0; i < this.items.length; i++) {
+      if (this.items[i].item_group === item_group) {
+        output.push(this.items[i]);
+      }
+    }
+    return output.filter( function (item) {
+      return (item.status === 'active' && item.quantity > 0);
+    });
   }
   getItem(id) {
     for (var i = 0; i < this.items.length; i++) {

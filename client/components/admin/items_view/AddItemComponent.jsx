@@ -10,7 +10,6 @@ const AddItem = React.createClass({
   },
   componentDidMount: function () {},
   render: function () {
-    // TODO: Add validation to form
     return (
       <div id="add-item-modal">
         <ItemModal type="add-item-form" submitButtonText="Add Item" submitCallback={this._addItemClickHandler} closeCallback={this.props.closeModal} />
@@ -20,7 +19,6 @@ const AddItem = React.createClass({
   _addItemClickHandler: function (event) {
     event.preventDefault();
     let form          = document.body.querySelector('#add-item-form'),
-        formValidated = false,
         data          = {
           // Create a temporary ID until we are returned a real one from DB following AJAX promise resolution in DAO
           tempid:      Math.random()*1000000,
@@ -36,6 +34,17 @@ const AddItem = React.createClass({
           imageurl:    form.imageurl.value,
           status:      form.status.value
         };
+    let formIsValid = this._validateForm(data);
+    if (formIsValid) {
+      ItemActions.addItem(data);
+      this.props.closeModal(event);
+    } else {
+      alert("Please fill out all form fields before submitting");
+    }
+  },
+  _validateForm: function (data) {
+    let items = this.props.items,
+        valid = false;
     if ( data.name
       && data.item_group
       && data.category
@@ -45,16 +54,11 @@ const AddItem = React.createClass({
       && data.description
       && data.sku
       && data.quantity
-      && data.imageurl !== "/images/default.png"
+      && data.imageurl !== '/img/shoppingCartIcon.png'
       && data.status ) {
-      formValidated = true;
+      valid = true;
     }
-    if (formValidated) {
-      ItemActions.addItem(data);
-      this.props.closeModal(event);
-    } else {
-      alert("Please fill out all form fields before submitting");
-    }
+    return valid;
   }
 })
 

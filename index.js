@@ -3,26 +3,31 @@
 /******** 1. Config ********/
 /***************************/
 
+// Set environment
+const env = process.env.NODE_ENV || 'development'
+
+// Use New Relic (must be defined before any other require calls)
+if (env === 'production') { require('newrelic'); };
+
+// Define global variables
 global.rootRequire = function (name) {
   return require(__dirname + '/' + name);
 }
 
-const env = process.env.NODE_ENV || 'development'
-  , express         = require('express')
-  , sassMiddleware  = require('node-sass-middleware')
-  , app             = express()
-  , helmet          = require('helmet')
-  , session         = require('express-session')
-  , bodyParser      = require('body-parser')
-  , rateLimit       = require('express-rate-limit');
+// Initialize
+const express        = require('express'),
+      app            = express(),
+      sassMiddleware = require('node-sass-middleware'),
+      helmet         = require('helmet'),
+      session        = require('express-session'),
+      bodyParser     = require('body-parser'),
+      rateLimit      = require('express-rate-limit');
 
+// Configure
 app.set('port', (process.env.PORT || 5000) );
-
 app.set('views', (__dirname + '/views'));
 app.set('view engine', 'ejs');
-
 require('express-helpers')(app);
-
 app.use(
   sassMiddleware({
     src: __dirname + '/client/sass',
@@ -37,9 +42,8 @@ const ONEHOURINMILLISECONDS = 60 * 60 * 1000;
 const sess = {
   secret: process.env.SESSION_SECRET,
   name: process.env.SESSION_NAME,
-  // Consider updating resave and saveUninitialized options as necessary if you modify user session setup
-  resave: false,
-  saveUninitialized: false,
+  resave: false, // Re-examine this option if/when altering user session setup
+  saveUninitialized: false, // Re-examine this option if/when altering user session setup
   cookie: {
     httpOnly: true,
     maxAge: ONEHOURINMILLISECONDS
@@ -48,11 +52,11 @@ const sess = {
 
 // Configuration specific to production env
 if (env == 'production') {
-  // Force SSL on heroku by checking the 'x-forwarded-proto' header
+  // Force SSL on heroku
   const forceSSL = require('express-force-ssl');
   app.set('forceSSLOptions', {trustXFPHeader: true});
   app.use(forceSSL);
-  // Use secure cookies in production
+  // Use secure cookies
   app.set('trust proxy', 1) // trust first proxy
   sess.cookie.secure = true // serve secure cookies
 }
@@ -79,10 +83,8 @@ const loginAttemptLimiter = new rateLimit({
   max: 60, // start blocking after 60 requests
   message: "Too many login attempts from this IP, please try again after an hour"
 });
-// only apply to requests that begin with /api/
 app.use('/api/', apiLimiter);
 app.use('/login', loginAttemptLimiter);
-
 
 // Support JSON-encoded bodies
 app.use(bodyParser.json({
@@ -103,6 +105,16 @@ app.use( require('request-param')() );
 
 const initializeRoutes = require('./lib/routes/routes.js').init;
 initializeRoutes(app);
+
+// Use Rollbar (must define error-handling middleware last, after other app.use() and routes calls)
+if (env === 'production') {
+  const rollbar         = require('rollbar'),
+        rollbar_options = { exitOnUncaughtException: true };
+  app.use(rollbar.errorHandler(process.env.ROLLBAR_ACCESS_TOKEN, {
+    environment: env
+  }));
+  rollbar.handleUncaughtExceptionsAndRejections(process.env.ROLLBAR_ACCESS_TOKEN, rollbar_options);
+}
 
 /***************************/
 /******** 3. Server ********/

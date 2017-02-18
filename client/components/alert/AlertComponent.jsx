@@ -19,14 +19,22 @@ const Alert = React.createClass({
     var alert = document.getElementById(this.props.id);
     alert.removeEventListener( 'transitionend', this._onTransitionEnd);
   },
+  formatMessage: function (message) {
+    return message
+            .split(/\n\n/g)
+            .map( function (row,i,arr) {
+              if (arr.length === 1) { return <p key={i}>{row}</p> }
+              return <p key={i} className="alert-li">{row}</p>
+            });
+  },
   render: function() {
+    let message = this.formatMessage(this.props.message);
     let className = 'alert alert-' + this.props.tone;
     return(
-      <alert id={this.props.id} className={className}>{this.props.message}</alert>
+      <alert id={this.props.id} className={className}>{message}</alert>
     )
   },
   _onTransitionEnd: function (element) {
-    var alert = document.getElementById(this.props.id);
     // Remove alert from DOM
     AlertActions.removeAlert(this.props.id);
   },
