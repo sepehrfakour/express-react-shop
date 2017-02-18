@@ -73,7 +73,7 @@ class StripeDAO {
         // Empty cart, navigate to home page, display success message
         CartActions.clearCart();
         browserHistory.push('/');
-        let msg = "Hooray! Your order has been placed and you will receive an order confirmation email shortly.";
+        let msg = "Your order has been placed! You will receive an order confirmation email shortly.";
         OverlayActions.setOverlay(false); // Deactivate loading overlay
         AlertActions.addAlert(msg,'positive');
       }

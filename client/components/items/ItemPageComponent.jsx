@@ -56,6 +56,7 @@ const ItemPage = React.createClass({
     })[0];
     if (!selectedItem) { return []; }; // No item exists of this color/size combo; exit early
     let quantity = selectedItem.quantity;
+    if (quantity >= 10) { return [1,2,3,4,5,6,7,8,9,10]; }; // Item quantity 10+; exit early
     // Populate an array of valid quantity choices for <select> input
     for (var i = 1; i <= quantity; i++) {
       validQuantities.push(i);

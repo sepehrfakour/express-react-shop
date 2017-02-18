@@ -79,16 +79,16 @@ class StripeController {
       } else {
         sold_out_items = insufficientItems.reduce( function(prev,curr) {
           if (typeof(prev) === 'object') {
-            return  prev.name + ' (' + prev.quantity + ' remain), ' +
-                    curr.name + ' (' + curr.quantity + ' remain)';
+            return  prev.name + ' - ' + prev.color + ' - ' + prev.size + ' - (' + prev.quantity + ' remain)\n\n' +
+                    curr.name + ' - ' + curr.color + ' - ' + curr.size + ' - (' + curr.quantity + ' remain)';
           } else {
-            return  prev + ', ' +
-                    curr.name + ' (' + curr.quantity + ' remain)';
+            return  prev + '\n\n' +
+                    curr.name + ' - ' + curr.color + ' - ' + curr.size + ' - (' + curr.quantity + ' remain)';
           }
         });
       };
-      console.log('Insufficient quantity of following items to fulfill order:',sold_out_items);
-      res.status(400).write('Oops! Insufficient inventory to fulfill your order for the following item(s): ' + sold_out_items);
+      console.log('Cannot fulfill order - Insufficient quantity of following items:\n\n',sold_out_items);
+      res.status(400).write('Insufficient inventory for the following item(s):\n\n' + sold_out_items);
       return res.end();
     }
     // Save temp array for later use

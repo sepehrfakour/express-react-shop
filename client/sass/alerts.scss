@@ -43,6 +43,18 @@
       &.alert-negative {
         background-color: $error-red-trans;
       }
+      p {
+        margin: 1px 0px;
+        text-align: center;
+        &.alert-li {
+          font-size: 13px;
+          text-align: left;
+          &:first-of-type {
+            font-size: 15px;
+            font-weight: 700;
+          }
+        }
+      }
     }
   }
 }
