@@ -10,7 +10,6 @@ const EditItem = React.createClass({
   },
   componentDidMount: function () {},
   render: function () {
-    // TODO: Add validation to form
     return (
       <div id="edit-item-modal">
         <ItemModal type="edit-item-form" submitButtonText="Edit Item" submitCallback={this._editItemClickHandler} closeCallback={this.props.closeModal} item={this.props.item} />
@@ -20,7 +19,6 @@ const EditItem = React.createClass({
   _editItemClickHandler: function (event) {
     event.preventDefault();
     let form          = document.body.querySelector('#edit-item-form'),
-        formValidated = false,
         data          = {
           id:          this.props.item.id,
           name:        form.name.value,
@@ -35,6 +33,17 @@ const EditItem = React.createClass({
           imageurl:    form.imageurl.value,
           status:      form.status.value
         };
+    let formIsValid = this._validateForm(data);
+    if (formIsValid) {
+      ItemActions.updateItem(data);
+      this.props.closeModal(event);
+    } else {
+      alert("Please fill out all form fields before submitting");
+    }
+  },
+  _validateForm: function (data) {
+    let items = this.props.items,
+        valid = false;
     if ( data.name
       && data.item_group
       && data.category
@@ -44,16 +53,11 @@ const EditItem = React.createClass({
       && data.description
       && data.sku
       && data.quantity
-      && data.imageurl !== "/images/default.png"
+      && data.imageurl !== '/img/shoppingCartIcon.png'
       && data.status ) {
-      formValidated = true;
+      valid = true;
     }
-    if (formValidated) {
-      ItemActions.updateItem(data);
-      this.props.closeModal(event);
-    } else {
-      alert("Please fill out all form fields before submitting");
-    }
+    return valid;
   }
 })
 
