@@ -32,6 +32,10 @@ let Data = {
   loggedIn: (window.loggedIn === undefined) ? false : window.loggedIn
 }
 
+// Require Mixpanel
+const Mixpanel = require('./helpers/mixpanel/mixpanel.js');
+mixpanel.track('App Instance Loaded');
+
 /************************************/
 /********** 3. Render View **********/
 /************************************/
@@ -59,6 +63,4 @@ ReactDOM.render(
 /********** 4. Post-render **********/
 /************************************/
 
-// Require Mixpanel
-const Mixpanel = require('./helpers/mixpanel/mixpanel.js');
-mixpanel.track('App Instance Loaded');
+// Execute any code that should be called after DOM rendering has started
