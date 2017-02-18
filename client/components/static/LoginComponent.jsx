@@ -20,6 +20,7 @@ const Login = React.createClass({
             <p>
               <input type="submit" name="submit" tabIndex="3" />
             </p>
+            <input type="hidden" name="_csrf" value={window.csrf_token} />
           </form>
         </div>
       </div>

@@ -34,7 +34,7 @@ let Data = {
 
 // Require Mixpanel
 const Mixpanel = require('./helpers/mixpanel/mixpanel.js');
-mixpanel.track('App Instance Loaded');
+mixpanel.track('App Loaded');
 
 /************************************/
 /********** 3. Render View **********/

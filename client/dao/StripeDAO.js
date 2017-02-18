@@ -52,9 +52,10 @@ class StripeDAO {
       method: 'POST',
       body: JSON.stringify(data),
       headers: new Headers({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': window.csrf_token
       }),
-      credentials: 'include'
+      credentials: 'same-origin'
     });
 
     fetch(request).then( function (res) {
@@ -67,8 +68,8 @@ class StripeDAO {
       // return res.text();
     }).then( function(response) {
       let status = response.status;
-      if ((status === 402) || (status === 400)) {
-        that.errorBackToCart(response.message);
+      if ((status !== 200)) {
+        that.errorBackToCart(status,response.message);
       } else {
         // Empty cart, navigate to home page, display success message
         CartActions.clearCart();
@@ -76,17 +77,20 @@ class StripeDAO {
         let msg = "Your order has been placed! You will receive an order confirmation email shortly.";
         OverlayActions.setOverlay(false); // Deactivate loading overlay
         AlertActions.addAlert(msg,'positive');
+        mixpanel.track('Payment Success');
       }
     });
   }
-  errorBackToCart(message) {
+  errorBackToCart(status,message) {
     // Navigate to cart and display API/Stripe error message
     browserHistory.push('/cart');
     OverlayActions.setOverlay(false); // Deactivate loading overlay
-    if (message) {
+    if (message && status !== 403) { // 403 implies invalid CSRF token, no need to display that error message
       AlertActions.addAlert(message,'negative');
+      mixpanel.track('Payment Failure', {message: message});
     } else {
       AlertActions.addAlert("Payment could not be processed. Please try again later.",'negative');
+      mixpanel.track('Payment Failure', {message: "No message."});
     }
   }
 }

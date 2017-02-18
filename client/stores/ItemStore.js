@@ -41,43 +41,23 @@ class ItemStore extends EventEmitter {
     });
   }
   getItemsByCategory(category) {
-    let output = [];
-    for (var i = 0; i < this.items.length; i++) {
-      if (this.items[i].category === category) {
-        output.push(this.items[i]);
-      }
-    }
-    return output;
+    return this.items.filter( function (item) {
+      return (item.category === category);
+    });
   }
   getValidItemsByCategory(category) {
-    let output = [];
-    for (var i = 0; i < this.items.length; i++) {
-      if (this.items[i].category === category) {
-        output.push(this.items[i]);
-      }
-    }
-    return output.filter( function (item) {
-      return (item.status === 'active' && item.quantity > 0);
+    return this.items.filter( function (item) {
+      return (item.category === category && item.status === 'active' && item.quantity > 0);
     });
   }
   getItemsByItemGroup(item_group) {
-    let output = [];
-    for (var i = 0; i < this.items.length; i++) {
-      if (this.items[i].item_group === item_group) {
-        output.push(this.items[i]);
-      }
-    }
-    return output;
+    return this.items.filter( function (item) {
+      return (item.item_group === item_group);
+    });
   }
   getValidItemsByItemGroup(item_group) {
-    let output = [];
-    for (var i = 0; i < this.items.length; i++) {
-      if (this.items[i].item_group === item_group) {
-        output.push(this.items[i]);
-      }
-    }
-    return output.filter( function (item) {
-      return (item.status === 'active' && item.quantity > 0);
+    return this.items.filter( function (item) {
+      return (item.item_group === item_group && item.status === 'active' && item.quantity > 0);
     });
   }
   getItem(id) {

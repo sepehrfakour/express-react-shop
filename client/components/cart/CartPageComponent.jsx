@@ -18,19 +18,15 @@ const CartPage = React.createClass({
     };
   },
   componentWillMount: function () {
-    // TODO: Refactor this listener on ItemStore (Necessary to display item info on browser page refresh)
-    // (maybe make singular call to ItemStore on MainWindow and pass items array as props)
+    // ItemStore listener necessary to display item info on browser page refresh)
     ItemStore.on("change", this._onChange);
     CartStore.on("change", this._onChange);
   },
   componentWillUnmount: function () {
-    // TODO: Refactor this listener on ItemStore (Necessary to display item info on browser page refresh)
-    // (maybe make singular call to ItemStore on MainWindow and pass items array as props)
     ItemStore.removeListener("change", this._onChange);
     CartStore.removeListener("change", this._onChange);
   },
   buildItems: function (cartItem) {
-    // TODO: Refactor: should we continue fetching item data by id from store one at a time in this buildItems method?
     let item = ItemStore.getItem(cartItem.id);
     // Adjust subtotal
     this.subtotal += (parseFloat(item.price,10) * parseInt(cartItem.quantity,10));

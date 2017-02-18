@@ -21,6 +21,8 @@ const express        = require('express'),
       helmet         = require('helmet'),
       session        = require('express-session'),
       bodyParser     = require('body-parser'),
+      cookieParser   = require('cookie-parser'),
+      csrf           = require('csurf'),
       rateLimit      = require('express-rate-limit');
 
 // Configure
@@ -63,13 +65,10 @@ if (env == 'production') {
 
 // Static assets path
 app.use(express.static(__dirname + '/public'));
-
 // Use helmet
 app.use(helmet());
-
 // Use sessions
 app.use(session(sess));
-
 // Rate limiting
 const apiLimiter = new rateLimit({
   windowMs: 15*60*1000, // 15 minutes
@@ -85,7 +84,6 @@ const loginAttemptLimiter = new rateLimit({
 });
 app.use('/api/', apiLimiter);
 app.use('/login', loginAttemptLimiter);
-
 // Support JSON-encoded bodies
 app.use(bodyParser.json({
   limit: '5mb'
@@ -95,7 +93,10 @@ app.use(bodyParser.urlencoded({
   extended: true,
   limit: '5mb'
 }));
-
+// Parse cookies
+app.use(cookieParser());
+// Use CSRF protection
+app.use(csrf({ cookie: true }))
 // Parse request params like in Express 3.0
 app.use( require('request-param')() );
 
