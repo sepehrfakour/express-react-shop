@@ -21,16 +21,16 @@ const AdminOrdersView = React.createClass({
     })
   },
   buildOrders: function (order) {
-    let key = 'order-' + order.id,
-        id = order.id,
-        name = order.customer_first_name + ' ' + order.customer_last_name,
-        email = order.customer_email,
-        phone = order.customer_phone,
-        address = order.shipping_street_1 + ' ' + [order.shipping_street_2, order.shipping_city, order.shipping_state, order.shipping_country].join(', '),
-        total = order.total_amount,
-        timestamp = Date.parse(order.date_created),
-        date = new Date(timestamp),
-        dateString = (date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear(),
+    let key            = 'order-' + order.id,
+        id             = order.id,
+        name           = order.customer_first_name + ' ' + order.customer_last_name,
+        email          = order.customer_email,
+        phone          = order.customer_phone,
+        address        = order.shipping_street_1 + ' ' + [order.shipping_street_2, order.shipping_city, order.shipping_state, order.shipping_country].join(', '),
+        total          = order.total_amount,
+        timestamp      = Date.parse(order.date_created),
+        date           = new Date(timestamp),
+        dateString     = (date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear(),
         dateTimeString = dateString + ' @ ' + date.getHours() + ':' + date.getMinutes() + ' (utc)';
     return (
       <tr key={key} className="order" onClick={this._orderRowClickHandler}>
@@ -63,7 +63,7 @@ const AdminOrdersView = React.createClass({
             </tr>
           </thead>
           <tbody>
-            { (orders) ? orders.map(this.buildOrders) : <tr><td>Unable to access orders</td></tr> }
+            { (orders) ? orders.map(this.buildOrders) : <tr><td colSpan="8">Unable to access orders</td></tr> }
           </tbody>
         </table>
       </div>

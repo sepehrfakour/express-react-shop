@@ -28,8 +28,7 @@ const CheckoutPage = React.createClass({
     };
   },
   componentWillMount: function () {
-    // TODO: Refactor this listener on ItemStore (Necessary to display item info on browser page refresh)
-    // (maybe make singular call to ItemStore on MainWindow and pass items array as props)
+    // ItemStore listener necessary to display item info on browser page refresh)
     ItemStore.on("change", this._onChange);
     CartStore.on("change", this._onChange);
     CheckoutStore.on("change", this._onChange);
@@ -38,14 +37,11 @@ const CheckoutPage = React.createClass({
     window.scrollTo(0, 0);
   },
   componentWillUnmount: function () {
-    // TODO: Refactor this listener on ItemStore (Necessary to display item info on browser page refresh)
-    // (maybe make singular call to ItemStore on MainWindow and pass items array as props)
     ItemStore.removeListener("change", this._onChange);
     CartStore.removeListener("change", this._onChange);
     CheckoutStore.removeListener("change", this._onChange);
   },
   buildItems: function (cartItem) {
-    // TODO: Refactor current method, which, using ItemStore, matches ids to retreive each Cart item's data etc
     let item = ItemStore.getItem(cartItem.id);
     // Adjust subtotal
     this.subtotal += (parseFloat(item.price,10) * parseInt(cartItem.quantity,10));
@@ -72,7 +68,7 @@ const CheckoutPage = React.createClass({
     this.subtotal = 0.00;
     this.tax_rate = 0.08;
     // Initialize boolean flag to ensure at least one item in cart
-    this.cartHasItems = (this.state.items.length > 0) ? true : false ;
+    this.cartHasItems = (this.state.items.length > 0) ? true : false;
     let progressClassName = 'row progress-' + this.state.currentForm;
     return(
       <div id="checkout-page" className="container-fluid content">
