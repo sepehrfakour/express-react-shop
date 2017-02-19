@@ -1,30 +1,38 @@
 import { browserHistory } from 'react-router';
 
+const AlertActions = require('../actions/AlertActions.js');
+
 class OrderDAO {
-  constructor () {
-    // super();
-  }
   getOrders (callback) {
+    let that = this;
     // Get items from DB then run provided callback
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', `/api/v1/orders`);
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          // Valid response with an array of order objects
-          let response = JSON.parse(xhr.responseText);
-          callback(response);
-        } else if (xhr.status === 403) {
-          // Client needs to authenticate
-          window.location.href = '/login';
-        }
-        else{
-          // Error
-          alert('Oops! Something went wrong. Could not get orders.');
-        }
-      }
-    };
-    xhr.send();
+    let request = new Request('/api/v1/orders', {
+      method: 'GET',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': window.csrf_token
+      }),
+      credentials: 'same-origin'
+    });
+    fetch(request)
+      .then( function (res) {
+        return res.text().then(text => {
+          return {
+            message: text,
+            status: res.status
+          }
+        });
+      })
+      .then( function(response) {
+        (response.status === 200) ? callback(JSON.parse(response.message)) : that._handleError(response);
+      });
+  }
+  _handleError (response) {
+    if (response.status === 403) {
+      window.location.href = '/login'; // Client needs to authenticate
+    }
+    let msg = 'Error:\n\n' + 'Status: ' + response.status + '\n\n' + 'Message: ' + response.message;
+    AlertActions.addAlert(msg,'negative');
   }
 }
 

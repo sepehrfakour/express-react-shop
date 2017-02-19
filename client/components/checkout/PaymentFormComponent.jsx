@@ -87,7 +87,6 @@ const PaymentForm = React.createClass({
     this.setState({cardType:cardType});
   },
   _submitCallback: function (event) {
-    // TODO: Split expiry into two 2-character input fields
     event.preventDefault();
     if (!this.props.cartHasItems) {
       // Make sure this form wont submit unless cart has at least one item in it

@@ -49,7 +49,6 @@ const ItemModal = React.createClass({
     if (this.state.loadingImage) {
       spinnerClassName = 'spinner visible';
     }
-    // TODO: Add validation to form
     return(
         <form id={this.props.type} data-id={id} onSubmit={this.props.submitCallback}>
           <h2>{this.props.submitButtonText + " Form"}</h2>

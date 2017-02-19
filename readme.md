@@ -125,10 +125,6 @@ In order to run Unit Tests use:
 
 ####Roadmap:
 
-- Allow admin to add items as a group, set order status, edit banner images
+- Implement virtualized lists for rendering items and orders views
 
-- Add pagination for admin items and orders views
-
-- Add New Relic and Rollbar
-
-- Lazy load images a bit below the fold
+- More robust admin functionality
